@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from utmccf.com/2010/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 29 Jan 2023 20:31:29 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="profile" href="https://gmpg.org/xfn/11">
+<link rel="pingback" href="../xmlrpc.php">
+<title>2010</title>
+<meta name='robots' content='max-image-preview:large' />
+
+<script id="wpcom_remote_login_js">
+var wpcom_remote_login_extra_auth = '';
+function wpcom_remote_login_remove_dom_node_id( element_id ) {
+	var dom_node = document.getElementById( element_id );
+	if ( dom_node ) { dom_node.parentNode.removeChild( dom_node ); }
+}
+function wpcom_remote_login_remove_dom_node_classes( class_name ) {
+	var dom_nodes = document.querySelectorAll( '.' + class_name );
+	for ( var i = 0; i < dom_nodes.length; i++ ) {
+		dom_nodes[ i ].parentNode.removeChild( dom_nodes[ i ] );
+	}
+}
+function wpcom_remote_login_final_cleanup() {
+	wpcom_remote_login_remove_dom_node_classes( "wpcom_remote_login_msg" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_key" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_validate" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_js" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_request_access_iframe" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_request_access_styles" );
+}
+
+// Watch for messages back from the remote login
+window.addEventListener( "message", function( e ) {
+	if ( e.origin === "https://r-login.wordpress.com/" ) {
+		var data = {};
+		try {
+			data = JSON.parse( e.data );
+		} catch( e ) {
+			wpcom_remote_login_final_cleanup();
+			return;
+		}
+
+		if ( data.msg === 'LOGIN' ) {
+			// Clean up the login check iframe
+			wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_key" );
+
+			var id_regex = new RegExp( /^[0-9]+$/ );
+			var token_regex = new RegExp( /^.*|.*|.*$/ );
+			if (
+				token_regex.test( data.token )
+				&& id_regex.test( data.wpcomid )
+			) {
+				// We have everything we need to ask for a login
+				var script = document.createElement( "script" );
+				script.setAttribute( "id", "wpcom_remote_login_validate" );
+				script.src = '../remote-login4f98.html?wpcom_remote_login=validate'
+					+ '&wpcomid=' + data.wpcomid
+					+ '&token=' + encodeURIComponent( data.token )
+					+ '&host=' + window.location.protocol
+					+ '//' + window.location.hostname
+					+ '&postid=712'
+					+ '&is_singular=';
+				document.body.appendChild( script );
+			}
+
+			return;
+		}
+
+		// Safari ITP, not logged in, so redirect
+		if ( data.msg === 'LOGIN-REDIRECT' ) {
+			window.location = 'https://wordpress.com/log-in?redirect_to=' + window.location.href;
+			return;
+		}
+
+		// Safari ITP, storage access failed, remove the request
+		if ( data.msg === 'LOGIN-REMOVE' ) {
+			var css_zap = 'html { -webkit-transition: margin-top 1s; transition: margin-top 1s; } /* 9001 */ html { margin-top: 0 !important; } * html body { margin-top: 0 !important; } @media screen and ( max-width: 782px ) { html { margin-top: 0 !important; } * html body { margin-top: 0 !important; } }';
+			var style_zap = document.createElement( 'style' );
+			style_zap.type = 'text/css';
+			style_zap.appendChild( document.createTextNode( css_zap ) );
+			document.body.appendChild( style_zap );
+
+			var e = document.getElementById( 'wpcom_request_access_iframe' );
+			e.parentNode.removeChild( e );
+
+			document.cookie = 'wordpress_com_login_access=denied; path=/; max-age=31536000';
+
+			return;
+		}
+
+		// Safari ITP
+		if ( data.msg === 'REQUEST_ACCESS' ) {
+			console.log( 'request access: safari' );
+
+			// Check ITP iframe enable/disable knob
+			if ( wpcom_remote_login_extra_auth !== 'safari_itp_iframe' ) {
+				return;
+			}
+
+			// If we are in a "private window" there is no ITP.
+			var private_window = false;
+			try {
+				var opendb = window.openDatabase( null, null, null, null );
+			} catch( e ) {
+				private_window = true;
+			}
+
+			if ( private_window ) {
+				console.log( 'private window' );
+				return;
+			}
+
+			var iframe = document.createElement( 'iframe' );
+			iframe.id = 'wpcom_request_access_iframe';
+			iframe.setAttribute( 'scrolling', 'no' );
+			iframe.setAttribute( 'sandbox', 'allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-top-navigation-by-user-activation' );
+			iframe.src = 'https://r-login.wordpress.com/remote-login.php?wpcom_remote_login=request_access&amp;origin=' + encodeURIComponent( data.origin ) + '&wpcomid=' + encodeURIComponent( data.wpcomid );
+
+			var css = 'html { -webkit-transition: margin-top 1s; transition: margin-top 1s; } /* 9001 */ html { margin-top: 46px !important; } * html body { margin-top: 46px !important; } @media screen and ( max-width: 660px ) { html { margin-top: 71px !important; } * html body { margin-top: 71px !important; } #wpcom_request_access_iframe { display: block; height: 71px !important; } } #wpcom_request_access_iframe { border: 0px; height: 46px; position: fixed; top: 0; left: 0; width: 100%; min-width: 100%; z-index: 99999; background: #23282d; } ';
+
+			var style = document.createElement( 'style' );
+			style.type = 'text/css';
+			style.id = 'wpcom_request_access_styles';
+			style.appendChild( document.createTextNode( css ) );
+			document.body.appendChild( style );
+
+			document.body.appendChild( iframe );
+		}
+
+		if ( data.msg === 'DONE' ) {
+			wpcom_remote_login_final_cleanup();
+		}
+	}
+}, false );
+
+// Inject the remote login iframe after the page has had a chance to load
+// more critical resources
+window.addEventListener( "DOMContentLoaded", function( e ) {
+	var iframe = document.createElement( "iframe" );
+	iframe.style.display = "none";
+	iframe.setAttribute( "scrolling", "no" );
+	iframe.setAttribute( "id", "wpcom_remote_login_key" );
+	iframe.src = "https://r-login.wordpress.com/remote-login.php"
+		+ "?wpcom_remote_login=key"
+		+ "&origin=aHR0cHM6Ly91dG1jY2YuY29t"
+		+ "&wpcomid=6991593"
+		+ "&time=1675024108";
+	document.body.appendChild( iframe );
+}, false );
+</script>
+<link rel='dns-prefetch' href='http://s0.wp.com/' />
+<link rel='dns-prefetch' href='http://utmccf.wordpress.com/' />
+<link rel='dns-prefetch' href='http://fonts-api.wp.com/' />
+<link href='https://fonts.gstatic.com/' crossorigin rel='preconnect' />
+<link rel="alternate" type="application/rss+xml" title=" &raquo; Feed" href="../feed/index.html" />
+<link rel="alternate" type="application/rss+xml" title=" &raquo; Comments Feed" href="../comments/feed/index.html" />
+<script type="text/javascript">
+		/* <![CDATA[ */
+		function addLoadEvent(func) {
+			var oldonload = window.onload;
+			if (typeof window.onload != 'function') {
+				window.onload = func;
+			} else {
+				window.onload = function () {
+					oldonload();
+					func();
+				}
+			}
+		}
+		/* ]]> */
+	</script>
+<script type="text/javascript">
+window._wpemojiSettings = {"baseUrl":"https:\/\/s0.wp.com\/wp-content\/mu-plugins\/wpcom-smileys\/twemoji\/2\/72x72\/","ext":".png","svgUrl":"https:\/\/s0.wp.com\/wp-content\/mu-plugins\/wpcom-smileys\/twemoji\/2\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/s0.wp.com\/wp-includes\/js\/wp-emoji-release.min.js?m=1652185836h&ver=6.2-alpha-55134"}};
+/*! This file is auto-generated */
+!function(e,a,t){var n,r,o,i=a.createElement("canvas"),p=i.getContext&&i.getContext("2d");function s(e,t){var a=String.fromCharCode,e=(p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,e),0,0),i.toDataURL());return p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,t),0,0),e===i.toDataURL()}function c(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(o=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},r=0;r<o.length;r++)t.supports[o[r]]=function(e){if(p&&p.fillText)switch(p.textBaseline="top",p.font="600 32px Arial",e){case"flag":return s([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])?!1:!s([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!s([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]);case"emoji":return!s([129777,127995,8205,129778,127999],[129777,127995,8203,129778,127999])}return!1}(o[r]),t.supports.everything=t.supports.everything&&t.supports[o[r]],"flag"!==o[r]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[o[r]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(e=t.source||{}).concatemoji?c(e.concatemoji):e.wpemoji&&e.twemoji&&(c(e.twemoji),c(e.wpemoji)))}(window,document,window._wpemojiSettings);
+</script>
+<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 0.07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link crossorigin='anonymous' rel='stylesheet' id='all-css-0-1' href='https://s0.wp.com/_static/??-eJyNUttWAyEM/CHZuLZW++Dpt7AQMTVcDoHW/XuxN2uvvnAyCTOZBGCdlImhYCjgq0pcHQWBdTLRK/HEOJ6gzog8wGXaEkvS5nOHIeVoqykUA/gWMQpQeKdABZWYHJn3eDxT3Uu62uCA2bVKRlj1z91j18NQiS0MHFs3piHrPIKUkfEgRMFwta3lUsCjJY2MfuP3CCTWI2bF6LQZO0/hPr3VjvEf0nXzG6e/C2ptYy3KZbIntv8tkXWh4OQO3cQd7anrX7teCfnEqDKuuglYknK4oa6sryXAsBYho8pHm1kujnz0C34equV90ufbukFbk3VYtg23sSr4dZuy+ZjDkDKKqHZ6qn7vsvEW/q2fvUyn8/ls0i+/AUglGXA=?cssminify=yes' type='text/css' media='all' />
+<style id='wp-block-library-inline-css'>
+.has-text-align-justify {
+	text-align:justify;
+}
+.wp-block-cover__image-background.has-parallax {
+	background-size: cover;
+}
+</style>
+<style id='global-styles-inline-css'>
+body{--wp--preset--shadow--natural: 0 .2rem .3rem 0 rgba(0,0,0, 0.3), 0 .5rem .6rem 0 rgba(0,0,0, 0.4);--wp--preset--shadow--sharp: .5rem .5rem 0 0 rgba(0,0,0, 0.4);--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--duotone--dark-grayscale: url('#wp-duotone-dark-grayscale');--wp--preset--duotone--grayscale: url('#wp-duotone-grayscale');--wp--preset--duotone--purple-yellow: url('#wp-duotone-purple-yellow');--wp--preset--duotone--blue-red: url('#wp-duotone-blue-red');--wp--preset--duotone--midnight: url('#wp-duotone-midnight');--wp--preset--duotone--magenta-yellow: url('#wp-duotone-magenta-yellow');--wp--preset--duotone--purple-green: url('#wp-duotone-purple-green');--wp--preset--duotone--blue-orange: url('#wp-duotone-blue-orange');--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;}:where(.is-layout-flex){gap: 0.5em;}body .is-layout-flow > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}body .is-layout-flow > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}body .is-layout-flow > .aligncenter{margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}body .is-layout-constrained > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}body .is-layout-constrained > .aligncenter{margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)){max-width: var(--wp--style--global--content-size);margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > .alignwide{max-width: var(--wp--style--global--wide-size);}body .is-layout-flex{display: flex;}body .is-layout-flex{flex-wrap: wrap;align-items: center;}body .is-layout-flex > *{margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}
+.wp-block-pullquote{font-size: 1.5em;line-height: 1.6;}
+.wp-block-navigation a:where(:not(.wp-element-button)){color: inherit;}
+</style>
+<link rel='stylesheet' id='edin-pt-sans-css' href='https://fonts-api.wp.com/css?family=PT+Sans%3A400%2C700%2C400italic%2C700italic&amp;subset=latin%2Clatin-ext' media='all' />
+<link rel='stylesheet' id='edin-pt-serif-css' href='https://fonts-api.wp.com/css?family=PT+Serif%3A400%2C700%2C400italic%2C700italic&amp;subset=latin%2Clatin-ext' media='all' />
+<link rel='stylesheet' id='edin-pt-mono-css' href='https://fonts-api.wp.com/css?family=PT+Mono&amp;subset=latin%2Clatin-ext' media='all' />
+<link crossorigin='anonymous' rel='stylesheet' id='all-css-8-1' href='https://s0.wp.com/_static/??-eJydjs0KwjAQhF/IuFS00IP4KBLTbUzNH9mE4tu7rR6CSgVvM8s3swNTFCr4jD5DvqJDglgugL3xMPB9UQxsFdEGKtgVEW3RxhOMmKNUt5eHmEJfVDbBw5mzoNFjMpyj7/Kj+n0H5bvFn9T8aiHFFFVw/w12rCy3TqbXmAkoKCOteE6uzVq9xiBsUHJprI0YrDRpLZrwYoNmqYGpys6hkzs27aHd77qubcYHlRqmhg==?cssminify=yes' type='text/css' media='all' />
+<style id='edin-style-inline-css'>
+ { clip: rect(1px, 1px, 1px, 1px); height: 1px; position: absolute; overflow: hidden; width: 1px; }
+</style>
+<link crossorigin='anonymous' rel='stylesheet' id='print-css-9-1' href='https://s0.wp.com/wp-content/mu-plugins/global-print/global-print.css?m=1465851035h&amp;cssminify=yes' type='text/css' media='print' />
+<style id='jetpack-global-styles-frontend-style-inline-css'>
+:root { --font-headings: unset; --font-base: unset; --font-headings-default: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif; --font-base-default: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;}
+</style>
+<link crossorigin='anonymous' rel='stylesheet' id='all-css-12-1' href='https://s0.wp.com/wp-content/themes/h4/global.css?m=1420737423h&amp;cssminify=yes' type='text/css' media='all' />
+<script id='wpcom-actionbar-placeholder-js-extra'>
+var actionbardata = {"siteID":"6991593","siteURL":"https:\/\/utmccf.com","xhrURL":"https:\/\/utmccf.com\/wp-admin\/admin-ajax.php","nonce":"996eb74240","isLoggedIn":"","statusMessage":"","subsEmailDefault":"instantly","proxyScriptUrl":"https:\/\/s0.wp.com\/wp-content\/js\/wpcom-proxy-request.js?ver=20211021","i18n":{"followedText":"New posts from this site will now appear in your <a href=\"https:\/\/wordpress.com\/read\">Reader<\/a>","foldBar":"Collapse this bar","unfoldBar":"Expand this bar"}};
+</script>
+<script crossorigin='anonymous' type='text/javascript' src='https://s0.wp.com/_static/??-eJyFykEOgyAQheELOVIlsmt6FrVTMwQGHCDq7asJXbjq6iXv/9QWYQ6ckbOySfkwkUMoCWVczg+IP6G1qVF3Jy5DlLAfv0Y8u/LGdEW7FpSjTuuJ/yLwtMiYseKXf3bGGD30+tHZL48zO4Y='></script>
+<script type='text/javascript'>
+	window.addEventListener( 'DOMContentLoaded', function() {
+		rltInitialize( {"token":null,"iframeOrigins":["https:\/\/widgets.wp.com"]} );
+	} );
+</script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://utmccf.wordpress.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://s0.wp.com/wp-includes/wlwmanifest.xml" />
+<meta name="generator" content="WordPress.com" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="2010" />
+<meta property="og:image" content="https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=200" />
+<meta property="og:image:width" content="200" />
+<meta property="og:image:height" content="200" />
+<meta property="og:image:alt" content="" />
+<meta property="og:locale" content="en_US" />
+
+<link rel='openid.server' href='../indexdd8f.html?openidserver=1' />
+<link rel='openid.delegate' href='../index.html' />
+<link rel="search" type="application/opensearchdescription+xml" href="../osd.xml" title="" />
+<link rel="search" type="application/opensearchdescription+xml" href="https://s1.wp.com/opensearch.xml" title="WordPress.com" />
+<meta name="theme-color" content="#ffffff" />
+<meta name="application-name" content="WordPress.com" /><meta name="msapplication-window" content="width=device-width;height=device-height" /><meta name="msapplication-tooltip" content="University of Toronto Mandarin Chinese Christian Fellowship" /><meta name="msapplication-task" content="name=Subscribe;action-uri=https://utmccf.com/feed/;icon-uri=https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=16" /><meta name="msapplication-task" content="name=Sign up for a free blog;action-uri=http://wordpress.com/signup/;icon-uri=https://s0.wp.com/i/favicon.ico" /><meta name="msapplication-task" content="name=WordPress.com Support;action-uri=http://support.wordpress.com/;icon-uri=https://s0.wp.com/i/favicon.ico" /><meta name="msapplication-task" content="name=WordPress.com Forums;action-uri=http://forums.wordpress.com/;icon-uri=https://s0.wp.com/i/favicon.ico" /><meta name="description" content="10 posts published by utmccf in the year 2010" />
+<style type="text/css">
+			.site-title,
+		.site-description {
+			position: absolute;
+			clip: rect(1px, 1px, 1px, 1px);
+		}
+		</style>
+<style type="text/css" id="custom-colors-css">	.hero a.button-minimal {
+		border-color: #fff !important;
+	}
+	#comments #respond .form-submit input#comment-submit,
+	.widget_flickr #flickr_badge_uber_wrapper td a:last-child {
+		background: #c5c5c5 !important;
+		border-color: #c5c5c5 !important;
+	}
+	@media screen and (min-width: 1020px) {
+		body.small-screen.navigation-classic .primary-navigation .menu-primary > ul > li.current-menu-item:before,
+		body.small-screen.navigation-classic .primary-navigation .menu-primary > ul > li.current_page_item:before,
+		body.small-screen.navigation-classic .primary-navigation .menu-item-has-children:hover:before,
+		body.small-screen.navigation-classic .primary-navigation ul ul .menu-item-has-children:before {
+			color: #fff;
+		}
+		body.large-screen.navigation-classic .primary-navigation ul ul ul:before {
+			border-bottom-color: transparent;
+		}
+	}
+	@media screen and (min-width: 1230px) {
+		body.small-screen .menu-toggle.open,
+		body.small-screen .menu-toggle.open:before,
+		body.small-screen .menu-toggle.open:focus,
+		body.small-screen .menu-toggle.open:focus:before {
+			color: #fff;
+		}
+		body.small-screen .menu-toggle.open:before,
+		body.small-screen .menu-toggle.open:focus:before {
+			border-color: #fff;
+		}
+		body.small-screen .menu-toggle.open:before {
+			background: transparent;
+		}
+		body.small-screen .menu-toggle.open:hover,
+		body.small-screen .menu-toggle.open:active,
+		body.small-screen .menu-toggle.open:hover:before,
+		body.small-screen .menu-toggle.open:active:before {
+			color: rgba(255, 255, 255, 0.5);
+		}
+		body.small-screen .menu-toggle.open:hover:before,
+		body.small-screen .menu-toggle.open:active:before {
+			border-color: rgba(255, 255, 255, 0.5);
+		}
+	}
+body { background-color: #ffffff;}
+mark,
+		ins,
+		button,
+		input[type="button"],
+		input[type="reset"],
+		input[type="submit"],
+		a.button,
+		a.button:visited,
+		a.button-minimal:hover,
+		a.button-minimal:focus,
+		a.button-minimal:active,
+		body:not(.small-screen) .menu-toggle.open:before,
+		body:not(.small-screen) .search-toggle.open:before,
+		.navigation-wrapper,
+		.search-wrapper,
+		.widget_nav_menu .dropdown-toggle:hover,
+		.hero.with-featured-image,
+		body[class*="front-page"] .hero,
+		#infinite-handle span,
+		.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li:hover,
+		.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li.current-menu-item > a,
+		.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li.current_page_item > a,
+		.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:hover,
+		.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:focus,
+		.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:active,
+		.large-screen.navigation-classic .primary-navigation ul ul li,
+		.widget_akismet_widget .a-stats a { background-color: #D8111B;}
+a,
+		a.button-minimal,
+		a.button-minimal:visited,
+		.menu-toggle:focus,
+		.search-toggle:focus,
+		.primary-navigation .dropdown-toggle:hover,
+		.footer-navigation a:hover,
+		.footer-navigation a:focus,
+		.footer-navigation a:active,
+		.screen-reader-text:hover,
+		.screen-reader-text:focus,
+		.screen-reader-text:active,
+		.site-footer a:hover,
+		.site-footer a:focus,
+		.site-footer a:active,
+		.format-link .entry-title a:hover:after,
+		.format-link .entry-title a:focus:after,
+		.format-link .entry-title a:active:after,
+		.entry-title a:hover,
+		.entry-title a:focus,
+		.entry-title a:active,
+		.featured-page .entry-title a:hover,
+		.featured-page .entry-title a:focus,
+		.featured-page .entry-title a:active,
+		.grid .entry-title a:hover,
+		.grid .entry-title a:focus,
+		.grid .entry-title a:active,
+		#infinite-footer .blog-credits a:hover,
+		#infinite-footer .blog-credits a:focus,
+		#infinite-footer .blog-credits a:active,
+		#infinite-footer .blog-info a:hover,
+		#infinite-footer .blog-info a:focus,
+		#infinite-footer .blog-info a:active,
+		.small-screen .menu-toggle:hover:before,
+		.small-screen .menu-toggle:active:before,
+		.small-screen .menu-toggle.open:before,
+		.small-screen .menu-toggle.open,
+		.medium-screen .menu-toggle:hover,
+		.medium-screen .menu-toggle:active,
+		.small-screen .search-toggle:hover:before,
+		.small-screen .search-toggle:active:before,
+		.small-screen .search-toggle.open:before,
+		.small-screen .search-toggle.open,
+		.medium-screen .search-toggle:hover,
+		.medium-screen .search-toggle:active,
+		.large-screen.navigation-classic .primary-navigation .menu-item-has-children:before,
+		.large-screen.navigation-classic .secondary-navigation a:hover,
+		.large-screen.navigation-classic .secondary-navigation a:focus,
+		.large-screen.navigation-classic .secondary-navigation a:active,
+		.widget_goodreads div[class^="gr_custom_each_container"] a:hover,
+		.widget_goodreads div[class^="gr_custom_each_container"] a:focus,
+		.widget_goodreads div[class^="gr_custom_each_container"] a:active,
+		.testimonial-entry-title a:hover,
+		.testimonial-entry-title a:focus,
+		.testimonial-entry-title a:active { color: #D8111B;}
+button,
+		input[type="button"],
+		input[type="reset"],
+		input[type="submit"],
+		input[type="text"]:focus,
+		input[type="email"]:focus,
+		input[type="url"]:focus,
+		input[type="password"]:focus,
+		input[type="search"]:focus,
+		textarea:focus,
+		a.button,
+		a.button-minimal,
+		a.button:visited,
+		a.button-minimal:visited,
+		a.button-minimal:hover,
+		a.button-minimal:focus,
+		a.button-minimal:active,
+		#infinite-handle span,
+		.small-screen .menu-toggle:hover:before,
+		.small-screen .menu-toggle:active:before,
+		.small-screen .menu-toggle.open:before,
+		.small-screen .search-toggle:hover:before,
+		.small-screen .search-toggle:active:before,
+		.small-screen .search-toggle.open:before,
+		#comments #respond #comment-form-comment.active,
+		#comments #respond .comment-form-fields div.comment-form-input.active,
+		.widget_akismet_widget .a-stats a { border-color: #D8111B;}
+.search-wrapper .search-field { border-color: #EF989D;}
+.large-screen.navigation-classic .primary-navigation ul ul ul:before,
+		.rtl blockquote,
+		body.rtl .hentry .wpcom-reblog-snapshot .reblogger-note-content blockquote { border-right-color: #D8111B;}
+.footer-navigation a:hover,
+		.footer-navigation a:focus,
+		.footer-navigation a:active,
+		.large-screen.navigation-classic .primary-navigation ul ul:before,
+		.large-screen.navigation-classic .primary-navigation ul ul li:last-of-type,
+		.large-screen.navigation-classic .secondary-navigation a:hover,
+		.large-screen.navigation-classic .secondary-navigation a:focus,
+		.large-screen.navigation-classic .secondary-navigation a:active { border-bottom-color: #D8111B;}
+blockquote,
+		body .hentry .wpcom-reblog-snapshot .reblogger-note-content blockquote { border-left-color: #D8111B;}
+</style>
+<link rel="icon" href="https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=32" sizes="32x32" />
+<link rel="icon" href="https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=192" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=180" />
+<meta name="msapplication-TileImage" content="https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=270" />
+</head>
+<body class="archive date customizer-styles-applied navigation-classic no-sidebar highlander-enabled highlander-light">
+<div id="page" class="hfeed site">
+<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+<header id="masthead" class="site-header" role="banner">
+<a href="../index.html" class="header-image" rel="home">
+<img src="https://utmccf.files.wordpress.com/2019/05/cropped-header4-1.png" width="1350" height="110" alt="cropped-header4-1-1.png">
+</a>
+<div class="header-wrapper clear">
+<div class="site-branding">
+<a href="../index.html" class="site-logo-link" rel="home" itemprop="url"></a> <p class="site-title"><a href="../index.html" rel="home"></a></p>
+<p class="site-description">University of Toronto Mandarin Chinese Christian Fellowship</p>
+</div>
+<div id="site-navigation" class="header-navigation">
+<button class="menu-toggle" aria-expanded="false">Menu</button>
+<div class="navigation-wrapper clear">
+<nav class="primary-navigation" role="navigation">
+<div class="menu-primary"><ul id="menu-main-menu" class="clear"><li id="menu-item-2281" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2281"><a href="https://utmccf.wordpress.com/">首页 | Home</a></li>
+<li id="menu-item-1630" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1630"><a href="../fellowship/index.html">聚会 | Gatherings</a>
+<ul class="sub-menu">
+<li id="menu-item-2263" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2263"><a href="../info/index.html">聚会讯息 Time &amp; Location</a></li>
+<li id="menu-item-1633" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1633"><a href="../fellowship/index.html">本周团契 This Week&#8217;s Event</a></li>
+<li id="menu-item-1631" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1631"><a href="../life/index.html">生命小组 Life Group</a></li>
+<li id="menu-item-1632" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1632"><a href="../%e4%bb%a3%e7%a5%b7%e4%ba%8b%e9%a1%b9-prayer-requests/index.html">祷告 Prayer</a></li>
+</ul>
+</li>
+<li id="menu-item-1634" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1634"><a href="../index.html">活动 | events</a>
+<ul class="sub-menu">
+<li id="menu-item-1635" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1635"><a href="../conference/index.html">近期活动 Latest Event</a></li>
+<li id="menu-item-2842" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2842"><a href="../%e8%bf%91%e6%9c%9f%e6%b4%bb%e5%8a%a8-2019/index.html">往期活动 | Past Events</a></li>
+</ul>
+</li>
+<li id="menu-item-1623" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-1623"><a href="../about-us-%e5%85%b3%e4%ba%8e%e6%88%91%e4%bb%ac/index.html">关于我们 | About Us</a>
+<ul class="sub-menu">
+<li id="menu-item-1625" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1625"><a href="../%e5%9b%a2%e5%a5%91%e5%8e%86%e5%8f%b2-mccf-history/index.html">团契历史 History</a></li>
+<li id="menu-item-1882" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1882"><a href="../committee-16-17/index.html">执委会 Committee</a></li>
+<li id="menu-item-1629" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1629"><a href="../about-us-%e5%85%b3%e4%ba%8e%e6%88%91%e4%bb%ac/index.html">团契宗旨 Constitution</a></li>
+<li id="menu-item-1812" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1812"><a href="../churches/index.html">周边教会 Churches Around Campus</a></li>
+</ul>
+</li>
+</ul></div> </nav>
+</div>
+</div>
+</div>
+</header>
+<div id="content" class="site-content">
+<div class="hero without-featured-image">
+<div class="hero-wrapper">
+<h1 class="page-title">
+Year: <span>2010</span> </h1>
+</div>
+</div>
+<div class="content-wrapper clear">
+<div id="primary" class="content-area">
+<main id="main" class="site-main" role="main">
+<article id="post-712" class="post-712 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="12/17/%e5%9c%a3%e8%af%9e%e6%99%9a%e9%a4%90christmas-dinner/index.html" rel="bookmark">圣诞晚餐/Christmas Dinner</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="12/17/%e5%9c%a3%e8%af%9e%e6%99%9a%e9%a4%90christmas-dinner/index.html" rel="bookmark"><time class="entry-date published" datetime="2010-12-17T17:23:33-05:00">December 17, 2010</time><time class="updated" datetime="2011-01-13T17:24:08-05:00">January 13, 2011</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="12/17/%e5%9c%a3%e8%af%9e%e6%99%9a%e9%a4%90christmas-dinner/index.html">
+</a>
+<div class="entry-content">
+<p>日期/DATE: 星期五，12月17日 Friday, December 17, 2010 时间/TIME: 6:00am-9:00pm 地点/LOCATION: Multifaith Center – 2nd Floor 弟兄姊妹们平安： 在这期末考试季节中，你也许会感到很疲惫与紧张。对于某些人，这周五将是这忙碌的结束；对于另些人，这周五将开始今年最后一个忙碌的周末。无论你的 情况如何，能休息一下身体与头脑会帮助你更好的面对明天将来临的事。所以这周五，我们真诚的邀请你到我们的年度圣诞晚餐(免费)！我们也欢迎你带新朋友一 起来。 如果你不清楚Multifaith Center的地点，请看附件里的校园地图。若有任何问题与需求，请发email给我们或联系以下的负责人。 Dear brothers and sisters: In the midst of exam season, you are probably feeling very tired and stressed.  For some of you, this Friday will be the end of the struggle; for others, it will &hellip; <a href="12/17/%e5%9c%a3%e8%af%9e%e6%99%9a%e9%a4%90christmas-dinner/index.html" class="more-link">Continue reading <span class="screen-reader-text">圣诞晚餐/Christmas Dinner</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-709" class="post-709 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="12/03/%e6%95%ac%e6%8b%9c%e4%b9%8b%e5%a4%9cworship-night/index.html" rel="bookmark">敬拜之夜/Worship Night</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="12/03/%e6%95%ac%e6%8b%9c%e4%b9%8b%e5%a4%9cworship-night/index.html" rel="bookmark"><time class="entry-date published" datetime="2010-12-03T19:07:21-05:00">December 3, 2010</time><time class="updated" datetime="2010-12-16T19:07:36-05:00">December 16, 2010</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="12/03/%e6%95%ac%e6%8b%9c%e4%b9%8b%e5%a4%9cworship-night/index.html">
+</a>
+<div class="entry-content">
+<p>日期/DATE: 星期五，12月3日 Friday, December 3, 2010 时间/TIME: 6:00am-8:00pm 地点/LOCATION: GB304 弟兄姊妹们平安： 这周五是我们团契今年的最后一次聚会，更是我们中许多人期待已久的一学期一度的“敬拜之夜”。我们这个时候会用整晚的时间，不做其他，唯独用诗歌全 心敬拜我们的主耶和华。我们也会在这样一个夜晚，借由诗歌彼此分享见证，在主内更加紧密的连接在一起。希望大家都不会错过这一次难得的聚会哦，之后将有很 长一段假期都不能团契聚会了，肯定会非常想念大家的。 This Friday will be our last gathering for this year. It is also what many of us have been waiting for: our semi-annual “Worship Night”! We will be doing nothing but singing praises to the Lord with all our hearts throughout &hellip; <a href="12/03/%e6%95%ac%e6%8b%9c%e4%b9%8b%e5%a4%9cworship-night/index.html" class="more-link">Continue reading <span class="screen-reader-text">敬拜之夜/Worship Night</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-703" class="post-703 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="11/26/%e6%9f%a5%e7%bb%8fbible-study-%e2%80%93-%e7%ba%a6%e7%bf%b0john-1828-1916/index.html" rel="bookmark">查经/Bible Study – 约翰/John&nbsp;18:28-19:16</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="11/26/%e6%9f%a5%e7%bb%8fbible-study-%e2%80%93-%e7%ba%a6%e7%bf%b0john-1828-1916/index.html" rel="bookmark"><time class="entry-date published" datetime="2010-11-26T10:48:04-05:00">November 26, 2010</time><time class="updated" datetime="2010-12-02T10:48:24-05:00">December 2, 2010</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="11/26/%e6%9f%a5%e7%bb%8fbible-study-%e2%80%93-%e7%ba%a6%e7%bf%b0john-1828-1916/index.html">
+</a>
+<div class="entry-content">
+<p>日期/DATE: 星期五，11月26日 Friday, November 26, 2010 时间/TIME: 6:00am-8:00pm 地点/LOCATION: GB304 弟兄姊妹们平安： 耶 稣基督来到世界是为了要拯救世人。祂是创世以来唯一没有罪没有亏欠神荣耀的人。但是，当代的人民却以种种的原因想置祂于死地。是什么让他们对真理有如此的 抵触呢？耶稣被钉十字架的判定可以说的上是历史上最大的冤案。通过这周的经文，让我们回到耶稣被审问的那一段情景。同时，也让我们思考一下有没有什么事情 可以同样的让我们对真理麻痹。愿大家能更深的认识到神对世人的爱与宽恕。 Jesus Christ came to this world in order to bring salvation to the people.  He is the only person without sin, without blemish for the glory of God.  However, people during his time on earth wanted to crucify him for &hellip; <a href="11/26/%e6%9f%a5%e7%bb%8fbible-study-%e2%80%93-%e7%ba%a6%e7%bf%b0john-1828-1916/index.html" class="more-link">Continue reading <span class="screen-reader-text">查经/Bible Study – 约翰/John&nbsp;18:28-19:16</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-700" class="post-700 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="11/20/1040-%e5%bd%b1%e7%89%87%e7%89%b9%e6%98%a0-film-screening/index.html" rel="bookmark">1040 影片特映 /Film&nbsp;Screening</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="11/20/1040-%e5%bd%b1%e7%89%87%e7%89%b9%e6%98%a0-film-screening/index.html" rel="bookmark"><time class="entry-date published" datetime="2010-11-20T10:57:01-05:00">November 20, 2010</time><time class="updated" datetime="2010-11-25T10:57:21-05:00">November 25, 2010</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="11/20/1040-%e5%bd%b1%e7%89%87%e7%89%b9%e6%98%a0-film-screening/index.html">
+</a>
+<div class="entry-content">
+<p>日期/DATE: 星期六，11月20日 Saturday, November 20, 2010 时间/TIME: 7:00am-10:00pm 地点/LOCATION: The Garden Korean Church 联系人/CONTACT: davidfeng818[at]hotmail[dot]com, 647-878-0958 1040影片真实的纪录了在 “10/40跨度”（地球东北半部10与40纬度间的地带）所发生的奇异巨变.  在 这影片中，嘻哈艺人马正远牧师将带领观众走一趟精彩旅程，穿越中国，南韩，台湾，新加坡，和印度尼西亚，去目睹圣灵大有作为之处。它包括与重要领导和明星 的真诚采访，同时也含有许多尚未泄露的惊人故事。这部电影满有激情的彰显了我们世界其中的一部分是怎样的在经历一场大型的政治经济变动与面貌改革。 “10/40跨度”的确是世界福音散播的前沿！ 10/40 is a documentary that will examine the rapid changes that have been happening in the “1040 Window” (area between 10 and 40 degrees North Latitude on the eastern hemisphere). In the film, &hellip; <a href="11/20/1040-%e5%bd%b1%e7%89%87%e7%89%b9%e6%98%a0-film-screening/index.html" class="more-link">Continue reading <span class="screen-reader-text">1040 影片特映 /Film&nbsp;Screening</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-698" class="post-698 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="11/19/%e6%9f%a5%e7%bb%8fbible-study-%e2%80%93-%e7%ba%a6%e7%bf%b0john-41-26/index.html" rel="bookmark">查经/Bible Study – 约翰/John&nbsp;4:1-26</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="11/19/%e6%9f%a5%e7%bb%8fbible-study-%e2%80%93-%e7%ba%a6%e7%bf%b0john-41-26/index.html" rel="bookmark"><time class="entry-date published" datetime="2010-11-19T10:56:08-05:00">November 19, 2010</time><time class="updated" datetime="2010-11-25T10:56:26-05:00">November 25, 2010</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="11/19/%e6%9f%a5%e7%bb%8fbible-study-%e2%80%93-%e7%ba%a6%e7%bf%b0john-41-26/index.html">
+</a>
+<div class="entry-content">
+<p>日期/DATE: 星期五，11月19日 Friday, November 19, 2010 时间/TIME: 6:00am-8:00pm 地点/LOCATION: GB304 弟兄姊妹们平安： 我们这周查的经文，约4：1-26，是诉说耶稣怎样把福音传给一位撒玛利亚妇女。通过他们的对话，我们会再次看到耶稣是怎样把恩典与真理带给他要拯 救的人。这妇女天天到井边去打水，为要取得她生活所需的；耶稣知道她一切苦处，便把活水的泉源告诉了她，叫她可以对属世的需求永远不渴。 这故事虽发生在2000多年以前，但他诉说的真理却是给我们每一个人的，因为神知到我们所有的背景与需求。 不管你是否读过这段经文，或来没来过我们以前的查经，你这次来对你生活都会有所光照。让我们一起用心灵与诚实到他的面前来吧！ Dear brothers and sisters: This week’s passage, John 4: 1-26, describes how Jesus spread the gospel to a Samaritan woman.  Through their conversation, we again see how Jesus brought grace and truth to those who he came to save.  This &hellip; <a href="11/19/%e6%9f%a5%e7%bb%8fbible-study-%e2%80%93-%e7%ba%a6%e7%bf%b0john-41-26/index.html" class="more-link">Continue reading <span class="screen-reader-text">查经/Bible Study – 约翰/John&nbsp;4:1-26</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-694" class="post-694 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="11/12/%e8%bf%90%e5%8a%a8%e4%b9%8b%e5%a4%9csports-night/index.html" rel="bookmark">运动之夜/Sports Night</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="11/12/%e8%bf%90%e5%8a%a8%e4%b9%8b%e5%a4%9csports-night/index.html" rel="bookmark"><time class="entry-date published" datetime="2010-11-12T09:15:10-05:00">November 12, 2010</time><time class="updated" datetime="2010-11-18T09:15:30-05:00">November 18, 2010</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="11/12/%e8%bf%90%e5%8a%a8%e4%b9%8b%e5%a4%9csports-night/index.html">
+</a>
+<div class="entry-content">
+<p>日期/DATE: 星期五，11月12日 Friday, November 12, 2010 时间/TIME: 6:00am-8:00pm 地点/LOCATION: GB304 弟兄姊妹们平安： 在繁忙的课业中，为了让大家有一个锻炼与休闲的机会，MCCF将会在这周五为大家举办一次运动之夜。我们首先会在GB304集合敬拜，再一起前往Harthouse预订的场地去玩躲避球.  请大家带好运动衣裤以及锁。欢迎你带朋友们一起来。 Dear brothers and sisters: In the midst of a busy student life, as a chance for you to exercise and relax, MCCF will be hosting a sports night this Friday.  We will first meet for worship at GB304, then go together to &hellip; <a href="11/12/%e8%bf%90%e5%8a%a8%e4%b9%8b%e5%a4%9csports-night/index.html" class="more-link">Continue reading <span class="screen-reader-text">运动之夜/Sports Night</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-689" class="post-689 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="11/05/%e7%94%b5%e5%bd%b1%ef%bc%9a%e5%a4%a9%e4%bd%9c%e4%b9%8b%e7%9b%92movie-the-miracle-box/index.html" rel="bookmark">电影：天作之盒/Movie: The Miracle&nbsp;Box</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="11/05/%e7%94%b5%e5%bd%b1%ef%bc%9a%e5%a4%a9%e4%bd%9c%e4%b9%8b%e7%9b%92movie-the-miracle-box/index.html" rel="bookmark"><time class="entry-date published" datetime="2010-11-05T09:18:02-05:00">November 5, 2010</time><time class="updated" datetime="2010-11-11T09:18:24-05:00">November 11, 2010</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="11/05/%e7%94%b5%e5%bd%b1%ef%bc%9a%e5%a4%a9%e4%bd%9c%e4%b9%8b%e7%9b%92movie-the-miracle-box/index.html">
+</a>
+<div class="entry-content">
+<p>日期/DATE: 星期五，11月5日 Friday, November 5, 2010 时间/TIME: 6:00am-8:00pm 地点/LOCATION: GB120 弟兄姊妹们平安： 在上几次的活动中，我们通过查经与讲座，了解到了神的能力与权威。 那 些耶稣所行的神迹与他所讲的道都是千古以来人们信心的依据。但神的工作并没有停留在那个时代。祂仍旧在关怀与祝福着我们的每一天。当我们愿意依靠祂时，我 们会发现在平凡的生活中有许多神的恩典与帮助。耶稣对我们的爱是不保留的。这爱可以感化人们的心，让愿意跟随他的子民也有同样的美德。 为了让大家能看到在我们当中的美好祝福，这周五，我们邀请大家来看一部动人的电影，名叫“天作之盒”。电影的故事发生于2003年非典期间。它描写 了两位梦想从事医学的年轻人是怎样凭着信心与爱而做出了不平凡的事, 在危机时帮助了许多周围的人。同时，故事也描写了他们在付出的过程中怎样体会到了神对他们的祝福。 为了让大家能跟好的欣赏这部电影，我们会免费提供饮料与爆米花！请你邀请你的朋友们与你一起来看。 Dear brothers and sisters: Through the bible studies and guest talks of our previous gatherings, we learnt about God’s great ability and authority.  The miracles that Jesus performed and the lessons that He taught have become &hellip; <a href="11/05/%e7%94%b5%e5%bd%b1%ef%bc%9a%e5%a4%a9%e4%bd%9c%e4%b9%8b%e7%9b%92movie-the-miracle-box/index.html" class="more-link">Continue reading <span class="screen-reader-text">电影：天作之盒/Movie: The Miracle&nbsp;Box</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-685" class="post-685 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="10/29/%e5%9b%ad%e4%b8%bb%e5%a4%8d%e4%bb%87%e8%ae%b0return-of-the-landlord/index.html" rel="bookmark">园主复仇记/Return of the&nbsp;Landlord</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="10/29/%e5%9b%ad%e4%b8%bb%e5%a4%8d%e4%bb%87%e8%ae%b0return-of-the-landlord/index.html" rel="bookmark"><time class="entry-date published" datetime="2010-10-29T08:46:15-05:00">October 29, 2010</time><time class="updated" datetime="2010-11-04T08:46:35-05:00">November 4, 2010</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="10/29/%e5%9b%ad%e4%b8%bb%e5%a4%8d%e4%bb%87%e8%ae%b0return-of-the-landlord/index.html">
+</a>
+<div class="entry-content">
+<p>日期/DATE: 星期五，10月29日 Friday, October 29, 2010 时间/TIME: 6:00am-8:00pm 地点/LOCATION: GB304 弟兄姊妹们平安： 经过上几周的查经，希望大家对我们的神都有了更好的了解。为了让大家对基督信仰有更全面的认识，我们很高兴这周五请到了多伦多华人浸信会的谭牧师来 为我们讲道。所讲的题目, 园主复仇记, 将围绕着一段触心的圣经故事，记载于马太福音21:33–46。希望大家都能来听这美好的信息。 Dear brothers and sisters: Through the past few weeks’ bible study, hopefully you’ve all gained a better understanding of our God.  In order to give you a more comprehensive view of the Christian faith, we are happy to have invited &hellip; <a href="10/29/%e5%9b%ad%e4%b8%bb%e5%a4%8d%e4%bb%87%e8%ae%b0return-of-the-landlord/index.html" class="more-link">Continue reading <span class="screen-reader-text">园主复仇记/Return of the&nbsp;Landlord</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-681" class="post-681 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="10/22/%e6%9f%a5%e7%bb%8fbible-study-%e7%ba%a6%e7%bf%b0john-91-41/index.html" rel="bookmark">查经/Bible Study (约翰/John&nbsp;9:1-41)</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="10/22/%e6%9f%a5%e7%bb%8fbible-study-%e7%ba%a6%e7%bf%b0john-91-41/index.html" rel="bookmark"><time class="entry-date published" datetime="2010-10-22T09:51:51-05:00">October 22, 2010</time><time class="updated" datetime="2010-10-27T09:52:07-05:00">October 27, 2010</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="10/22/%e6%9f%a5%e7%bb%8fbible-study-%e7%ba%a6%e7%bf%b0john-91-41/index.html">
+</a>
+<div class="entry-content">
+<p>日期/DATE: 星期五，10月22日 Friday, October 22, 2010 时间/TIME: 6:00am-8:00pm 地点/LOCATION: GB304 弟兄姊妹们平安： 人们常说，眼睛是心灵的窗口。视觉是我们用来描写世界的首要因素。 光通过眼睛可以把世界投影在脑海中。同时，情绪与心思也能被眼光而反映出来。 但 是这与世界沟通的 基本工具却对那些生下来就是瞎眼的人来说是个难以理解，求之不得的神话。他们虽然听说过光是怎样能把黑暗变的五颜六色，但是事实上他们是想象不到有光的世 界到底如何。面对这无可盼望的事实，唯独有一位从神那里来的曾经用祂的能力完全的医治过天生的瞎子。那位就是耶稣。 为了更好的了解这奇异的神迹， 我们这周五将一起查看约翰福音9:1-41。通过阅读这段经文，希望我们不光会熟悉故事的情节，而且会睁大眼睛去寻找那真光。因为，那些不愿意看的人也是瞎眼的人。求神医治所有寻求祂的, 让我们能看到祂的作为。 Dear brothers and sisters: It’s often said, our eyes is a window to our mind.  Vision is the primary element we use to trace out the world.  Light projects the world in our brain through &hellip; <a href="10/22/%e6%9f%a5%e7%bb%8fbible-study-%e7%ba%a6%e7%bf%b0john-91-41/index.html" class="more-link">Continue reading <span class="screen-reader-text">查经/Bible Study (约翰/John&nbsp;9:1-41)</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-677" class="post-677 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="10/15/%e6%9f%a5%e7%bb%8fbible-study-%e7%ba%a6%e7%bf%b0john-31-15/index.html" rel="bookmark">查经/Bible Study (约翰/John&nbsp;3:1-15)</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="10/15/%e6%9f%a5%e7%bb%8fbible-study-%e7%ba%a6%e7%bf%b0john-31-15/index.html" rel="bookmark"><time class="entry-date published" datetime="2010-10-15T15:39:31-05:00">October 15, 2010</time><time class="updated" datetime="2010-10-22T15:39:47-05:00">October 22, 2010</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="10/15/%e6%9f%a5%e7%bb%8fbible-study-%e7%ba%a6%e7%bf%b0john-31-15/index.html">
+</a>
+<div class="entry-content">
+<p>日期/DATE: 星期五，10月15日 Friday, October 15, 2010 时间/TIME: 6:00am-8:00pm 地点/LOCATION: GB119 &amp; GB120 弟兄姊妹们平安： 希 望你们都度过了一个美好的感恩节，在忙碌的学业生活中有了个喘气的机会。在这期中考试的季节里，祝大家都能取得满意的成绩，也同时保护好身体。虽然团契的 同工最近学业也很重，这周仍会有一次查经活动。神的话语可以给我们添加能力与智慧。祂能让我们找到更多的学习动力，同时也不会让我们被眼前的忙碌所迷茫。 在 上周的聚会中，我们学到了主耶稣是怎样治疗了十个麻风病患者。在这种难以相信的事实面前，人们往往不得不承认耶稣是有神力的。但是，耶稣基督并不光是一位 神医，也不仅仅是一位能行神迹的先知。祂到底对我们生活有何重要性呢？对这个问题，有一位学历渊博的犹太领袖曾经亲自跟耶稣谈讨过。这件事被记载于约翰福 音第3章，也就是我们这周所要查的经文。希望大家能来与我们一起查看这段信息。 Dear brothers and sisters: Hope you’ve had a wonderful Thanksgiving holiday and had an opportunity to relax from your busy student life.  In midst of the midterm season, we wish you all achieve satisfactory results &hellip; <a href="10/15/%e6%9f%a5%e7%bb%8fbible-study-%e7%ba%a6%e7%bf%b0john-31-15/index.html" class="more-link">Continue reading <span class="screen-reader-text">查经/Bible Study (约翰/John&nbsp;3:1-15)</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<nav class="navigation paging-navigation" role="navigation">
+<h2 class="screen-reader-text">Posts navigation</h2>
+<div class="nav-links">
+<div class="nav-previous">
+<a href="page/2/index.html"><span class="meta-nav">&larr;</span> Older posts</a> </div>
+</div>
+</nav>
+</main>
+</div>
+</div>
+</div>
+<div id="tertiary" class="footer-widget-area" role="complementary">
+<div class="footer-widget-wrapper clear">
+<div class="footer-widget">
+<aside id="widget_contact_info-10" class="widget widget_contact_info"><h2 class="widget-title">Location</h2><div itemscope itemtype="http://schema.org/LocalBusiness"><div class="confit-address" itemscope itemtype="http://schema.org/PostalAddress" itemprop="address"><a href="https://maps.google.com/maps?z=16&amp;q=hart%2Bhouse%2Bdebate%2Broom" target="_blank" rel="noopener noreferrer">Hart House Debate Room</a></div><div class="confit-hours" itemprop="openingHours">Friday 6-8 PM</div></div></aside><aside id="text-6" class="widget widget_text"><h2 class="widget-title">email</h2> <div class="textwidget"><p><a href="../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="761f1810193603021b1515105815191b">[email&#160;protected]</a></p>
+</div>
+</aside> </div>
+<div class="footer-widget">
+<aside id="block-23" class="widget widget_block"><b>其他团契 OTHER FELLOWSHIPS</b></aside><aside id="block-22" class="widget widget_block">
+<ul>
+<li><a href="http://www.tccf.ca/">多大粤语基督徒团契 TCCF (Cantonese)</a></li>
+<li><a rel="noreferrer noopener" href="https://utccf.carrd.co/" target="_blank">多大华人基督徒团契 CCF (English)</a></li>
+</ul>
+</aside><aside id="linkcat-289787266" class="widget widget_links"><h2 class="widget-title">支持机构 Organizations</h2>
+<ul class='xoxo blogroll'>
+<li><a href="http://www.afccanada.org/" rel="noopener" target="_blank">加拿大福音使者协会 AFC</a></li>
+<li><a href="http://ccef-oc.org/" rel="noopener" target="_blank">加拿大校園福音團契 CCEF</a></li>
+</ul>
+</aside>
+<aside id="linkcat-18223485" class="widget widget_links"><h2 class="widget-title">有关链接 Related Links</h2>
+<ul class='xoxo blogroll'>
+<li><a href="https://www.biblegateway.com/" rel="noopener" title="Online Bible Reference" target="_blank">Bible Gateway</a></li>
+<li><a href="https://www.facebook.com/groups/uoftmccf/?ref=bookmarks" rel="noopener" target="_blank">团契 Facebook</a></li>
+</ul>
+</aside>
+</div>
+<div class="footer-widget">
+<aside id="pages-7" class="widget widget_pages"><h2 class="widget-title">Pages</h2>
+<ul>
+<li class="page_item page-item-1750"><a href="../churches/index.html">周边教会 Churches Around&nbsp;Campus</a></li>
+<li class="page_item page-item-503"><a href="../%e5%9b%a2%e5%a5%91%e5%8e%86%e5%8f%b2-mccf-history/index.html">团契历史 MCCF History</a></li>
+<li class="page_item page-item-29"><a href="../about-us-%e5%85%b3%e4%ba%8e%e6%88%91%e4%bb%ac/index.html">团契宗旨 Constitution</a></li>
+<li class="page_item page-item-2815"><a href="../%e8%bf%91%e6%9c%9f%e6%b4%bb%e5%8a%a8-2019/index.html">往期活动 | Past&nbsp;Events</a></li>
+</ul>
+</aside><aside id="jetpack_widget_social_icons-3" class="widget jetpack_widget_social_icons"><h2 class="widget-title">Follow Us</h2>
+<ul class="jetpack-social-widget-list size-large">
+<li class="jetpack-social-widget-item">
+<a href="https://www.facebook.com/groups/uoftmccf/?ref=bookmarks" target="_blank" rel="noopener noreferrer"><span class="screen-reader-text">Facebook</span><svg class="icon icon-facebook" aria-hidden="true" role="presentation"> <use href="#icon-facebook" xlink:href="#icon-facebook"></use> </svg> </a>
+</li>
+<li class="jetpack-social-widget-item">
+<a href="https://www.youtube.com/channel/UCjTZhoLEgJbU4rpL0znbdIw" target="_blank" rel="noopener noreferrer"><span class="screen-reader-text">YouTube</span><svg class="icon icon-youtube" aria-hidden="true" role="presentation"> <use href="#icon-youtube" xlink:href="#icon-youtube"></use> </svg> </a>
+</li>
+<li class="jetpack-social-widget-item">
+<a href="https://www.instagram.com/uoft_mccf" target="_blank" rel="noopener noreferrer"><span class="screen-reader-text">Instagram</span><svg class="icon icon-instagram" aria-hidden="true" role="presentation"> <use href="#icon-instagram" xlink:href="#icon-instagram"></use> </svg> </a>
+</li>
+</ul>
+</aside> </div>
+</div>
+</div>
+<footer id="colophon" class="site-footer" role="contentinfo">
+<div class="footer-wrapper clear">
+<div class="site-info">
+<a href="https://wordpress.com/?ref=footer_blog" rel="nofollow">Blog at WordPress.com.</a>
+</div>
+</div>
+</footer>
+</div>
+<script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
+		var infiniteScroll = {"settings":{"id":"main","ajaxurl":"https:\/\/utmccf.com\/?infinity=scrolling","type":"click","wrapper":true,"wrapper_class":"infinite-wrap","footer":"page","click_handle":"1","text":"Older posts","totop":"Scroll back to top","currentday":"15.10.10","order":"DESC","scripts":[],"styles":[],"google_analytics":false,"offset":1,"history":{"host":"utmccf.com","path":"\/2010\/page\/%d\/","use_trailing_slashes":true,"parameters":""},"query_args":{"year":2010,"error":"","m":"","p":0,"post_parent":"","subpost":"","subpost_id":"","attachment":"","attachment_id":0,"name":"","pagename":"","page_id":0,"second":"","minute":"","hour":"","day":0,"monthnum":0,"w":0,"category_name":"","tag":"","cat":"","tag_id":"","author":"","author_name":"","feed":"","tb":"","paged":0,"meta_key":"","meta_value":"","preview":"","s":"","sentence":"","title":"","fields":"","menu_order":"","embed":"","category__in":[],"category__not_in":[],"category__and":[],"post__in":[],"post__not_in":[],"post_name__in":[],"tag__in":[],"tag__not_in":[],"tag__and":[],"tag_slug__in":[],"tag_slug__and":[],"post_parent__in":[],"post_parent__not_in":[],"author__in":[],"author__not_in":[],"lazy_load_term_meta":false,"posts_per_page":10,"ignore_sticky_posts":false,"suppress_filters":false,"cache_results":true,"update_post_term_cache":true,"update_menu_item_cache":false,"update_post_meta_cache":true,"post_type":"","nopaging":false,"comments_per_page":"50","no_found_rows":false,"order":"DESC"},"query_before":"2023-01-29 15:28:28","last_post_date":"2010-10-15 15:39:31","body_class":"infinite-scroll","loading_text":"Loading new page","stats":"blog=6991593&v=wpcom&tz=-5&user_id=0&subd=utmccf&x_pagetype=infinite-click"}};
+		</script>
+
+<script src='http://0.gravatar.com/js/gprofiles.js?ver=202304z' id='grofiles-cards-js'></script>
+<script id='wpgroho-js-extra'>
+var WPGroHo = {"my_hash":""};
+</script>
+<script crossorigin='anonymous' type='text/javascript' src='https://s0.wp.com/wp-content/mu-plugins/gravatar-hovercards/wpgroho.js?m=1610363240h'></script>
+<script>
+		// Initialize and attach hovercards to all gravatars
+		( function() {
+			function init() {
+				if ( typeof Gravatar === 'undefined' ) {
+					return;
+				}
+
+				if ( typeof Gravatar.init !== 'function' ) {
+					return;
+				}
+
+				Gravatar.profile_cb = function ( hash, id ) {
+					WPGroHo.syncProfileData( hash, id );
+				};
+
+				Gravatar.my_hash = WPGroHo.my_hash;
+				Gravatar.init( 'body', '#wp-admin-bar-my-account' );
+			}
+
+			if ( document.readyState !== 'loading' ) {
+				init();
+			} else {
+				document.addEventListener( 'DOMContentLoaded', init );
+			}
+		} )();
+	</script>
+<div style="display:none">
+</div>
+<div id="actionbar" style="display: none;" class="actnbr-pub-edin actnbr-has-follow">
+<ul>
+<li class="actnbr-btn actnbr-hidden">
+<a class="actnbr-action actnbr-actn-follow " href="#">
+<svg class="gridicon gridicons-reader-follow" height="24" width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 16v2h-3v3h-2v-3h-3v-2h3v-3h2v3h3zM20 2v9h-4v3h-3v4H4c-1.1 0-2-.9-2-2V2h18zM8 13v-1H4v1h4zm3-3H4v1h7v-1zm0-2H4v1h7V8zm7-4H4v2h14V4z" /></g></svg><span>Follow</span>
+</a>
+<a class="actnbr-action actnbr-actn-following  no-display" href="#">
+<svg class="gridicon gridicons-reader-following" height="24" width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 13.482L15.508 21 12 17.4l1.412-1.388 2.106 2.188 6.094-6.094L23 13.482zm-7.455 1.862L20 10.89V2H2v14c0 1.1.9 2 2 2h4.538l4.913-4.832 2.095 2.176zM8 13H4v-1h4v1zm3-2H4v-1h7v1zm0-2H4V8h7v1zm7-3H4V4h14v2z" /></g></svg><span>Following</span>
+</a>
+<div class="actnbr-popover tip tip-top-left actnbr-notice" id="follow-bubble">
+<div class="tip-arrow"></div>
+<div class="tip-inner actnbr-follow-bubble">
+<ul>
+<li class="actnbr-sitename">
+<a href="../index.html">
+<img alt='' src='https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=50' class='avatar avatar-50' height='50' width='50' /> utmccf.com </a>
+</li>
+<form method="post" action="https://subscribe.wordpress.com/" accept-charset="utf-8" style="display: none;">
+<div>
+<input type="email" name="email" placeholder="Enter your email address" class="actnbr-email-field" aria-label="Enter your email address" />
+</div>
+<input type="hidden" name="action" value="subscribe" />
+<input type="hidden" name="blog_id" value="6991593" />
+<input type="hidden" name="source" value="index.html" />
+<input type="hidden" name="sub-type" value="actionbar-follow" />
+<input type="hidden" id="_wpnonce" name="_wpnonce" value="1ee257c406" /> <div class="actnbr-button-wrap">
+<button type="submit" value="Sign me up">
+Sign me up </button>
+</div>
+</form>
+<li class="actnbr-login-nudge">
+<div>
+Already have a WordPress.com account? <a href="../../wordpress.com/log-in0631.html?redirect_to=https%3A%2F%2Fr-login.wordpress.com%2Fremote-login.php%3Faction%3Dlink%26back%3Dhttps%253A%252F%252Futmccf.com%252F2010%252F12%252F17%252F%2525e5%25259c%2525a3%2525e8%2525af%25259e%2525e6%252599%25259a%2525e9%2525a4%252590christmas-dinner%252F">Log in now.</a> </div>
+</li>
+</ul>
+</div>
+</div>
+</li>
+<li class="actnbr-ellipsis actnbr-hidden">
+<svg class="gridicon gridicons-ellipsis" height="24" width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M7 12c0 1.104-.896 2-2 2s-2-.896-2-2 .896-2 2-2 2 .896 2 2zm12-2c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2zm-7 0c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2z" /></g></svg> <div class="actnbr-popover tip tip-top-left actnbr-more">
+<div class="tip-arrow"></div>
+<div class="tip-inner">
+<ul>
+<li class="actnbr-sitename">
+<a href="../index.html">
+<img alt='' src='https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=50' class='avatar avatar-50' height='50' width='50' /> utmccf.com </a>
+</li>
+<li class="actnbr-folded-customize">
+<a href="https://utmccf.wordpress.com/wp-admin/customize.php?url=https%3A%2F%2Futmccf.wordpress.com%2F2010%2F">
+<svg class="gridicon gridicons-customize" height="20" width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M2 6c0-1.505.78-3.08 2-4 0 .845.69 2 2 2 1.657 0 3 1.343 3 3 0 .386-.08.752-.212 1.09.74.594 1.476 1.19 2.19 1.81L8.9 11.98c-.62-.716-1.214-1.454-1.807-2.192C6.753 9.92 6.387 10 6 10c-2.21 0-4-1.79-4-4zm12.152 6.848l1.34-1.34c.607.304 1.283.492 2.008.492 2.485 0 4.5-2.015 4.5-4.5 0-.725-.188-1.4-.493-2.007L18 9l-2-2 3.507-3.507C18.9 3.188 18.225 3 17.5 3 15.015 3 13 5.015 13 7.5c0 .725.188 1.4.493 2.007L3 20l2 2 6.848-6.848c1.885 1.928 3.874 3.753 5.977 5.45l1.425 1.148 1.5-1.5-1.15-1.425c-1.695-2.103-3.52-4.092-5.448-5.977z" /></g></svg> <span>Customize</span>
+</a>
+</li>
+<li class="actnbr-folded-follow">
+<a class="actnbr-action actnbr-actn-follow " href="#">
+<svg class="gridicon gridicons-reader-follow" height="24" width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 16v2h-3v3h-2v-3h-3v-2h3v-3h2v3h3zM20 2v9h-4v3h-3v4H4c-1.1 0-2-.9-2-2V2h18zM8 13v-1H4v1h4zm3-3H4v1h7v-1zm0-2H4v1h7V8zm7-4H4v2h14V4z" /></g></svg><span>Follow</span>
+</a>
+<a class="actnbr-action actnbr-actn-following  no-display" href="#">
+<svg class="gridicon gridicons-reader-following" height="24" width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 13.482L15.508 21 12 17.4l1.412-1.388 2.106 2.188 6.094-6.094L23 13.482zm-7.455 1.862L20 10.89V2H2v14c0 1.1.9 2 2 2h4.538l4.913-4.832 2.095 2.176zM8 13H4v-1h4v1zm3-2H4v-1h7v1zm0-2H4V8h7v1zm7-3H4V4h14v2z" /></g></svg><span>Following</span>
+</a>
+</li>
+<li class="actnbr-signup"><a href="https://wordpress.com/start/">Sign up</a></li>
+<li class="actnbr-login"><a href="../../wordpress.com/log-in0631.html?redirect_to=https%3A%2F%2Fr-login.wordpress.com%2Fremote-login.php%3Faction%3Dlink%26back%3Dhttps%253A%252F%252Futmccf.com%252F2010%252F12%252F17%252F%2525e5%25259c%2525a3%2525e8%2525af%25259e%2525e6%252599%25259a%2525e9%2525a4%252590christmas-dinner%252F">Log in</a></li>
+<li class="flb-report"><a href="https://en.wordpress.com/abuse/">Report this content</a></li>
+<li class="actnbr-reader">
+<a href="https://wordpress.com/read/feeds/542199">
+View site in Reader </a>
+</li>
+<li class="actnbr-subs">
+<a href="https://subscribe.wordpress.com/">Manage subscriptions</a>
+</li>
+<li class="actnbr-fold"><a href="#">Collapse this bar</a></li>
+</ul>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<script>
+window.addEventListener( "load", function( event ) {
+	var link = document.createElement( "link" );
+	link.href = "https://s0.wp.com/wp-content/mu-plugins/actionbar/actionbar.css?v=20210915";
+	link.type = "text/css";
+	link.rel = "stylesheet";
+	document.head.appendChild( link );
+
+	var script = document.createElement( "script" );
+	script.src = "https://s0.wp.com/wp-content/mu-plugins/actionbar/actionbar.js?v=20220329";
+	script.defer = true;
+	document.body.appendChild( script );
+} );
+</script>
+<div id="jp-carousel-loading-overlay">
+<div id="jp-carousel-loading-wrapper">
+<span id="jp-carousel-library-loading">&nbsp;</span>
+</div>
+</div>
+<div class="jp-carousel-overlay" style="display: none;">
+<div class="jp-carousel-container">
+
+<div class="jp-carousel-wrap swiper-container jp-carousel-swiper-container jp-carousel-transitions" itemscope itemtype="https://schema.org/ImageGallery">
+<div class="jp-carousel swiper-wrapper"></div>
+<div class="jp-swiper-button-prev swiper-button-prev">
+<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="maskPrev" mask-type="alpha" maskUnits="userSpaceOnUse" x="8" y="6" width="9" height="12">
+<path d="M16.2072 16.59L11.6496 12L16.2072 7.41L14.8041 6L8.8335 12L14.8041 18L16.2072 16.59Z" fill="white" />
+</mask>
+<g mask="url(#maskPrev)">
+<rect x="0.579102" width="23.8823" height="24" fill="#FFFFFF" />
+</g>
+</svg>
+</div>
+<div class="jp-swiper-button-next swiper-button-next">
+<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="maskNext" mask-type="alpha" maskUnits="userSpaceOnUse" x="8" y="6" width="8" height="12">
+<path d="M8.59814 16.59L13.1557 12L8.59814 7.41L10.0012 6L15.9718 12L10.0012 18L8.59814 16.59Z" fill="white" />
+</mask>
+<g mask="url(#maskNext)">
+<rect x="0.34375" width="23.8822" height="24" fill="#FFFFFF" />
+</g>
+</svg>
+</div>
+</div>
+
+<div class="jp-carousel-close-hint">
+<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="maskClose" mask-type="alpha" maskUnits="userSpaceOnUse" x="5" y="5" width="15" height="14">
+<path d="M19.3166 6.41L17.9135 5L12.3509 10.59L6.78834 5L5.38525 6.41L10.9478 12L5.38525 17.59L6.78834 19L12.3509 13.41L17.9135 19L19.3166 17.59L13.754 12L19.3166 6.41Z" fill="white" />
+</mask>
+<g mask="url(#maskClose)">
+<rect x="0.409668" width="23.8823" height="24" fill="#FFFFFF" />
+</g>
+</svg>
+</div>
+
+<div class="jp-carousel-info">
+<div class="jp-carousel-info-footer">
+<div class="jp-carousel-pagination-container">
+<div class="jp-swiper-pagination swiper-pagination"></div>
+<div class="jp-carousel-pagination"></div>
+</div>
+<div class="jp-carousel-photo-title-container">
+<h2 class="jp-carousel-photo-caption"></h2>
+</div>
+<div class="jp-carousel-photo-icons-container">
+<a href="#" class="jp-carousel-icon-btn jp-carousel-icon-info" aria-label="Toggle photo metadata visibility">
+<span class="jp-carousel-icon">
+<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="maskInfo" mask-type="alpha" maskUnits="userSpaceOnUse" x="2" y="2" width="21" height="20">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.7537 2C7.26076 2 2.80273 6.48 2.80273 12C2.80273 17.52 7.26076 22 12.7537 22C18.2466 22 22.7046 17.52 22.7046 12C22.7046 6.48 18.2466 2 12.7537 2ZM11.7586 7V9H13.7488V7H11.7586ZM11.7586 11V17H13.7488V11H11.7586ZM4.79292 12C4.79292 16.41 8.36531 20 12.7537 20C17.142 20 20.7144 16.41 20.7144 12C20.7144 7.59 17.142 4 12.7537 4C8.36531 4 4.79292 7.59 4.79292 12Z" fill="white" />
+</mask>
+<g mask="url(#maskInfo)">
+<rect x="0.8125" width="23.8823" height="24" fill="#FFFFFF" />
+</g>
+</svg>
+</span>
+</a>
+<a href="#" class="jp-carousel-icon-btn jp-carousel-icon-comments" aria-label="Toggle photo comments visibility">
+<span class="jp-carousel-icon">
+<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="maskComments" mask-type="alpha" maskUnits="userSpaceOnUse" x="2" y="2" width="21" height="20">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M4.3271 2H20.2486C21.3432 2 22.2388 2.9 22.2388 4V16C22.2388 17.1 21.3432 18 20.2486 18H6.31729L2.33691 22V4C2.33691 2.9 3.2325 2 4.3271 2ZM6.31729 16H20.2486V4H4.3271V18L6.31729 16Z" fill="white" />
+</mask>
+<g mask="url(#maskComments)">
+<rect x="0.34668" width="23.8823" height="24" fill="#FFFFFF" />
+</g>
+</svg>
+<span class="jp-carousel-has-comments-indicator" aria-label="This image has comments."></span>
+</span>
+</a>
+</div>
+</div>
+<div class="jp-carousel-info-extra">
+<div class="jp-carousel-info-content-wrapper">
+<div class="jp-carousel-photo-title-container">
+<h2 class="jp-carousel-photo-title"></h2>
+</div>
+<div class="jp-carousel-comments-wrapper">
+<div id="jp-carousel-comments-loading">
+<span>Loading Comments...</span>
+</div>
+<div class="jp-carousel-comments"></div>
+<div id="jp-carousel-comment-form-container">
+<span id="jp-carousel-comment-form-spinner">&nbsp;</span>
+<div id="jp-carousel-comment-post-results"></div>
+<form id="jp-carousel-comment-form">
+<label for="jp-carousel-comment-form-comment-field" class="screen-reader-text">Write a Comment...</label>
+<textarea name="comment" class="jp-carousel-comment-form-field jp-carousel-comment-form-textarea" id="jp-carousel-comment-form-comment-field" placeholder="Write a Comment..."></textarea>
+<div id="jp-carousel-comment-form-submit-and-info-wrapper">
+<div id="jp-carousel-comment-form-commenting-as">
+<fieldset>
+<label for="jp-carousel-comment-form-email-field">Email (Required)</label>
+<input type="text" name="email" class="jp-carousel-comment-form-field jp-carousel-comment-form-text-field" id="jp-carousel-comment-form-email-field" />
+</fieldset>
+<fieldset>
+<label for="jp-carousel-comment-form-author-field">Name (Required)</label>
+<input type="text" name="author" class="jp-carousel-comment-form-field jp-carousel-comment-form-text-field" id="jp-carousel-comment-form-author-field" />
+</fieldset>
+<fieldset>
+<label for="jp-carousel-comment-form-url-field">Website</label>
+<input type="text" name="url" class="jp-carousel-comment-form-field jp-carousel-comment-form-text-field" id="jp-carousel-comment-form-url-field" />
+</fieldset>
+</div>
+<input type="submit" name="submit" class="jp-carousel-comment-form-button" id="jp-carousel-comment-form-button-submit" value="Post Comment" />
+</div>
+</form>
+</div>
+</div>
+<div class="jp-carousel-image-meta">
+<div class="jp-carousel-title-and-caption">
+<div class="jp-carousel-photo-info">
+<h3 class="jp-carousel-caption" itemprop="caption description"></h3>
+</div>
+<div class="jp-carousel-photo-description"></div>
+</div>
+<ul class="jp-carousel-image-exif" style="display: none;"></ul>
+<a class="jp-carousel-image-download" target="_blank" style="display: none;">
+<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="3" y="3" width="19" height="18">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M5.84615 5V19H19.7775V12H21.7677V19C21.7677 20.1 20.8721 21 19.7775 21H5.84615C4.74159 21 3.85596 20.1 3.85596 19V5C3.85596 3.9 4.74159 3 5.84615 3H12.8118V5H5.84615ZM14.802 5V3H21.7677V10H19.7775V6.41L9.99569 16.24L8.59261 14.83L18.3744 5H14.802Z" fill="white" />
+</mask>
+<g mask="url(#mask0)">
+<rect x="0.870605" width="23.8823" height="24" fill="#FFFFFF" />
+</g>
+</svg>
+<span class="jp-carousel-download-text"></span>
+</a>
+<div class="jp-carousel-image-map" style="display: none;"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<link crossorigin='anonymous' rel='stylesheet' id='all-css-0-2' href='https://s0.wp.com/_static/??-eJyljUEOwjAMBD9EsFohCgfEW4JjVSlOYsW2Kn4PSPTKpbed1WoWVgnYqlE1KB6Efc5VYSGTiM8fg/SWHC23CuWTmBQw9uZKDLpmoR4eXhPTEVUPsNu5Tbdin9YyUwpzZKb++kffm3u5DedpvJ6mcbgsb3YxbRs=?cssminify=yes' type='text/css' media='all' />
+<script id='edin-navigation-js-extra'>
+var screen_reader_text = {"expand":"<span class=\"screen-reader-text\">expand child menu<\/span>","collapse":"<span class=\"screen-reader-text\">collapse child menu<\/span>"};
+</script>
+<script id='edin-script-js-extra'>
+var screen_reader_text = {"expand":"<span class=\"screen-reader-text\">expand child menu<\/span>","collapse":"<span class=\"screen-reader-text\">collapse child menu<\/span>"};
+</script>
+<script id='jetpack-carousel-js-extra'>
+var jetpackSwiperLibraryPath = {"url":"https:\/\/s0.wp.com\/wp-content\/mu-plugins\/jetpack-plugin\/production\/_inc\/build\/carousel\/swiper-bundle.min.js"};
+var jetpackCarouselStrings = {"widths":[370,700,1000,1200,1400,2000],"is_logged_in":"","lang":"en","ajaxurl":"https:\/\/utmccf.com\/wp-admin\/admin-ajax.php","nonce":"7057bbbb33","display_exif":"1","display_comments":"1","single_image_gallery":"1","single_image_gallery_media_file":"","background_color":"black","comment":"Comment","post_comment":"Post Comment","write_comment":"Write a Comment...","loading_comments":"Loading Comments...","download_original":"View full size <span class=\"photo-size\">{0}<span class=\"photo-size-times\">\u00d7<\/span>{1}<\/span>","no_comment_text":"Please be sure to submit some text with your comment.","no_comment_email":"Please provide an email address to comment.","no_comment_author":"Please provide your name to comment.","comment_post_error":"Sorry, but there was an error posting your comment. Please try again later.","comment_approved":"Your comment was approved.","comment_unapproved":"Your comment is in moderation.","camera":"Camera","aperture":"Aperture","shutter_speed":"Shutter Speed","focal_length":"Focal Length","copyright":"Copyright","comment_registration":"0","require_name_email":"1","login_url":"https:\/\/utmccf.wordpress.com\/wp-login.php?redirect_to=https%3A%2F%2Futmccf.com%2F2010%2F10%2F15%2F%25e6%259f%25a5%25e7%25bb%258fbible-study-%25e7%25ba%25a6%25e7%25bf%25b0john-31-15%2F","blog_id":"6991593","meta_data":["camera","aperture","shutter_speed","focal_length","copyright"],"stats_query_args":"blog=6991593&v=wpcom&tz=-5&user_id=0&subd=utmccf","is_public":"1"};
+</script>
+<script crossorigin='anonymous' type='text/javascript' src='https://s0.wp.com/_static/??-eJyVUFtuwkAMvFCNhaigP1WPUm12ndRhX9r1Arl9HampqoAofNnjx3jGeM5gUxSKgqFB9m3gWHEkycYefzDmklyzwili0MxTxXnJWIE+lYBjxTlClUl7m7G+4B9e7To6saV8WbceOvnJ0WLX2Dvk2HNkIai2JO8XPG0CxzW3fFFQobl1SE4ZVUY0Jx7MTPrAcD1yBs/xqB5tq9DzlfwbW3O849I4VQqdKRhMFSqagRT1ffW1Z19jTUmtkv+dXgq3fvMsubAnB4Pxnsp0D/1zbNEE52xTWEHd+wjv2/1h93rY7d+24zc2BPwU'></script>
+<script type="text/javascript">
+// <![CDATA[
+(function() {
+try{
+  if ( window.external &&'msIsSiteMode' in window.external) {
+    if (window.external.msIsSiteMode()) {
+      var jl = document.createElement('script');
+      jl.type='text/javascript';
+      jl.async=true;
+      jl.src='../wp-content/plugins/ie-sitemode/custom-jumplist.php';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(jl, s);
+    }
+  }
+}catch(e){}
+})();
+// ]]>
+</script> <script type="text/javascript">
+			(function() {
+				var extend = function(out) {
+					out = out || {};
+
+					for (var i = 1; i < arguments.length; i++) {
+						if (!arguments[i])
+						continue;
+
+						for (var key in arguments[i]) {
+						if (arguments[i].hasOwnProperty(key))
+							out[key] = arguments[i][key];
+						}
+					}
+
+					return out;
+				};
+				extend( window.infiniteScroll.settings.scripts, ["mobile-useragent-info","rlt-proxy","jquery-core","jquery-migrate","jquery","wpcom-actionbar-placeholder","grofiles-cards","wpgroho","contact-form-styles","devicepx","the-neverending-homepage","edin-navigation","edin-skip-link-focus-fix","edin-script","wpcom-masterbar-tracks-js","jetpack-carousel","tiled-gallery","carousel-wpcom"] );
+				extend( window.infiniteScroll.settings.styles, ["wpcom-smileys","the-neverending-homepage","wp-block-library","mediaelement","wp-mediaelement","jetpack-layout-grid","jetpack-ratings","coblocks-frontend","classic-theme-styles","wpcom-core-compat-playlist-styles","wpcom-text-widget-styles","wpcom-bbpress2-staff-css","edin-edincon","genericons","edin-style","edin-wpcom","jetpack-widget-social-icons-styles","geo-location-flair","reblogging","a8c-global-print","h4-global","global-styles","edin-pt-sans","edin-pt-serif","edin-pt-mono","jetpack-global-styles-frontend-style","jetpack-carousel-swiper-css","jetpack-carousel","tiled-gallery"] );
+			})();
+		</script>
+<span id="infinite-aria" aria-live="assertive"></span>
+<script src="http://stats.wp.com/w.js?63" defer></script> <script type="text/javascript">
+_tkq = window._tkq || [];
+_stq = window._stq || [];
+_tkq.push(['storeContext', {'blog_id':'6991593','blog_tz':'-5','user_lang':'en','blog_lang':'en','user_id':'0'}]);
+_stq.push(['view', {'blog':'6991593','v':'wpcom','tz':'-5','user_id':'0','subd':'utmccf'}]);
+_stq.push(['extra', {'crypt':'UE40eW5QN0p8M2Y/RE1mNzc2NTVTamdsd0xoLz9RQkM2K298TXY9bERQMXc2MjhEaVZfb2wwakRoSj0mUkp1THptM1NdbkV1WjZIcU9mVWQmPUIvMlN6Jk8wW3NYVEJ3dWZOWExuWD8rZDJfUmZbTHYuQ1p5c085WXlLX2ZYdmZdNmFDekNmX2VTeXFtM1E9UThLP3gyUDg2NCxTd3FVLVUsQTRKSWRtQ25bYi05bGdaVHZrZDNCSHoyeXJ2ck9UdmJGQ1ZRSEN4dlMwTj9OdiV8SD09SF93RzUwZm1mWXNKSWQycUFZYXE1c0EtaEUwRjBDQi4/RD00T2omP0NDUHB+Z003aGJFYUNJMHczVnFLejMsJkVYVTVrLXg4WVRhXXp2PVlyWUZETFMtb285bjltMl8='}]);
+_stq.push([ 'clickTrackerInit', '6991593', '0' ]);
+	</script>
+<noscript><img src="https://pixel.wp.com/b.gif?v=noscript" style="height:1px;width:1px;overflow:hidden;position:absolute;bottom:1px;" alt="" /></noscript>
+<script>
+if ( 'object' === typeof wpcom_mobile_user_agent_info ) {
+
+	wpcom_mobile_user_agent_info.init();
+	var mobileStatsQueryString = "";
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedPlatformName )
+		mobileStatsQueryString += "&x_" + 'mobile_platforms' + '=' + wpcom_mobile_user_agent_info.matchedPlatformName;
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedUserAgentName )
+		mobileStatsQueryString += "&x_" + 'mobile_devices' + '=' + wpcom_mobile_user_agent_info.matchedUserAgentName;
+	
+	if( wpcom_mobile_user_agent_info.isIPad() )
+		mobileStatsQueryString += "&x_" + 'ipad_views' + '=' + 'views';
+
+	if( "" != mobileStatsQueryString ) {
+		new Image().src = document.location.protocol + '//pixel.wp.com/g.gif?v=wpcom-no-pv' + mobileStatsQueryString + '&baba=' + Math.random();
+	}
+	
+}
+</script>
+</body>
+
+<!-- Mirrored from utmccf.com/2010/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 29 Jan 2023 20:31:30 GMT -->
+</html>
