@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="profile" href="https://gmpg.org/xfn/11">
+<link rel="pingback" href="https://utmccf.com/xmlrpc.php">
+<title>2013</title>
+<meta name='robots' content='max-image-preview:large' />
+
+<script id="wpcom_remote_login_js">
+var wpcom_remote_login_extra_auth = '';
+function wpcom_remote_login_remove_dom_node_id( element_id ) {
+	var dom_node = document.getElementById( element_id );
+	if ( dom_node ) { dom_node.parentNode.removeChild( dom_node ); }
+}
+function wpcom_remote_login_remove_dom_node_classes( class_name ) {
+	var dom_nodes = document.querySelectorAll( '.' + class_name );
+	for ( var i = 0; i < dom_nodes.length; i++ ) {
+		dom_nodes[ i ].parentNode.removeChild( dom_nodes[ i ] );
+	}
+}
+function wpcom_remote_login_final_cleanup() {
+	wpcom_remote_login_remove_dom_node_classes( "wpcom_remote_login_msg" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_key" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_validate" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_js" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_request_access_iframe" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_request_access_styles" );
+}
+
+// Watch for messages back from the remote login
+window.addEventListener( "message", function( e ) {
+	if ( e.origin === "https://r-login.wordpress.com" ) {
+		var data = {};
+		try {
+			data = JSON.parse( e.data );
+		} catch( e ) {
+			wpcom_remote_login_final_cleanup();
+			return;
+		}
+
+		if ( data.msg === 'LOGIN' ) {
+			// Clean up the login check iframe
+			wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_key" );
+
+			var id_regex = new RegExp( /^[0-9]+$/ );
+			var token_regex = new RegExp( /^.*|.*|.*$/ );
+			if (
+				token_regex.test( data.token )
+				&& id_regex.test( data.wpcomid )
+			) {
+				// We have everything we need to ask for a login
+				var script = document.createElement( "script" );
+				script.setAttribute( "id", "wpcom_remote_login_validate" );
+				script.src = '/remote-login.php?wpcom_remote_login=validate'
+					+ '&wpcomid=' + data.wpcomid
+					+ '&token=' + encodeURIComponent( data.token )
+					+ '&host=' + window.location.protocol
+					+ '//' + window.location.hostname
+					+ '&postid=1329'
+					+ '&is_singular=';
+				document.body.appendChild( script );
+			}
+
+			return;
+		}
+
+		// Safari ITP, not logged in, so redirect
+		if ( data.msg === 'LOGIN-REDIRECT' ) {
+			window.location = 'https://wordpress.com/log-in?redirect_to=' + window.location.href;
+			return;
+		}
+
+		// Safari ITP, storage access failed, remove the request
+		if ( data.msg === 'LOGIN-REMOVE' ) {
+			var css_zap = 'html { -webkit-transition: margin-top 1s; transition: margin-top 1s; } /* 9001 */ html { margin-top: 0 !important; } * html body { margin-top: 0 !important; } @media screen and ( max-width: 782px ) { html { margin-top: 0 !important; } * html body { margin-top: 0 !important; } }';
+			var style_zap = document.createElement( 'style' );
+			style_zap.type = 'text/css';
+			style_zap.appendChild( document.createTextNode( css_zap ) );
+			document.body.appendChild( style_zap );
+
+			var e = document.getElementById( 'wpcom_request_access_iframe' );
+			e.parentNode.removeChild( e );
+
+			document.cookie = 'wordpress_com_login_access=denied; path=/; max-age=31536000';
+
+			return;
+		}
+
+		// Safari ITP
+		if ( data.msg === 'REQUEST_ACCESS' ) {
+			console.log( 'request access: safari' );
+
+			// Check ITP iframe enable/disable knob
+			if ( wpcom_remote_login_extra_auth !== 'safari_itp_iframe' ) {
+				return;
+			}
+
+			// If we are in a "private window" there is no ITP.
+			var private_window = false;
+			try {
+				var opendb = window.openDatabase( null, null, null, null );
+			} catch( e ) {
+				private_window = true;
+			}
+
+			if ( private_window ) {
+				console.log( 'private window' );
+				return;
+			}
+
+			var iframe = document.createElement( 'iframe' );
+			iframe.id = 'wpcom_request_access_iframe';
+			iframe.setAttribute( 'scrolling', 'no' );
+			iframe.setAttribute( 'sandbox', 'allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-top-navigation-by-user-activation' );
+			iframe.src = 'https://r-login.wordpress.com/remote-login.php?wpcom_remote_login=request_access&origin=' + encodeURIComponent( data.origin ) + '&wpcomid=' + encodeURIComponent( data.wpcomid );
+
+			var css = 'html { -webkit-transition: margin-top 1s; transition: margin-top 1s; } /* 9001 */ html { margin-top: 46px !important; } * html body { margin-top: 46px !important; } @media screen and ( max-width: 660px ) { html { margin-top: 71px !important; } * html body { margin-top: 71px !important; } #wpcom_request_access_iframe { display: block; height: 71px !important; } } #wpcom_request_access_iframe { border: 0px; height: 46px; position: fixed; top: 0; left: 0; width: 100%; min-width: 100%; z-index: 99999; background: #23282d; } ';
+
+			var style = document.createElement( 'style' );
+			style.type = 'text/css';
+			style.id = 'wpcom_request_access_styles';
+			style.appendChild( document.createTextNode( css ) );
+			document.body.appendChild( style );
+
+			document.body.appendChild( iframe );
+		}
+
+		if ( data.msg === 'DONE' ) {
+			wpcom_remote_login_final_cleanup();
+		}
+	}
+}, false );
+
+// Inject the remote login iframe after the page has had a chance to load
+// more critical resources
+window.addEventListener( "DOMContentLoaded", function( e ) {
+	var iframe = document.createElement( "iframe" );
+	iframe.style.display = "none";
+	iframe.setAttribute( "scrolling", "no" );
+	iframe.setAttribute( "id", "wpcom_remote_login_key" );
+	iframe.src = "https://r-login.wordpress.com/remote-login.php"
+		+ "?wpcom_remote_login=key"
+		+ "&origin=aHR0cHM6Ly91dG1jY2YuY29t"
+		+ "&wpcomid=6991593"
+		+ "&time=1675980128";
+	document.body.appendChild( iframe );
+}, false );
+</script>
+<link rel='dns-prefetch' href='https://s0.wp.com/' />
+<link rel='dns-prefetch' href='https://utmccf.wordpress.com/' />
+<link rel='dns-prefetch' href='https://fonts-api.wp.com/' />
+<link href='https://fonts.gstatic.com' crossorigin rel='preconnect' />
+<link rel="alternate" type="application/rss+xml" title=" &raquo; Feed" href="https://utmccf.com/feed/" />
+<link rel="alternate" type="application/rss+xml" title=" &raquo; Comments Feed" href="https://utmccf.com/comments/feed/" />
+<script type="text/javascript">
+		/* <![CDATA[ */
+		function addLoadEvent(func) {
+			var oldonload = window.onload;
+			if (typeof window.onload != 'function') {
+				window.onload = func;
+			} else {
+				window.onload = function () {
+					oldonload();
+					func();
+				}
+			}
+		}
+		/* ]]> */
+	</script>
+<script type="text/javascript">
+window._wpemojiSettings = {"baseUrl":"https:\/\/s0.wp.com\/wp-content\/mu-plugins\/wpcom-smileys\/twemoji\/2\/72x72\/","ext":".png","svgUrl":"https:\/\/s0.wp.com\/wp-content\/mu-plugins\/wpcom-smileys\/twemoji\/2\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/s0.wp.com\/wp-includes\/js\/wp-emoji-release.min.js?m=1652185836h&ver=6.2-alpha-55134"}};
+/*! This file is auto-generated */
+!function(e,a,t){var n,r,o,i=a.createElement("canvas"),p=i.getContext&&i.getContext("2d");function s(e,t){var a=String.fromCharCode,e=(p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,e),0,0),i.toDataURL());return p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,t),0,0),e===i.toDataURL()}function c(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(o=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},r=0;r<o.length;r++)t.supports[o[r]]=function(e){if(p&&p.fillText)switch(p.textBaseline="top",p.font="600 32px Arial",e){case"flag":return s([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])?!1:!s([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!s([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]);case"emoji":return!s([129777,127995,8205,129778,127999],[129777,127995,8203,129778,127999])}return!1}(o[r]),t.supports.everything=t.supports.everything&&t.supports[o[r]],"flag"!==o[r]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[o[r]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(e=t.source||{}).concatemoji?c(e.concatemoji):e.wpemoji&&e.twemoji&&(c(e.twemoji),c(e.wpemoji)))}(window,document,window._wpemojiSettings);
+</script>
+<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 0.07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link crossorigin='anonymous' rel='stylesheet' id='all-css-0-1' href='https://s0.wp.com/_static/??-eJyNkt1SAyEMhV9IiGtrtRdOn4WfDKYCyxDoyttLW9tZq229YTgJXzgJwJSEGWPBWCBUkXx1FBmmZMYgOJDHdqGkYX6AGXZiXO1SY3Y9kxF2w7N8lAPoSt6C9qP5EJ50VrkBl+bxXIii8dUiw5YhoCWFHsPB0Ewkrxpm4dEp02SgeB/vubn+AV03f3Dai2FJam9ZtbEW4TLZC9v/LpFVoej4Dm7Gb+xJDq9yEEwheRQZd3IBlricT4gr4+sBMF4xkxHlvffMf7Y8e+b9Q/V4SOr3tG5gE1mH5XjhcS8Kft5GDl9I65SRWfQ1UA0nl53bhLdh9bJcrterxbD9AkqO9/s=?cssminify=yes' type='text/css' media='all' />
+<style id='wp-block-library-inline-css'>
+.has-text-align-justify {
+	text-align:justify;
+}
+.wp-block-cover__image-background.has-parallax {
+	background-size: cover;
+}
+</style>
+<style id='global-styles-inline-css'>
+body{--wp--preset--shadow--natural: 0 .2rem .3rem 0 rgba(0,0,0, 0.3), 0 .5rem .6rem 0 rgba(0,0,0, 0.4);--wp--preset--shadow--sharp: .5rem .5rem 0 0 rgba(0,0,0, 0.4);--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--duotone--dark-grayscale: url('index.html');--wp--preset--duotone--grayscale: url('index.html');--wp--preset--duotone--purple-yellow: url('index.html');--wp--preset--duotone--blue-red: url('index.html');--wp--preset--duotone--midnight: url('index.html');--wp--preset--duotone--magenta-yellow: url('index.html');--wp--preset--duotone--purple-green: url('index.html');--wp--preset--duotone--blue-orange: url('index.html');--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;}:where(.is-layout-flex){gap: 0.5em;}body .is-layout-flow > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}body .is-layout-flow > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}body .is-layout-flow > .aligncenter{margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}body .is-layout-constrained > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}body .is-layout-constrained > .aligncenter{margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)){max-width: var(--wp--style--global--content-size);margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > .alignwide{max-width: var(--wp--style--global--wide-size);}body .is-layout-flex{display: flex;}body .is-layout-flex{flex-wrap: wrap;align-items: center;}body .is-layout-flex > *{margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}
+.wp-block-pullquote{font-size: 1.5em;line-height: 1.6;}
+.wp-block-navigation a:where(:not(.wp-element-button)){color: inherit;}
+</style>
+<link rel='stylesheet' id='edin-pt-sans-css' href='https://fonts-api.wp.com/css?family=PT+Sans%3A400%2C700%2C400italic%2C700italic&#038;subset=latin%2Clatin-ext' media='all' />
+<link rel='stylesheet' id='edin-pt-serif-css' href='https://fonts-api.wp.com/css?family=PT+Serif%3A400%2C700%2C400italic%2C700italic&#038;subset=latin%2Clatin-ext' media='all' />
+<link rel='stylesheet' id='edin-pt-mono-css' href='https://fonts-api.wp.com/css?family=PT+Mono&#038;subset=latin%2Clatin-ext' media='all' />
+<link crossorigin='anonymous' rel='stylesheet' id='all-css-8-1' href='https://s0.wp.com/_static/??-eJydjs0KwjAQhF/IuFS00IP4KBLTbUzNH9mE4tu7rR6CSgVvM8s3swNTFCr4jD5DvqJDglgugL3xMPB9UQxsFdEGKtgVEW3RxhOMmKNUt5eHmEJfVDbBw5mzoNFjMpyj7/Kj+n0H5bvFn9T8aiHFFFVw/w12rCy3TqbXmAkoKCOteE6uzVq9xiBsUHJprI0YrDRpLZrwYoNmqYGpys6hkzs27aHd77qubcYHlRqmhg==?cssminify=yes' type='text/css' media='all' />
+<style id='edin-style-inline-css'>
+ { clip: rect(1px, 1px, 1px, 1px); height: 1px; position: absolute; overflow: hidden; width: 1px; }
+</style>
+<link crossorigin='anonymous' rel='stylesheet' id='print-css-9-1' href='https://s0.wp.com/wp-content/mu-plugins/global-print/global-print.css?m=1465851035h&cssminify=yes' type='text/css' media='print' />
+<style id='jetpack-global-styles-frontend-style-inline-css'>
+:root { --font-headings: unset; --font-base: unset; --font-headings-default: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif; --font-base-default: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;}
+</style>
+<link crossorigin='anonymous' rel='stylesheet' id='all-css-12-1' href='https://s0.wp.com/wp-content/themes/h4/global.css?m=1420737423h&cssminify=yes' type='text/css' media='all' />
+<script id='wpcom-actionbar-placeholder-js-extra'>
+var actionbardata = {"siteID":"6991593","siteURL":"https:\/\/utmccf.com","xhrURL":"https:\/\/utmccf.com\/wp-admin\/admin-ajax.php","nonce":"83f96e105d","isLoggedIn":"","statusMessage":"","subsEmailDefault":"instantly","proxyScriptUrl":"https:\/\/s0.wp.com\/wp-content\/js\/wpcom-proxy-request.js?ver=20211021","i18n":{"followedText":"New posts from this site will now appear in your <a href="https://utmccf.com/2013/\&quot;https:\/\/wordpress.com\/read\&quot;">Reader<\/a>","foldBar":"Collapse this bar","unfoldBar":"Expand this bar"}};
+</script>
+<script crossorigin='anonymous' type='text/javascript' src='https://s0.wp.com/_static/??-eJyFykEOgyAQheELOVIlsmt6FrVTMwQGHCDq7asJXbjq6iXv/9QWYQ6ckbOySfkwkUMoCWVczg+IP6G1qVF3Jy5DlLAfv0Y8u/LGdEW7FpSjTuuJ/yLwtMiYseKXf3bGGD30+tHZL48zO4Y='></script>
+<script type='text/javascript'>
+	window.addEventListener( 'DOMContentLoaded', function() {
+		rltInitialize( {"token":null,"iframeOrigins":["https:\/\/widgets.wp.com"]} );
+	} );
+</script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://utmccf.wordpress.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://s0.wp.com/wp-includes/wlwmanifest.xml" />
+<meta name="generator" content="WordPress.com" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="2013" />
+<meta property="og:image" content="https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=200" />
+<meta property="og:image:width" content="200" />
+<meta property="og:image:height" content="200" />
+<meta property="og:image:alt" content="" />
+<meta property="og:locale" content="en_US" />
+
+<link rel='openid.server' href='https://utmccf.com/?openidserver=1' />
+<link rel='openid.delegate' href='../index.html' />
+<link rel="search" type="application/opensearchdescription+xml" href="https://utmccf.com/osd.xml" title="" />
+<link rel="search" type="application/opensearchdescription+xml" href="https://s1.wp.com/opensearch.xml" title="WordPress.com" />
+<meta name="theme-color" content="#ffffff" />
+<meta name="application-name" content="WordPress.com" /><meta name="msapplication-window" content="width=device-width;height=device-height" /><meta name="msapplication-tooltip" content="University of Toronto Mandarin Chinese Christian Fellowship" /><meta name="msapplication-task" content="name=Subscribe;action-uri=https://utmccf.com/feed/;icon-uri=https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=16" /><meta name="msapplication-task" content="name=Sign up for a free blog;action-uri=http://wordpress.com/signup/;icon-uri=https://s0.wp.com/i/favicon.ico" /><meta name="msapplication-task" content="name=WordPress.com Support;action-uri=http://support.wordpress.com/;icon-uri=https://s0.wp.com/i/favicon.ico" /><meta name="msapplication-task" content="name=WordPress.com Forums;action-uri=http://forums.wordpress.com/;icon-uri=https://s0.wp.com/i/favicon.ico" /><meta name="description" content="36 posts published by utmccf in the year 2013" />
+<style type="text/css">
+			.site-title,
+		.site-description {
+			position: absolute;
+			clip: rect(1px, 1px, 1px, 1px);
+		}
+		</style>
+<style type="text/css" id="custom-colors-css">	.hero a.button-minimal {
+		border-color: #fff !important;
+	}
+	#comments #respond .form-submit input#comment-submit,
+	.widget_flickr #flickr_badge_uber_wrapper td a:last-child {
+		background: #c5c5c5 !important;
+		border-color: #c5c5c5 !important;
+	}
+	@media screen and (min-width: 1020px) {
+		body.small-screen.navigation-classic .primary-navigation .menu-primary > ul > li.current-menu-item:before,
+		body.small-screen.navigation-classic .primary-navigation .menu-primary > ul > li.current_page_item:before,
+		body.small-screen.navigation-classic .primary-navigation .menu-item-has-children:hover:before,
+		body.small-screen.navigation-classic .primary-navigation ul ul .menu-item-has-children:before {
+			color: #fff;
+		}
+		body.large-screen.navigation-classic .primary-navigation ul ul ul:before {
+			border-bottom-color: transparent;
+		}
+	}
+	@media screen and (min-width: 1230px) {
+		body.small-screen .menu-toggle.open,
+		body.small-screen .menu-toggle.open:before,
+		body.small-screen .menu-toggle.open:focus,
+		body.small-screen .menu-toggle.open:focus:before {
+			color: #fff;
+		}
+		body.small-screen .menu-toggle.open:before,
+		body.small-screen .menu-toggle.open:focus:before {
+			border-color: #fff;
+		}
+		body.small-screen .menu-toggle.open:before {
+			background: transparent;
+		}
+		body.small-screen .menu-toggle.open:hover,
+		body.small-screen .menu-toggle.open:active,
+		body.small-screen .menu-toggle.open:hover:before,
+		body.small-screen .menu-toggle.open:active:before {
+			color: rgba(255, 255, 255, 0.5);
+		}
+		body.small-screen .menu-toggle.open:hover:before,
+		body.small-screen .menu-toggle.open:active:before {
+			border-color: rgba(255, 255, 255, 0.5);
+		}
+	}
+body { background-color: #ffffff;}
+mark,
+		ins,
+		button,
+		input[type="button"],
+		input[type="reset"],
+		input[type="submit"],
+		a.button,
+		a.button:visited,
+		a.button-minimal:hover,
+		a.button-minimal:focus,
+		a.button-minimal:active,
+		body:not(.small-screen) .menu-toggle.open:before,
+		body:not(.small-screen) .search-toggle.open:before,
+		.navigation-wrapper,
+		.search-wrapper,
+		.widget_nav_menu .dropdown-toggle:hover,
+		.hero.with-featured-image,
+		body[class*="front-page"] .hero,
+		#infinite-handle span,
+		.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li:hover,
+		.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li.current-menu-item > a,
+		.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li.current_page_item > a,
+		.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:hover,
+		.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:focus,
+		.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:active,
+		.large-screen.navigation-classic .primary-navigation ul ul li,
+		.widget_akismet_widget .a-stats a { background-color: #D8111B;}
+a,
+		a.button-minimal,
+		a.button-minimal:visited,
+		.menu-toggle:focus,
+		.search-toggle:focus,
+		.primary-navigation .dropdown-toggle:hover,
+		.footer-navigation a:hover,
+		.footer-navigation a:focus,
+		.footer-navigation a:active,
+		.screen-reader-text:hover,
+		.screen-reader-text:focus,
+		.screen-reader-text:active,
+		.site-footer a:hover,
+		.site-footer a:focus,
+		.site-footer a:active,
+		.format-link .entry-title a:hover:after,
+		.format-link .entry-title a:focus:after,
+		.format-link .entry-title a:active:after,
+		.entry-title a:hover,
+		.entry-title a:focus,
+		.entry-title a:active,
+		.featured-page .entry-title a:hover,
+		.featured-page .entry-title a:focus,
+		.featured-page .entry-title a:active,
+		.grid .entry-title a:hover,
+		.grid .entry-title a:focus,
+		.grid .entry-title a:active,
+		#infinite-footer .blog-credits a:hover,
+		#infinite-footer .blog-credits a:focus,
+		#infinite-footer .blog-credits a:active,
+		#infinite-footer .blog-info a:hover,
+		#infinite-footer .blog-info a:focus,
+		#infinite-footer .blog-info a:active,
+		.small-screen .menu-toggle:hover:before,
+		.small-screen .menu-toggle:active:before,
+		.small-screen .menu-toggle.open:before,
+		.small-screen .menu-toggle.open,
+		.medium-screen .menu-toggle:hover,
+		.medium-screen .menu-toggle:active,
+		.small-screen .search-toggle:hover:before,
+		.small-screen .search-toggle:active:before,
+		.small-screen .search-toggle.open:before,
+		.small-screen .search-toggle.open,
+		.medium-screen .search-toggle:hover,
+		.medium-screen .search-toggle:active,
+		.large-screen.navigation-classic .primary-navigation .menu-item-has-children:before,
+		.large-screen.navigation-classic .secondary-navigation a:hover,
+		.large-screen.navigation-classic .secondary-navigation a:focus,
+		.large-screen.navigation-classic .secondary-navigation a:active,
+		.widget_goodreads div[class^="gr_custom_each_container"] a:hover,
+		.widget_goodreads div[class^="gr_custom_each_container"] a:focus,
+		.widget_goodreads div[class^="gr_custom_each_container"] a:active,
+		.testimonial-entry-title a:hover,
+		.testimonial-entry-title a:focus,
+		.testimonial-entry-title a:active { color: #D8111B;}
+button,
+		input[type="button"],
+		input[type="reset"],
+		input[type="submit"],
+		input[type="text"]:focus,
+		input[type="email"]:focus,
+		input[type="url"]:focus,
+		input[type="password"]:focus,
+		input[type="search"]:focus,
+		textarea:focus,
+		a.button,
+		a.button-minimal,
+		a.button:visited,
+		a.button-minimal:visited,
+		a.button-minimal:hover,
+		a.button-minimal:focus,
+		a.button-minimal:active,
+		#infinite-handle span,
+		.small-screen .menu-toggle:hover:before,
+		.small-screen .menu-toggle:active:before,
+		.small-screen .menu-toggle.open:before,
+		.small-screen .search-toggle:hover:before,
+		.small-screen .search-toggle:active:before,
+		.small-screen .search-toggle.open:before,
+		#comments #respond #comment-form-comment.active,
+		#comments #respond .comment-form-fields div.comment-form-input.active,
+		.widget_akismet_widget .a-stats a { border-color: #D8111B;}
+.search-wrapper .search-field { border-color: #EF989D;}
+.large-screen.navigation-classic .primary-navigation ul ul ul:before,
+		.rtl blockquote,
+		body.rtl .hentry .wpcom-reblog-snapshot .reblogger-note-content blockquote { border-right-color: #D8111B;}
+.footer-navigation a:hover,
+		.footer-navigation a:focus,
+		.footer-navigation a:active,
+		.large-screen.navigation-classic .primary-navigation ul ul:before,
+		.large-screen.navigation-classic .primary-navigation ul ul li:last-of-type,
+		.large-screen.navigation-classic .secondary-navigation a:hover,
+		.large-screen.navigation-classic .secondary-navigation a:focus,
+		.large-screen.navigation-classic .secondary-navigation a:active { border-bottom-color: #D8111B;}
+blockquote,
+		body .hentry .wpcom-reblog-snapshot .reblogger-note-content blockquote { border-left-color: #D8111B;}
+</style>
+<link rel="icon" href="https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=32" sizes="32x32" />
+<link rel="icon" href="https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=192" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=180" />
+<meta name="msapplication-TileImage" content="https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=270" />
+</head>
+<body class="archive date customizer-styles-applied navigation-classic no-sidebar highlander-enabled highlander-light">
+<div id="page" class="hfeed site">
+<a class="skip-link screen-reader-text" href="index.html#content">Skip to content</a>
+<header id="masthead" class="site-header" role="banner">
+<a href="../index.html" class="header-image" rel="home">
+<img src="https://utmccf.files.wordpress.com/2019/05/cropped-header4-1.png" width="1350" height="110" alt="cropped-header4-1-1.png">
+</a>
+<div class="header-wrapper clear">
+<div class="site-branding">
+<a href="../index.html" class="site-logo-link" rel="home" itemprop="url"></a> <p class="site-title"><a href="../index.html" rel="home"></a></p>
+<p class="site-description">University of Toronto Mandarin Chinese Christian Fellowship</p>
+</div>
+<div id="site-navigation" class="header-navigation">
+<button class="menu-toggle" aria-expanded="false">Menu</button>
+<div class="navigation-wrapper clear">
+<nav class="primary-navigation" role="navigation">
+<div class="menu-primary"><ul id="menu-main-menu" class="clear"><li id="menu-item-2281" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2281"><a href="../index.html">首页 | Home</a></li>
+<li id="menu-item-1630" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1630"><a href="../fellowship.html">聚会 | Gatherings</a>
+<ul class="sub-menu">
+<li id="menu-item-2263" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2263"><a href="../info/index.html">聚会讯息 Time &amp; Location</a></li>
+<li id="menu-item-1633" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1633"><a href="../fellowship.html">本周团契 This Week&#8217;s Event</a></li>
+<li id="menu-item-1631" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1631"><a href="../life/index.html">生命小组 Life Group</a></li>
+<li id="menu-item-1632" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1632"><a href="../代祷事项-prayer-requests/index.html">祷告 Prayer</a></li>
+</ul>
+</li>
+<li id="menu-item-1634" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1634"><a href="http://www.utmccf.com">活动 | events</a>
+<ul class="sub-menu">
+<li id="menu-item-1635" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1635"><a href="../conference/index.html">近期活动 Latest Event</a></li>
+<li id="menu-item-2842" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2842"><a href="../近期活动-2019/index.html">往期活动 | Past Events</a></li>
+</ul>
+</li>
+<li id="menu-item-1623" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-1623"><a href="../about-us-关于我们/index.html">关于我们 | About Us</a>
+<ul class="sub-menu">
+<li id="menu-item-1625" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1625"><a href="../团契历史-mccf-history/index.html">团契历史 History</a></li>
+<li id="menu-item-1882" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1882"><a href="../committee-16-17/index.html">执委会 Committee</a></li>
+<li id="menu-item-1629" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1629"><a href="../about-us-关于我们/index.html">团契宗旨 Constitution</a></li>
+<li id="menu-item-1812" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1812"><a href="../churches/index.html">周边教会 Churches Around Campus</a></li>
+</ul>
+</li>
+</ul></div> </nav>
+</div>
+</div>
+</div>
+</header>
+<div id="content" class="site-content">
+<div class="hero without-featured-image">
+<div class="hero-wrapper">
+<h1 class="page-title">
+Year: <span>2013</span> </h1>
+</div>
+</div>
+<div class="content-wrapper clear">
+<div id="primary" class="content-area">
+<main id="main" class="site-main" role="main">
+<article id="post-1329" class="post-1329 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="11/01/讲座seminar-为何要信耶稣why-believe-in-jesus/index.html" rel="bookmark">讲座/Seminar &#8211; 为何要信耶稣/Why Believe In&nbsp;Jesus</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="11/01/讲座seminar-为何要信耶稣why-believe-in-jesus/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-11-01T12:00:13-05:00">November 1, 2013</time><time class="updated" datetime="2013-11-07T11:32:02-05:00">November 7, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="11/01/讲座seminar-为何要信耶稣why-believe-in-jesus/index.html">
+</a>
+<div class="entry-content">
+<p>多大团契 UTMCCF 亲爱的弟兄姐妹们,大家好呀！这周我们会邀请 徐春平牧师 来到我们当中，为我们带来： 为何要信耶稣 的讲座。 为什么要信耶稣？他与我有什么关系？ 请来本周五MCCF讲座，两小时改变你的一生，你的一生可以被两小时改变！！精彩不容错过！ 本周主题：讲座：为何要信耶稣？ 时间：Friday November 1st   6：00pm 地点：Galbraith Building GB-412 (35 St. George Street) Prayer meeting 4:30-5:30pm Gerstein Library2102 Send your prayer requests to <a href="../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="78080a19011d0a380d0c151b1b1e561b1715">[email&#160;protected]</a>  ================================= 找不到？走丢了？门不开？   Peter Hu：647-979-6800 David Lu: 647-982-9386 ================================= Dear Brothers and Sisters,Hope you had a great week! This Friday, we will be inviting Rev. Xu, to talk to us about “Why do we &hellip; <a href="11/01/讲座seminar-为何要信耶稣why-believe-in-jesus/index.html" class="more-link">Continue reading <span class="screen-reader-text">讲座/Seminar &#8211; 为何要信耶稣/Why Believe In&nbsp;Jesus</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1326" class="post-1326 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="10/25/查经bible-study/index.html" rel="bookmark">查经/Bible Study</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="10/25/查经bible-study/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-10-25T12:00:29-05:00">October 25, 2013</time><time class="updated" datetime="2013-10-31T10:41:13-05:00">October 31, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="10/25/查经bible-study/index.html">
+</a>
+<div class="entry-content">
+<p>多大团契 UTMCCF 亲爱的弟兄姐妹们,&nbsp; 上周我们一起进行了一次灰常活泼，愉快的互动查经！相信大家对耶稣平静风浪这个故事有了新的理解。 即将走出象牙塔，踏入社会的你 是否每天忍受着各种各样的诱惑？对于种种试探，你又会怎样选择呢？ 本周五，让我们一起来看看耶稣是怎样面对试探的。 本周五我们会继续查经，本周的主题是－－－耶稣受试探！ 本周主题：耶稣受试探 时间：Friday October 25th   6：00pm 地点：Sandford Fleming Building - SF 3202 (10 King’s College Road Toronto, ON, Canada M5S 3G4 ) Prayer meeting 4:30-5:30pm Gerstein Library Marvin Gerstein Room (Main floor) Send your prayer requests to <a href="../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="7d0d0f1c04180f3d0809101e1e1b531e1210">[email&#160;protected]</a>  ================================= 找不到？走丢了？门不开？   Peter 弟兄：647-979-6800 ================================= Dear Brothers and Sisters, Last time we had an extremely fun Bible study! Hope you had a better understanding &hellip; <a href="10/25/查经bible-study/index.html" class="more-link">Continue reading <span class="screen-reader-text">查经/Bible Study</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1324" class="post-1324 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="10/18/1324/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-10-18T12:00:33-05:00">October 18, 2013</time><time class="updated" datetime="2013-10-24T14:24:49-05:00">October 24, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="10/18/1324/index.html">
+</a>
+<div class="entry-content">
+<p>多大团契 UTMCCF 亲爱的弟兄姐妹们, 希望大家都度过了一个愉快的感恩节！这周五我们还会继续查经，本周的主题是：耶稣平静风浪。 欢迎大家参加！ 精彩不容错过！敬请期待！ 本周主题：耶稣平静风浪 时间：Friday October 25th   6：00pm 地点：Galbraith Building - GB 119 (35 St. George Street, ON, Canada) &nbsp; Prayer Meeting换地方啦！！！ Prayer meeting 4:30-5:30pm Gerstein Library 2102 Send your prayer requests to <a href="../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="98e8eaf9e1fdead8edecf5fbfbfeb6fbf7f5">[email&#160;protected]</a>  &nbsp; 火辣辣的生命小组/Life Group Friday October 18th. Gerstein Library room 2102. 1-3PM ================================= 找不到？走丢了？门不开？   龚悦Steven 弟兄：416-838-4947 David 弟兄： 647-982-9386 ================================= Dear Brothers and Sisters, Hope you had a great Thanksgiving holiday 😀 This week, we will &hellip; <a href="10/18/1324/index.html" class="more-link">Continue reading <span class="screen-reader-text"></span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1318" class="post-1318 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="10/11/seminar/index.html" rel="bookmark">讲座/Seminar &#8211; 耶稣是谁/Who Is&nbsp;Jesus</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="10/11/seminar/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-10-11T12:00:40-05:00">October 11, 2013</time><time class="updated" datetime="2013-10-16T19:42:59-05:00">October 16, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="10/11/seminar/index.html">
+</a>
+<div class="entry-content">
+<p>多大团契 UTMCCF 亲爱的弟兄姐妹们, Midterm season来势汹汹，匆匆穿梭于教学楼，图书馆之间的你，是否还会留意校园里那些美丽的景色呢？！ 君不见，MP前落英满地，SS门口一抹红枫似残阳。King’s circle 古楼巍然耸立，Vic廊下树影斑驳。。。清新秋意，一步一景。。。漫步此间，口中不禁赞美：我主我神，你真伟大！宇宙万物都出自你手！你负我轭，背我担。赐下耶稣流宝血，赎我罪。。。 亲爱的朋友们，你们知道耶稣是谁吗？他是真实存在过的吗？或只是西方基督教里杜撰出的一个人物？如果他是真实存在的，那么，他又做过什么？为何他的出现改变了整个西方，甚至整个世界？其他宗教又是怎样描述耶稣的呢？他，与我 又有什么关系呢？ 本周我们会由多伦多华人福音堂的 黄智奇牧师为我们带来一场扣人心弦的专题讲座–耶稣是谁. 精彩不容错过！敬请期待！  本周团契的主题是：耶稣是谁 讲员： 黄智奇 牧师 Prayer meeting @Friday October 11th 5:00 p.m. SF 3202 Send your prayer requests to <a href="../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="d2a2a0b3abb7a092a7a6bfb1b1b4fcb1bdbf">[email&#160;protected]</a>  时间：Friday October 11th   6:00 p.m. 地点：Sandford Fleming Building – SF 3202 (10 King’s College Road Toronto, ON, Canada, M5S 3G4 ) 龚悦Steven 弟兄：416－838－4947 David 弟兄： 647-982-9386 Dear Brothers and Sisters, Hope you had a good week  This &hellip; <a href="10/11/seminar/index.html" class="more-link">Continue reading <span class="screen-reader-text">讲座/Seminar &#8211; 耶稣是谁/Who Is&nbsp;Jesus</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1312" class="post-1312 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="10/04/查经bible-study-太matthew-131-23/index.html" rel="bookmark">查经/Bible Study &#8211; (太/Matthew&nbsp;13:1-23)</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="10/04/查经bible-study-太matthew-131-23/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-10-04T12:00:53-05:00">October 4, 2013</time><time class="updated" datetime="2013-10-10T21:46:47-05:00">October 10, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="10/04/查经bible-study-太matthew-131-23/index.html">
+</a>
+<div class="entry-content">
+<p>亲爱的弟兄姐妹们, 大家好呀～伴随着漫山遍野渐渐变红的枫叶，美丽的十月来到了我们身边。十月是丰收的季节，也是感恩的季节。春天的播种，夏天的耕耘终于在秋天有了回报。 在圣经中，耶稣曾经讲了一个关于撒种的比喻。这个比喻到底是什么?它又在暗示些什么呢？ 在秋色漫天的多大，我们邀请您，本周五下午六点，与我们一起相聚在SF，来聆听  一粒小种子引发出来的故事.  本周团契的主题是：撒种的比喻 Prayer meeting @5:00pm SF 3202 Send your prayer requests to <a href="../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="6d1d1f0c14081f2d1819000e0e0b430e0200">[email&#160;protected]</a>  时间：Friday October 4th   6:00 p.m. 地点：Sandford Fleming Building - SF 3201 (10 King's College Road Toronto, ON, Canada, M5S 3G4 ) Dear Brothers and Sisters, It is finally October, time to see the beautiful maple leaves!! This week, we are going to see the Parable about &hellip; <a href="10/04/查经bible-study-太matthew-131-23/index.html" class="more-link">Continue reading <span class="screen-reader-text">查经/Bible Study &#8211; (太/Matthew&nbsp;13:1-23)</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1304" class="post-1304 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="09/27/查经bible-study-约9章/index.html" rel="bookmark">查经/Bible Study &#8211; (约/John:&nbsp;9)</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="09/27/查经bible-study-约9章/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-09-27T12:00:27-05:00">September 27, 2013</time><time class="updated" datetime="2013-10-02T23:10:24-05:00">October 2, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="09/27/查经bible-study-约9章/index.html">
+</a>
+<div class="entry-content">
+<p>亲爱的弟兄姐妹们, 大家这周过的怎么样呢？天气突然转凉，一定要听妈妈的话，多穿衣服，注意保暖啊！（已经中枪的人含着眼泪说这番话。。。） 好，现在进入正题 （背景音乐起。。。） 一个天生瞎眼的乞丐，有一天突然奇迹般的恢复了视力。这，到底是怎么回事？ 面对社会上诸多势力的压迫，“他” 以人所不能的方法行了奇事。“他” 又是谁？ 为何行此奇事还要遭到诋毁？究竟是什么让他成为众矢之的？“他” 又说了什么让逼迫者大惊失色？？这一切的一切又会隐藏着什么不为人知的奥秘呢？ 这个周五，MCCF 领你一起拨开纷乱迷雾，探寻事实真相！ 周五六点钟，我们不见不散！ 本周团契的主题是：约翰福音第九章，耶稣使瞎子看见。 Prayer meeting @5:00pm SF 3202 Send your prayer requests to <a href="../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="a7d7d5c6dec2d5e7d2d3cac4c4c189c4c8ca">[email&#160;protected]</a>  时间：Friday September 27th   6：00pm 地点：Sandford Fleming Building – SF 3201 (10 King’s College Road Toronto, ON, Canada, M5S 3G4 ) Dear Brothers and Sisters, Hope u had a great week! This Friday at MCCF, we are going &hellip; <a href="09/27/查经bible-study-约9章/index.html" class="more-link">Continue reading <span class="screen-reader-text">查经/Bible Study &#8211; (约/John:&nbsp;9)</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1283" class="post-1283 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="09/20/寻宝大行动-treasure-sharing/index.html" rel="bookmark">寻宝大行动 / Treasure&nbsp;Sharing</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="09/20/寻宝大行动-treasure-sharing/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-09-20T17:58:11-05:00">September 20, 2013</time><time class="updated" datetime="2013-09-26T18:04:42-05:00">September 26, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="09/20/寻宝大行动-treasure-sharing/index.html">
+</a>
+<div class="entry-content">
+<p>亲爱的弟兄姐妹们, 中秋节快乐！今晚的月亮真是又圆又亮！坐在地铁上，望着高高悬挂在天上的银盘在飞速闪过的树影里穿梭，不禁想：月宫里的嫦娥现在在做什么？是和小白兔，吴刚一起吃月饼，还是在品淡淡的桂花酒？月宫的冷清也许只是在今天才有所改变。嫦娥亲手做出香甜的月饼，玉兔献出自己辛苦制作的灵药，吴刚也取出珍藏多年的桂花佳酿。。。大家都拿出了自己最重要的宝贝。对于你来说，最重要的宝贝是什么呢？  是人，是物，还是。。。 本周团契的主题是：寻宝大行动--分享你生命中最重要的“宝贝”  请预备好一样对自己很重要的东西，比如一根笔，一个本子，一张照片，一个小礼物，等等（不要带宠物来哦） 让我们一起分享我们“宝贝”！ Prayer meeting @5:00pm SF 3201 时间：Friday, September 20th, 6:00pm 地点：Sandford Fleming Building - SF 3201 (10 King's College Road Toronto, ON, Canada, M5S 3G4 ) Dear Brothers and Sisters, Happy Happy Moon Festival! Hope you enjoy the big and bright moon tonight!! for this week's fellowship, we are going to do something very special! 😀 &hellip; <a href="09/20/寻宝大行动-treasure-sharing/index.html" class="more-link">Continue reading <span class="screen-reader-text">寻宝大行动 / Treasure&nbsp;Sharing</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1280" class="post-1280 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="09/13/mccf-orientation-迎新活动/index.html" rel="bookmark">MCCF Orientation /&nbsp;迎新活动</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="09/13/mccf-orientation-迎新活动/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-09-13T22:22:18-05:00">September 13, 2013</time><time class="updated" datetime="2013-09-19T22:38:18-05:00">September 19, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="09/13/mccf-orientation-迎新活动/index.html">
+</a>
+<div class="entry-content">
+<p>亲爱的弟兄姐妹们, 不论是新学弟学妹，还是资深（Lao）学长学姐。开学第一周大家过得怎么样呢？主页妞我今天一大早在St.Mikes找教室急得团团转，瞬间就有一种回到大一的感觉。。。 还记得第一次来到MCCF Orientation，进门之前我心里特别忐忑“这里的活动会不会有认识的同学？惨了，如果没有认识的人岂不是特别尴尬！！” 可是活动一开始，这些担心就随着阵阵笑声烟消云散了。小组长们带着我们做各种有趣的游戏，分享身边的故事。我发现我并不是唯一一个新来的同学，很快我就和其他新生有说有笑，互留联系方式。。。 那年的Orientation给我留下了很深的印象，我就这样留在了MCCF,从昨天Follower变成今天Leader,MCCF 一直伴随着我的大学生涯。。。今年，又一轮Orientation正在袭来，你，准备好了吗？ Prayer meeting @5:00pm SF 3202 时间 / Time：Friday September 13th   6:00pm 地点 / Location: Sandford Fleming Building - SF 3202 (10 King's College Road Toronto, ON, Canada, M5S 3G4 ) 迷路了，怎么办？别着急，MCCF大哥哥大姐姐们来帮忙！ SF Building 位于多大第一奢侈品店Book Store的斜对面，在SF附近，MCCF同工们会身着MCCF T-Shirt等待／指引迷路的孩纸～ Don't be shy, just ask!! 还是找不着怎么办？ MCCF为您专业打造了一款外形美(zei)观(shuai)的人肉GPS--Nick君。 使用方法，请拨打Nick君电话: 647-983-7169。 无论您身在何处，Nick君都会为您指出一条通往SF的捷径！ 本周活动 / Events This Week 赞美之泉 音乐布道会 / Song of Praises &hellip; <a href="09/13/mccf-orientation-迎新活动/index.html" class="more-link">Continue reading <span class="screen-reader-text">MCCF Orientation /&nbsp;迎新活动</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1274" class="post-1274 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="08/23/查经-bible-study-可mark-9-14-29/index.html" rel="bookmark">查经 / Bible Study – (可/Mark 9:&nbsp;14-29)</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="08/23/查经-bible-study-可mark-9-14-29/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-08-23T18:55:38-05:00">August 23, 2013</time><time class="updated" datetime="2013-09-11T19:01:11-05:00">September 11, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="08/23/查经-bible-study-可mark-9-14-29/index.html">
+</a>
+<div class="entry-content">
+<p>亲爱的弟兄姐妹们, 立秋过后已经十多天了，可是夏天还是依依不舍地在多伦多逗留。（内心的呼唤：请多留几天吧！半年的冬天伤不起！！）我们MCCF暑期查经也接近尾声了。 一段故事的结束代表着另一段故事的开始，谢谢大家在这个夏天留给MCCF的美好回忆！此番将会是我们暑期最后一次查经！将由副团长 Jia 姐妹带领（此处应该有掌声）。这个周五，我们将会查考马可福音9:14-29.  继续欢迎大家热烈参加~ 最后希望大家带着夏日的美好，热情满满开始新的学期！ 時間：Friday August 23rd  6:00pm 地點：Multifaith Centre KP Activity Hall (569 Spadina Ave.Toronto, ON M5S 2J7) 禱告會: Friday 5:00 pm - 6:00 pm Multifaith Centre 2nd Floor KP Activity Hall Dear Brothers and Sisters, Hope you enjoyed your summer!! This Friday, we will have our Last Bible study of the summer. &hellip; <a href="08/23/查经-bible-study-可mark-9-14-29/index.html" class="more-link">Continue reading <span class="screen-reader-text">查经 / Bible Study – (可/Mark 9:&nbsp;14-29)</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1269" class="post-1269 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="08/16/查经-bible-study-太matthew-18-21-35/index.html" rel="bookmark">查经 / Bible Study – (太/Matthew 18:&nbsp;21-35)</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="08/16/查经-bible-study-太matthew-18-21-35/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-08-16T22:03:41-05:00">August 16, 2013</time><time class="updated" datetime="2013-08-21T22:08:50-05:00">August 21, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="08/16/查经-bible-study-太matthew-18-21-35/index.html">
+</a>
+<div class="entry-content">
+<p>亲爱的弟兄姐妹们, A"请问，您问什么要在身上纹'小良'两个字？" B"呜呜呜，这是‘恨’字啦！" 在你心中，有没有什么不能原谅的人或事？他们带给你的伤害总是在夜深人静的时候浮现在眼前？有时恨不得带给你伤害的人从来没有出现过？又或许，那个人就是你自己。对于自己犯下的错误导致别人受到伤害。。。在白天，工作，学习充斥着我们的生活，可是在晚上，皎洁的月光洒在床前，好像照亮了心里每个黑暗的角落。往昔的种种不堪都一股脑的涌出，无情地撕咬着受伤的心。 曾经试着想原谅，可就是忘不掉. 这个周五，我们会一起查考马太福音18章21-35节.看看耶稣是怎样说关于”饶恕“的问题。 時間：Friday August 16th  6：00pm 地點：Multifaith Centre KP Activity Hall (569 Spadina Ave.Toronto, ON M5S 2J7) 禱告會: 週五 5:00 pm - 6:00 pm Multifaith Centre 2nd Floor KP Activity Hall &nbsp; Dear Brothers and Sisters, Do you ever encounter the issue of forgiving someone? Sometimes, even though you want to let it &hellip; <a href="08/16/查经-bible-study-太matthew-18-21-35/index.html" class="more-link">Continue reading <span class="screen-reader-text">查经 / Bible Study – (太/Matthew 18:&nbsp;21-35)</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1263" class="post-1263 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="08/02/查经-bible-study-太matthew-13-1-23/index.html" rel="bookmark">查经 / Bible Study – (太/Matthew 13:&nbsp;1-23)</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="08/02/查经-bible-study-太matthew-13-1-23/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-08-02T20:44:00-05:00">August 2, 2013</time><time class="updated" datetime="2013-08-14T20:49:59-05:00">August 14, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="08/02/查经-bible-study-太matthew-13-1-23/index.html">
+</a>
+<div class="entry-content">
+<p>亲爱的弟兄姐妹们, 过去的一周大家过得怎么样？有没有好好的enjoy难得的Long Weekend？？这周我们会在Multifaith Centre 二楼 KP Activity Hall 一同查考马太福音13章1-23节，看耶稣有关撒种的比喻。不见不散！ 時間：Friday August 9th  6：00pm 地點：Multifaith Centre KP Activity Hall  禱告會: 週五 5:00 pm - 6:00 pm Multifaith Centre 2nd Floor KP Activity Hall Dear Brothers and Sisters, Hope you had a wonderful Long Weekend! This week, the bible study will be held at Multifaith Centre 2nd floor KP Activity Hall This &hellip; <a href="08/02/查经-bible-study-太matthew-13-1-23/index.html" class="more-link">Continue reading <span class="screen-reader-text">查经 / Bible Study – (太/Matthew 13:&nbsp;1-23)</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1260" class="post-1260 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="08/02/查经bible-study-可mark-10-17-22/index.html" rel="bookmark">查经/Bible Study (可/Mark 10:&nbsp;17-22)</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="08/02/查经bible-study-可mark-10-17-22/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-08-02T20:31:17-05:00">August 2, 2013</time><time class="updated" datetime="2013-08-08T20:33:02-05:00">August 8, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="08/02/查经bible-study-可mark-10-17-22/index.html">
+</a>
+<div class="entry-content">
+<p>亲爱的弟兄姐妹们, 盼望着，盼望着，脚步声近了，期待已久的LONG WEEKEND终于来了！！（让我擦下泪先。。。TvT）这周五，8月2号，没错，就是明天！怀揣着你对LONG WEEKEND的激情，带着你对人生的感悟，踏着轻盈的步伐，请到MULTIFAITH CENTRE 二楼 与我们一起查考 马可福音 10章17-22节。 让LONG WEEKEND有一个有意义的开始！ 團契聚會: 週五, August 2,  6:00 pm - 8:00 pm Multifaith Centre 2nd Floor KP Activity Hall  禱告會: 週五 5:00 pm - 6:00 pm Multifaith Centre 2nd Floor KP Activity Hall Dear Brothers and Sisters, Are you excited about the coming LONG　WEEKEND? This week, we will be moving back &hellip; <a href="08/02/查经bible-study-可mark-10-17-22/index.html" class="more-link">Continue reading <span class="screen-reader-text">查经/Bible Study (可/Mark 10:&nbsp;17-22)</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1256" class="post-1256 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="07/26/1256/index.html" rel="bookmark">查经 / Bible Study – (可/Mark 8:&nbsp;27-38)</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="07/26/1256/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-07-26T22:17:31-05:00">July 26, 2013</time><time class="updated" datetime="2013-08-14T20:46:14-05:00">August 14, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="07/26/1256/index.html">
+</a>
+<div class="entry-content">
+<p>亲爱的弟兄姐妹们: 让人窒息的闷热天气总算是告一段落了！你剩下的假期打算怎么过呢？（对不起，不是故意提起这种令人伤感的话题。。。才怪～）这周五，对，没错！就是今天！我们会一起查考 马可福音 8章27-38节。请来 GB 405 下午六点，团长会等你哟！不见不散～ 😀 團契聚會: 週五, July 26,  6:00 pm - 8:00 pm GB 405 禱告會: 週五 5:00 pm - 6:00 pm GB405 Dear Brothers and Sisters, Aren't you glad that the humid weather had finally came to a stop?  Come to GB 405 this week at 6:00pm to study the words of God. This week, we will be &hellip; <a href="07/26/1256/index.html" class="more-link">Continue reading <span class="screen-reader-text">查经 / Bible Study – (可/Mark 8:&nbsp;27-38)</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1253" class="post-1253 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="07/19/查经-bible-study-可mark-4-35-41/index.html" rel="bookmark">查经 / Bible Study &#8211; (可/Mark 4:&nbsp;35-41)</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="07/19/查经-bible-study-可mark-4-35-41/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-07-19T21:59:08-05:00">July 19, 2013</time><time class="updated" datetime="2013-08-05T22:17:08-05:00">August 5, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="07/19/查经-bible-study-可mark-4-35-41/index.html">
+</a>
+<div class="entry-content">
+<p>亲爱的弟兄姐妹们: 请闭上眼睛想像， 坐在光洁明亮的落地窗前，午后的阳光斜斜地洒落在他/她乌黑柔软的秀发上，窗外斑驳的树影不时在招摇，好像在说“热呀，热呀。。。”虽然外面的行人挥汗如雨，可是这里却弥漫着一股清凉的学术气息。好像与世隔绝，一点也感觉不到夏日的烦躁。。。 少年，你想避暑吗？你想洗涤你的心灵吗？这个周五，请来 GB 405 与我们一同查考 马可福音 4章35-41节. 下午六点，不见不散～ 團契聚會: 週五, July 19, 6:00 pm - 8:00 pm GB 405 禱告會: 週五 5:00 pm - 6:00 pm GB405 Dear Brothers and Sisters, If you see this news letter, then I would like to congratulate you that you have survived another HOT summer day~ ;D   Come to GB 405 this week &hellip; <a href="07/19/查经-bible-study-可mark-4-35-41/index.html" class="more-link">Continue reading <span class="screen-reader-text">查经 / Bible Study &#8211; (可/Mark 4:&nbsp;35-41)</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1251" class="post-1251 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="07/12/户外活动-ultimate-frisbee/index.html" rel="bookmark">户外活动 &#8211; Ultimate&nbsp;Frisbee</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="07/12/户外活动-ultimate-frisbee/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-07-12T21:57:08-05:00">July 12, 2013</time><time class="updated" datetime="2013-08-05T21:58:36-05:00">August 5, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="07/12/户外活动-ultimate-frisbee/index.html">
+</a>
+<div class="entry-content">
+<p>亲爱的弟兄姐妹们, 新版News Letter第二期重磅来袭~ 这周我们还是将会聚在一起。。。不是查经哦~ 我们会聚在一起，在Front Campus前玩Frisbee！！子曾经曰过：没有玩过Frisbee的青春不是完整的青春！所以这周五 下午六点钟 我们先在Con Hall集合 然后一起迎着夕阳挥洒我们青春的汗水！让我们的大学生活没有遗憾！！！如果你迷失在美丽的多大校园中，请联系 Peter Hu @ 647-979-6800 Don't be afraid to call~ He doesn't bite ;D 時間：Friday July 12th 6:00pm 地點：Front Campus (6点Con Hall 集合) 禱告會: 週五 5:00 pm – 6:00 pm Multifaith Centre 2nd Floor KP Activity Hall 團契聚會: 週五 6:00 pm – 8:00 pm Multifaith Centre 2nd Floor KP Activity Hall Dear Brothers and &hellip; <a href="07/12/户外活动-ultimate-frisbee/index.html" class="more-link">Continue reading <span class="screen-reader-text">户外活动 &#8211; Ultimate&nbsp;Frisbee</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1242" class="post-1242 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="07/05/查经bible-study-可mark-2：1-12/index.html" rel="bookmark">查经/Bible Study (可/Mark&nbsp;2：1-12)</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="07/05/查经bible-study-可mark-2：1-12/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-07-05T22:53:29-05:00">July 5, 2013</time><time class="updated" datetime="2013-07-10T22:57:10-05:00">July 10, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="07/05/查经bible-study-可mark-2：1-12/index.html">
+</a>
+<div class="entry-content">
+<p>親愛的弟兄姊妹們, 由於得到高人指引，這週的News Letter改頭換面，煥然一新！本週五我們還是會在Multifaith Center 二樓 KP Activity Hall進行我們的查經活動。這次我們有幸請到了 多倫多華人福音堂 的 黃智奇 牧師 來帶領我們查考馬可福音2：1-12 （此處應該有掌聲！）熱烈歡迎新老朋友參加～ 禱告會: 週五 5:00 pm - 6:00 pm Multifaith Centre 2nd Floor KP Activity Hall 團契聚會: 週五 6:00 pm - 8:00 pm Multifaith Centre 2nd Floor KP Activity Hall Dear Brothers and Sisters, How's the new look of our News Letter?!!! XD This week, we &hellip; <a href="07/05/查经bible-study-可mark-2：1-12/index.html" class="more-link">Continue reading <span class="screen-reader-text">查经/Bible Study (可/Mark&nbsp;2：1-12)</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1239" class="post-1239 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="06/28/重生得救born-again/index.html" rel="bookmark">重生得救/Born Again</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="06/28/重生得救born-again/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-06-28T22:06:49-05:00">June 28, 2013</time><time class="updated" datetime="2013-07-04T22:11:31-05:00">July 4, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="06/28/重生得救born-again/index.html">
+</a>
+<div class="entry-content">
+<p>弟兄姐妹们平安~ 这周我们将继续查考圣经，本周的主题是-重生得救。热烈欢迎大家参加！！ 在主内/In HIM</p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1235" class="post-1235 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="06/21/十字架与就恩the-cross-and-salvation/index.html" rel="bookmark">十字架与就恩/The Cross and&nbsp;Salvation</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="06/21/十字架与就恩the-cross-and-salvation/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-06-21T22:00:12-05:00">June 21, 2013</time><time class="updated" datetime="2013-06-26T22:05:34-05:00">June 26, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="06/21/十字架与就恩the-cross-and-salvation/index.html">
+</a>
+<div class="entry-content">
+<p>弟兄姐妹们平安~ 这周我们将继续查考圣经，本周的主题是-十字架与救恩。热烈欢迎大家参加！！</p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1231" class="post-1231 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="06/14/对付罪how-to-deal-with-sin/index.html" rel="bookmark">对付罪/How to deal with&nbsp;Sin</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="06/14/对付罪how-to-deal-with-sin/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-06-14T21:25:12-05:00">June 14, 2013</time><time class="updated" datetime="2013-06-19T21:31:19-05:00">June 19, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="06/14/对付罪how-to-deal-with-sin/index.html">
+</a>
+<div class="entry-content">
+<p>弟兄姐妹们平安~ 这周我们将继续查考圣经，本周的主题是-对付罪。热烈欢迎大家参加！ 在主内/In HIM</p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1226" class="post-1226 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="06/07/罪-issue-of-sin/index.html" rel="bookmark">罪 / Issue of&nbsp;Sin</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="06/07/罪-issue-of-sin/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-06-07T22:37:22-05:00">June 7, 2013</time><time class="updated" datetime="2013-06-13T22:39:57-05:00">June 13, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="06/07/罪-issue-of-sin/index.html">
+</a>
+<div class="entry-content">
+<p>弟兄姐妹们平安~ 这周我们将继续查考圣经，本周的主题是-罪。热烈欢迎大家参加！！ 在主内/In HIM</p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1222" class="post-1222 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="05/31/认识神-who-is-god/index.html" rel="bookmark">认识神 / Who is&nbsp;God?</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="05/31/认识神-who-is-god/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-05-31T22:41:57-05:00">May 31, 2013</time><time class="updated" datetime="2013-06-05T22:44:54-05:00">June 5, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="05/31/认识神-who-is-god/index.html">
+</a>
+<div class="entry-content">
+<p>弟兄姐妹们平安~ 这周我们将继续查考圣经，本周的主题是-认识神。热烈欢迎大家参加！！ 在主内/In HIM</p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1217" class="post-1217 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="05/24/泥土音乐布道会/index.html" rel="bookmark">泥土音乐布道会</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="05/24/泥土音乐布道会/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-05-24T21:10:37-05:00">May 24, 2013</time><time class="updated" datetime="2013-05-29T21:14:54-05:00">May 29, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="05/24/泥土音乐布道会/index.html">
+</a>
+<div class="entry-content">
+<p>弟兄姐妹们平安~这周我们将一起参加泥土音乐的布道会，地点在 Toronto Chinese Baptist Church, 72-78 Beverley Street. 热烈欢迎大家的参加！在主内/In HIM </p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1212" class="post-1212 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="05/17/信/index.html" rel="bookmark">信</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="05/17/信/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-05-17T18:37:49-05:00">May 17, 2013</time><time class="updated" datetime="2013-05-22T18:42:12-05:00">May 22, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="05/17/信/index.html">
+</a>
+<div class="entry-content">
+<p>弟兄姐妹们平安~ 我们期待已久的暑期活动开始了！！！这周五我们将讨论“信”这个话题~~ 我们热烈欢迎新老朋友的归来！这周五晚上老地点，不见不散！ 在主内/In HIM</p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1208" class="post-1208 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="04/05/committee换届选举/index.html" rel="bookmark">Committee换届选举</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="04/05/committee换届选举/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-04-05T20:58:54-05:00">April 5, 2013</time><time class="updated" datetime="2013-05-16T21:00:35-05:00">May 16, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="04/05/committee换届选举/index.html">
+</a>
+<div class="entry-content">
+<p>弟兄姐妹们平安~ 这周五我们将举行Committee换届选举，欢迎大家参与投票~~一起为这属神的大家庭出一份力！更多信息详见附属图片~~期末来了，暑假已经不远了，大家加把劲！！！ 编辑的鉴证：这是本学期的最后一封Newsletter，想到这心中甚是不舍。回想这一学年，每一封newsletter的完成，其实都是来自于神的恩典。虽然在黑高风月夜独自编辑Newsletter，还面临没人看的打击，和如山考试的压力，听起来有点凄凉，可是俺心中每次都充满了难以言喻的快乐和满足。为什么呢？？？ 因为通过给大家发这一封封Newsletter，我真正的，是在事奉神。我的所有力量和智慧都来自于他，没有他，我根本坚持不下来。神深深的爱着你我，通过这一封封Newsletter，他呼召着你们，关怀着你们，而同时，也在喂养着我。我要感谢大家给我这个事奉的机会！ 我抱怨过自己的付出没有回报，可是到头来发现，我得到的要比付出的多出许多，也珍贵许多。我用了本来可能用来发呆看电视睡觉的时间，换来在主内成长的机会，精明的你们说，我是不是捡了个大便宜？在此感谢神的眷顾。 以上就是我的感想，分享给大家，望大家能从我的鉴证，和自己的生活中感受到神永恒不变的丰盛恩典！ MCCF 的活动即将在暑期（5月17）继续，下一封Newsletter由新一任秘书完成，预计在5月15抵达您的邮箱，敬请期待……</p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1202" class="post-1202 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="03/29/纪念耶稣受难日/index.html" rel="bookmark">纪念耶稣受难日</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="03/29/纪念耶稣受难日/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-03-29T20:22:17-05:00">March 29, 2013</time><time class="updated" datetime="2013-04-03T20:29:33-05:00">April 3, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="03/29/纪念耶稣受难日/index.html">
+</a>
+<div class="entry-content">
+<p>弟兄姐妹们平安~ 这周五我们将参加各自教会的活动来纪念耶稣受难日~~没有自己固定教会去的弟兄姐妹可以和我们一起去downtown Chinese Gospel Church~~我们会组织大家一起去，集合时间地点详见附属图片~~ 学习工作繁忙之余，大家注意身体啊！！！</p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1197" class="post-1197 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="03/22/回应神的爱/index.html" rel="bookmark">回应神的爱</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="03/22/回应神的爱/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-03-22T00:23:01-05:00">March 22, 2013</time><time class="updated" datetime="2013-03-28T00:25:17-05:00">March 28, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="03/22/回应神的爱/index.html">
+</a>
+<div class="entry-content">
+<p>弟兄姐妹们平安~ 这周五我们迎来了本学期的最后一次查经分享活动！大家不要错过哦~~~学期已经接近尾声，大家加把劲啊~ 我们这周的主题是“回应神的爱”，地点有所改变，本次活动地点改在GB404进行！！！详细信息请参详附属图片~~</p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1188" class="post-1188 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="03/15/运动之夜-sports-night/index.html" rel="bookmark">运动之夜 / Sports&nbsp;Night</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="03/15/运动之夜-sports-night/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-03-15T00:05:20-05:00">March 15, 2013</time><time class="updated" datetime="2013-03-21T00:09:25-05:00">March 21, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="03/15/运动之夜-sports-night/index.html">
+</a>
+<div class="entry-content">
+<p>弟兄姐妹们平安~ 最近正在换季，所以温度不稳定，大家忙碌之余要照顾好自己的身体啊！让我们把自己的诸多烦恼都交托给神，擦干眼泪笑一笑吧~~他在乎我们的心情！ 我们这周即将迎来“Sports Night”，地点有所改变，详细信息请参详附属图片~~</p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1183" class="post-1183 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="03/08/讲座：为何爱-（李德诚讲员）/index.html" rel="bookmark">讲座：为何爱 （李德诚讲员）</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="03/08/讲座：为何爱-（李德诚讲员）/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-03-08T23:13:53-05:00">March 8, 2013</time><time class="updated" datetime="2013-03-13T23:23:22-05:00">March 13, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="03/08/讲座：为何爱-（李德诚讲员）/index.html">
+</a>
+<div class="entry-content">
+<p>天气渐渐暖和起来了！春暖花开的时节快要到了！到了那时~~我们应该都在欢乐的考final exam，对吧！ 我们这周即将迎来“李德诚讲员讲座”，老时间老地点，详细信息请参详附属图片~~</p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1176" class="post-1176 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="03/01/爱家人-2/index.html" rel="bookmark">爱家人</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="03/01/爱家人-2/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-03-01T01:25:45-05:00">March 1, 2013</time><time class="updated" datetime="2013-03-07T01:27:26-05:00">March 7, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="03/01/爱家人-2/index.html">
+</a>
+<div class="entry-content">
+<p>弟兄姐妹们平安~ 相信大家正在无数midterm exams里挣扎着，那么这周五是时候来团契放松一下了！最近天气异常，大家注意身体啊！ 我们这周的主题是继续之前未进行的“爱家人”，老时间老地点，详细信息请参详附属图片~~</p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1168" class="post-1168 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="02/22/laser-tag/index.html" rel="bookmark">Laser Tag</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="02/22/laser-tag/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-02-22T23:46:28-05:00">February 22, 2013</time><time class="updated" datetime="2013-02-28T00:22:53-05:00">February 28, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="02/22/laser-tag/index.html">
+</a>
+<div class="entry-content">
+<p>弟兄姐妹们平安~ 大家的reading week过的怎么样啊？是去探亲了？旅游了？滑雪了？在学海中挣扎？还是一直在睡觉呢？ 不管怎样，在这里我们要提醒大家~~reading week快要结束了哦，是时候加速完成你们还未完成的计划了！如果大家觉得非常疲惫的话，这里有段经文送给你们作为鼓励！  “疲乏的，他赐能力。软弱的，他加力量。就是少年人也要疲乏困倦，强壮的也必全然跌倒。但那等候耶和华的，必从新得力，他们必如鹰展翅上腾，他们奔跑却不困倦，行走却不疲乏。” 以赛亚书 40：29-31 He gives power to the faint, and to him who has no might he increases strength. Even youths shall faint and be weary, and young men shall fall exhausted; but they who wait for the Lord shall renew their strength; they shall mount up with wings like eagles; they shall &hellip; <a href="02/22/laser-tag/index.html" class="more-link">Continue reading <span class="screen-reader-text">Laser Tag</span></a></p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1164" class="post-1164 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="02/15/情人节讲座/index.html" rel="bookmark">情人节讲座</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="02/15/情人节讲座/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-02-15T11:49:29-05:00">February 15, 2013</time><time class="updated" datetime="2013-02-21T11:50:40-05:00">February 21, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="02/15/情人节讲座/index.html">
+</a>
+<div class="entry-content">
+<p>弟兄姐妹们平安~ 相信大家正在无数midterm exams里挣扎着，那么这周五是时候来团契放松一下了！ 我们这周的主题是“情人节讲座”，老时间老地点，详细信息请参详附属图片~~ 下周五（Feb22nd）我们会一起去laser tag哦~~想要报名的话，这周五带10 CAD来交给Daniel Lee（你可以在newsletter里找到他的照片）</p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1159" class="post-1159 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="02/08/爱家人/index.html" rel="bookmark">爱家人</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="02/08/爱家人/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-02-08T21:02:06-05:00">February 8, 2013</time><time class="updated" datetime="2013-02-13T21:04:26-05:00">February 13, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="02/08/爱家人/index.html">
+</a>
+<div class="entry-content">
+<p>亲爱的弟兄姐妹们大家平安~~ 由于今日大雪，学校3点之后就会关闭，为了大家安全起见，今天(2月8日）的团契活动取消了。祝大家过一个愉快的周五，大家新春愉快！ Dear brothers and sisters: Because of the snow storm, all of the facilities of U of t will be closed after 3pm. Our fellowship tonight (February 8th) will be cancelled for everyone's safety~~ Wish you all have a good weekend! Happy Chinese New Year! UTMCCF IN HIM *************************************** 弟兄姐妹们平安~ 新春即将到来，MCCF在这里给大家拜年了！希望大家有一个快乐的新年和以及更加快乐的midterm exam period！ 相信很多弟兄姐妹都是独自在外闯荡而远离家乡~~家乡为什么美呢？因为那里有让我们牵肠挂肚的家人~~我们因为种种原因不能陪在他们身边，只好“每逢佳节倍思亲”… 我们这周的主题是“爱家人”，老时间老地点，详细信息请参详附属图片~~（制作人这次用上了自己所有的脑细胞，并且还借了点别人的），希望大家继续喜欢！这周五活动结束后我们会一起去庆祝春节哦~</p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1153" class="post-1153 post type-post status-publish format-image hentry category--past-events post_format-post-format-image">
+<header class="entry-header">
+<h2 class="entry-title"><a href="02/01/爱邻舍/index.html" rel="bookmark">爱邻舍</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="02/01/爱邻舍/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-02-01T00:37:44-05:00">February 1, 2013</time><time class="updated" datetime="2013-02-07T00:41:07-05:00">February 7, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<div class="entry-content">
+<p></p> </div>
+<footer class="entry-footer">
+<span class="post-format-link"><a class="genericon genericon-image" href="../type/image/index.html" title="All Image posts"><span class="screen-reader-text">Image</span></a></span> </footer>
+</article>
+<article id="post-1149" class="post-1149 post type-post status-publish format-image hentry category--past-events post_format-post-format-image">
+<header class="entry-header">
+<h2 class="entry-title"><a href="01/25/爱的特质/index.html" rel="bookmark">爱的特质</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="01/25/爱的特质/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-01-25T00:50:39-05:00">January 25, 2013</time><time class="updated" datetime="2013-01-31T00:56:47-05:00">January 31, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<div class="entry-content">
+<p></p> </div>
+<footer class="entry-footer">
+<span class="post-format-link"><a class="genericon genericon-image" href="../type/image/index.html" title="All Image posts"><span class="screen-reader-text">Image</span></a></span> </footer>
+</article>
+<article id="post-1144" class="post-1144 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="01/18/爱从哪里来/index.html" rel="bookmark">爱从哪里来?</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="01/18/爱从哪里来/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-01-18T11:51:31-05:00">January 18, 2013</time><time class="updated" datetime="2013-01-24T11:58:56-05:00">January 24, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="01/18/爱从哪里来/index.html">
+</a>
+<div class="entry-content">
+<p>&nbsp;</p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+<article id="post-1138" class="post-1138 post type-post status-publish format-standard hentry category--past-events">
+<header class="entry-header">
+<h2 class="entry-title"><a href="01/11/分享之夜/index.html" rel="bookmark">分享之夜</a></h2>
+<div class="entry-meta">
+<span class="posted-on">Posted on <a href="01/11/分享之夜/index.html" rel="bookmark"><time class="entry-date published" datetime="2013-01-11T12:14:54-05:00">January 11, 2013</time><time class="updated" datetime="2013-01-17T12:21:43-05:00">January 17, 2013</time></a></span><span class="byline"> by <span class="author vcard"><a class="url fn n" href="../author/utmccf/index.html">utmccf</a></span></span> </div>
+</header>
+<a class="post-thumbnail" href="01/11/分享之夜/index.html">
+</a>
+<div class="entry-content">
+<p>&nbsp;</p> </div>
+<footer class="entry-footer">
+</footer>
+</article>
+</main>
+</div>
+</div>
+</div>
+<div id="tertiary" class="footer-widget-area" role="complementary">
+<div class="footer-widget-wrapper clear">
+<div class="footer-widget">
+<aside id="widget_contact_info-10" class="widget widget_contact_info"><h2 class="widget-title">Location</h2><div itemscope itemtype="http://schema.org/LocalBusiness"><div class="confit-address" itemscope itemtype="http://schema.org/PostalAddress" itemprop="address"><a href="https://maps.google.com/maps?z=16&#038;q=hart%2Bhouse%2Bdebate%2Broom" target="_blank" rel="noopener noreferrer">Hart House Debate Room</a></div><div class="confit-hours" itemprop="openingHours">Friday 6-8 PM</div></div></aside><aside id="text-6" class="widget widget_text"><h2 class="widget-title">email</h2> <div class="textwidget"><p><a href="../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="365f5850597643425b5555501855595b">[email&#160;protected]</a></p>
+</div>
+</aside> </div>
+<div class="footer-widget">
+<aside id="block-23" class="widget widget_block"><b>其他团契 OTHER FELLOWSHIPS</b></aside><aside id="block-22" class="widget widget_block">
+<ul>
+<li><a href="http://www.tccf.ca/">多大粤语基督徒团契 TCCF (Cantonese)</a></li>
+<li><a rel="noreferrer noopener" href="https://utccf.carrd.co/" target="_blank">多大华人基督徒团契 CCF (English)</a></li>
+</ul>
+</aside><aside id="linkcat-289787266" class="widget widget_links"><h2 class="widget-title">支持机构 Organizations</h2>
+<ul class='xoxo blogroll'>
+<li><a href="http://www.afccanada.org/" rel="noopener" target="_blank">加拿大福音使者协会 AFC</a></li>
+<li><a href="http://ccef-oc.org/" rel="noopener" target="_blank">加拿大校園福音團契 CCEF</a></li>
+</ul>
+</aside>
+<aside id="linkcat-18223485" class="widget widget_links"><h2 class="widget-title">有关链接 Related Links</h2>
+<ul class='xoxo blogroll'>
+<li><a href="https://www.biblegateway.com" rel="noopener" title="Online Bible Reference" target="_blank">Bible Gateway</a></li>
+<li><a href="https://www.facebook.com/groups/uoftmccf/?ref=bookmarks" rel="noopener" target="_blank">团契 Facebook</a></li>
+</ul>
+</aside>
+</div>
+<div class="footer-widget">
+<aside id="pages-7" class="widget widget_pages"><h2 class="widget-title">Pages</h2>
+<ul>
+<li class="page_item page-item-1750"><a href="../churches/index.html">周边教会 Churches Around&nbsp;Campus</a></li>
+<li class="page_item page-item-503"><a href="../团契历史-mccf-history/index.html">团契历史 MCCF History</a></li>
+<li class="page_item page-item-29"><a href="../about-us-关于我们/index.html">团契宗旨 Constitution</a></li>
+<li class="page_item page-item-2815"><a href="../近期活动-2019/index.html">往期活动 | Past&nbsp;Events</a></li>
+</ul>
+</aside><aside id="jetpack_widget_social_icons-3" class="widget jetpack_widget_social_icons"><h2 class="widget-title">Follow Us</h2>
+<ul class="jetpack-social-widget-list size-large">
+<li class="jetpack-social-widget-item">
+<a href="https://www.facebook.com/groups/uoftmccf/?ref=bookmarks" target="_blank" rel="noopener noreferrer"><span class="screen-reader-text">Facebook</span><svg class="icon icon-facebook" aria-hidden="true" role="presentation"> <use href="#icon-facebook" xlink:href="#icon-facebook"></use> </svg> </a>
+</li>
+<li class="jetpack-social-widget-item">
+<a href="https://www.youtube.com/channel/UCjTZhoLEgJbU4rpL0znbdIw" target="_blank" rel="noopener noreferrer"><span class="screen-reader-text">YouTube</span><svg class="icon icon-youtube" aria-hidden="true" role="presentation"> <use href="#icon-youtube" xlink:href="#icon-youtube"></use> </svg> </a>
+</li>
+<li class="jetpack-social-widget-item">
+<a href="https://www.instagram.com/uoft_mccf" target="_blank" rel="noopener noreferrer"><span class="screen-reader-text">Instagram</span><svg class="icon icon-instagram" aria-hidden="true" role="presentation"> <use href="#icon-instagram" xlink:href="#icon-instagram"></use> </svg> </a>
+</li>
+</ul>
+</aside> </div>
+</div>
+</div>
+<footer id="colophon" class="site-footer" role="contentinfo">
+<div class="footer-wrapper clear">
+<div class="site-info">
+<a href="https://wordpress.com/?ref=footer_blog" rel="nofollow">Blog at WordPress.com.</a>
+</div>
+</div>
+</footer>
+</div>
+
+<script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src='https://0.gravatar.com/js/gprofiles.js?ver=202306z' id='grofiles-cards-js'></script>
+<script id='wpgroho-js-extra'>
+var WPGroHo = {"my_hash":""};
+</script>
+<script crossorigin='anonymous' type='text/javascript' src='https://s0.wp.com/wp-content/mu-plugins/gravatar-hovercards/wpgroho.js?m=1610363240h'></script>
+<script>
+		// Initialize and attach hovercards to all gravatars
+		( function() {
+			function init() {
+				if ( typeof Gravatar === 'undefined' ) {
+					return;
+				}
+
+				if ( typeof Gravatar.init !== 'function' ) {
+					return;
+				}
+
+				Gravatar.profile_cb = function ( hash, id ) {
+					WPGroHo.syncProfileData( hash, id );
+				};
+
+				Gravatar.my_hash = WPGroHo.my_hash;
+				Gravatar.init( 'body', '#wp-admin-bar-my-account' );
+			}
+
+			if ( document.readyState !== 'loading' ) {
+				init();
+			} else {
+				document.addEventListener( 'DOMContentLoaded', init );
+			}
+		} )();
+	</script>
+<div style="display:none">
+</div>
+<div id="actionbar" style="display: none;" class="actnbr-pub-edin actnbr-has-follow">
+<ul>
+<li class="actnbr-btn actnbr-hidden">
+<a class="actnbr-action actnbr-actn-follow " href="index.html">
+<svg class="gridicon gridicons-reader-follow" height="24" width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 16v2h-3v3h-2v-3h-3v-2h3v-3h2v3h3zM20 2v9h-4v3h-3v4H4c-1.1 0-2-.9-2-2V2h18zM8 13v-1H4v1h4zm3-3H4v1h7v-1zm0-2H4v1h7V8zm7-4H4v2h14V4z" /></g></svg><span>Follow</span>
+</a>
+<a class="actnbr-action actnbr-actn-following  no-display" href="index.html">
+<svg class="gridicon gridicons-reader-following" height="24" width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 13.482L15.508 21 12 17.4l1.412-1.388 2.106 2.188 6.094-6.094L23 13.482zm-7.455 1.862L20 10.89V2H2v14c0 1.1.9 2 2 2h4.538l4.913-4.832 2.095 2.176zM8 13H4v-1h4v1zm3-2H4v-1h7v1zm0-2H4V8h7v1zm7-3H4V4h14v2z" /></g></svg><span>Following</span>
+</a>
+<div class="actnbr-popover tip tip-top-left actnbr-notice" id="follow-bubble">
+<div class="tip-arrow"></div>
+<div class="tip-inner actnbr-follow-bubble">
+<ul>
+<li class="actnbr-sitename">
+<a href="../index.html">
+<img alt='' src='https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=50' class='avatar avatar-50' height='50' width='50' /> utmccf.com </a>
+</li>
+<form method="post" action="https://subscribe.wordpress.com" accept-charset="utf-8" style="display: none;">
+<div>
+<input type="email" name="email" placeholder="Enter your email address" class="actnbr-email-field" aria-label="Enter your email address" />
+</div>
+<input type="hidden" name="action" value="subscribe" />
+<input type="hidden" name="blog_id" value="6991593" />
+<input type="hidden" name="source" value="https://utmccf.com/2013/" />
+<input type="hidden" name="sub-type" value="actionbar-follow" />
+<input type="hidden" id="_wpnonce" name="_wpnonce" value="33981363eb" /> <div class="actnbr-button-wrap">
+<button type="submit" value="Sign me up">
+Sign me up </button>
+</div>
+</form>
+<li class="actnbr-login-nudge">
+<div>
+Already have a WordPress.com account? <a href="https://wordpress.com/log-in?redirect_to=https%3A%2F%2Fr-login.wordpress.com%2Fremote-login.php%3Faction%3Dlink%26back%3Dhttps%253A%252F%252Futmccf.com%252F2013%252F11%252F01%252F%2525e8%2525ae%2525b2%2525e5%2525ba%2525a7seminar-%2525e4%2525b8%2525ba%2525e4%2525bd%252595%2525e8%2525a6%252581%2525e4%2525bf%2525a1%2525e8%252580%2525b6%2525e7%2525a8%2525a3why-believe-in-jesus%252F">Log in now.</a> </div>
+</li>
+</ul>
+</div>
+</div>
+</li>
+<li class="actnbr-ellipsis actnbr-hidden">
+<svg class="gridicon gridicons-ellipsis" height="24" width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M7 12c0 1.104-.896 2-2 2s-2-.896-2-2 .896-2 2-2 2 .896 2 2zm12-2c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2zm-7 0c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2z" /></g></svg> <div class="actnbr-popover tip tip-top-left actnbr-more">
+<div class="tip-arrow"></div>
+<div class="tip-inner">
+<ul>
+<li class="actnbr-sitename">
+<a href="../index.html">
+<img alt='' src='https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=50' class='avatar avatar-50' height='50' width='50' /> utmccf.com </a>
+</li>
+<li class="actnbr-folded-customize">
+<a href="https://utmccf.wordpress.com/wp-admin/customize.php?url=https%3A%2F%2Futmccf.wordpress.com%2F2013%2F">
+<svg class="gridicon gridicons-customize" height="20" width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M2 6c0-1.505.78-3.08 2-4 0 .845.69 2 2 2 1.657 0 3 1.343 3 3 0 .386-.08.752-.212 1.09.74.594 1.476 1.19 2.19 1.81L8.9 11.98c-.62-.716-1.214-1.454-1.807-2.192C6.753 9.92 6.387 10 6 10c-2.21 0-4-1.79-4-4zm12.152 6.848l1.34-1.34c.607.304 1.283.492 2.008.492 2.485 0 4.5-2.015 4.5-4.5 0-.725-.188-1.4-.493-2.007L18 9l-2-2 3.507-3.507C18.9 3.188 18.225 3 17.5 3 15.015 3 13 5.015 13 7.5c0 .725.188 1.4.493 2.007L3 20l2 2 6.848-6.848c1.885 1.928 3.874 3.753 5.977 5.45l1.425 1.148 1.5-1.5-1.15-1.425c-1.695-2.103-3.52-4.092-5.448-5.977z" /></g></svg> <span>Customize</span>
+</a>
+</li>
+<li class="actnbr-folded-follow">
+<a class="actnbr-action actnbr-actn-follow " href="index.html">
+<svg class="gridicon gridicons-reader-follow" height="24" width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 16v2h-3v3h-2v-3h-3v-2h3v-3h2v3h3zM20 2v9h-4v3h-3v4H4c-1.1 0-2-.9-2-2V2h18zM8 13v-1H4v1h4zm3-3H4v1h7v-1zm0-2H4v1h7V8zm7-4H4v2h14V4z" /></g></svg><span>Follow</span>
+</a>
+<a class="actnbr-action actnbr-actn-following  no-display" href="index.html">
+<svg class="gridicon gridicons-reader-following" height="24" width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 13.482L15.508 21 12 17.4l1.412-1.388 2.106 2.188 6.094-6.094L23 13.482zm-7.455 1.862L20 10.89V2H2v14c0 1.1.9 2 2 2h4.538l4.913-4.832 2.095 2.176zM8 13H4v-1h4v1zm3-2H4v-1h7v1zm0-2H4V8h7v1zm7-3H4V4h14v2z" /></g></svg><span>Following</span>
+</a>
+</li>
+<li class="actnbr-signup"><a href="https://wordpress.com/start/">Sign up</a></li>
+<li class="actnbr-login"><a href="https://wordpress.com/log-in?redirect_to=https%3A%2F%2Fr-login.wordpress.com%2Fremote-login.php%3Faction%3Dlink%26back%3Dhttps%253A%252F%252Futmccf.com%252F2013%252F11%252F01%252F%2525e8%2525ae%2525b2%2525e5%2525ba%2525a7seminar-%2525e4%2525b8%2525ba%2525e4%2525bd%252595%2525e8%2525a6%252581%2525e4%2525bf%2525a1%2525e8%252580%2525b6%2525e7%2525a8%2525a3why-believe-in-jesus%252F">Log in</a></li>
+<li class="flb-report"><a href="https://en.wordpress.com/abuse/">Report this content</a></li>
+<li class="actnbr-reader">
+<a href="https://wordpress.com/read/feeds/542199">
+View site in Reader </a>
+</li>
+<li class="actnbr-subs">
+<a href="https://subscribe.wordpress.com/">Manage subscriptions</a>
+</li>
+<li class="actnbr-fold"><a href="index.html">Collapse this bar</a></li>
+</ul>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<script>
+window.addEventListener( "load", function( event ) {
+	var link = document.createElement( "link" );
+	link.href = "https://s0.wp.com/wp-content/mu-plugins/actionbar/actionbar.css?v=20210915";
+	link.type = "text/css";
+	link.rel = "stylesheet";
+	document.head.appendChild( link );
+
+	var script = document.createElement( "script" );
+	script.src = "https://s0.wp.com/wp-content/mu-plugins/actionbar/actionbar.js?v=20220329";
+	script.defer = true;
+	document.body.appendChild( script );
+} );
+</script>
+<script id='edin-navigation-js-extra'>
+var screen_reader_text = {"expand":"<span class=\"screen-reader-text\">expand child menu<\/span>","collapse":"<span class=\"screen-reader-text\">collapse child menu<\/span>"};
+</script>
+<script id='edin-script-js-extra'>
+var screen_reader_text = {"expand":"<span class=\"screen-reader-text\">expand child menu<\/span>","collapse":"<span class=\"screen-reader-text\">collapse child menu<\/span>"};
+</script>
+<script crossorigin='anonymous' type='text/javascript' src='https://s0.wp.com/_static/??-eJyNUMsOwjAM+yFChASDHRDf0rXdaLc+1KQD/p5U4oB22imO7MRx8JVBp8g2MoYKeamTi4TeclZ6/vWYSzJVs0sRg6DFErYhpRnGVAJ6wlaB+CPc0dMB//YKa+zqtM3vLcVPG2RZrgNaI0YijWp1k2peO8Q0uwyLi7PcoSvB6PZYtLqV/YVXJrgIgyoYFLEtgoCLvKMle4T7qbte+u7W9Wf/BWgRdj4='></script>
+<script type="text/javascript">
+// <![CDATA[
+(function() {
+try{
+  if ( window.external &&'msIsSiteMode' in window.external) {
+    if (window.external.msIsSiteMode()) {
+      var jl = document.createElement('script');
+      jl.type='text/javascript';
+      jl.async=true;
+      jl.src='/wp-content/plugins/ie-sitemode/custom-jumplist.php';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(jl, s);
+    }
+  }
+}catch(e){}
+})();
+// ]]>
+</script><script src="https://stats.wp.com/w.js?63" defer></script> <script type="text/javascript">
+_tkq = window._tkq || [];
+_stq = window._stq || [];
+_tkq.push(['storeContext', {'blog_id':'6991593','blog_tz':'-5','user_lang':'en','blog_lang':'en','user_id':'0'}]);
+_stq.push(['view', {'blog':'6991593','v':'wpcom','tz':'-5','user_id':'0','subd':'utmccf'}]);
+_stq.push(['extra', {'crypt':'UE40eW5QN0p8M2Y/RE1mNzc2NTVTamdsd0xoLz9RQkM2K298TXY9bERQMXc2MjhEaVZfb2wwakRoSj0mUkp1THptM1NdbkV1WjZIcU9mVWQmPUIvMlN6Jk8wW3NYVEJ3dWZOWExuWD8rZDJfUmZbTHYuQ1p5c085WXlLX2ZYdmZdNmFDekNmX2VTeXFtOV1FSlQxemhoTzB3MzYrJXhSP0liSlFCJWh6UmRhazduSTJRdHAzazhJbjEsP1RCRkdSS284LkxYV1R4cWw9P35RR3hPRHQ1PV1rUT0yT3Zrcm58ZyVMQ0NGSFIxOWFGUV0wMVRsOVdRZ3NDT3FUd3ZXM2hYdWxZfiV0eDJ3Y1VKUkIuLXxEVzlXZyZkLiZkbmdIZjlaclFuXzdJOFo9fGg/NEwlVU5b'}]);
+_stq.push([ 'clickTrackerInit', '6991593', '0' ]);
+	</script>
+<noscript><img src="https://pixel.wp.com/b.gif?v=noscript" style="height:1px;width:1px;overflow:hidden;position:absolute;bottom:1px;" alt="" /></noscript>
+<script>
+if ( 'object' === typeof wpcom_mobile_user_agent_info ) {
+
+	wpcom_mobile_user_agent_info.init();
+	var mobileStatsQueryString = "";
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedPlatformName )
+		mobileStatsQueryString += "&x_" + 'mobile_platforms' + '=' + wpcom_mobile_user_agent_info.matchedPlatformName;
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedUserAgentName )
+		mobileStatsQueryString += "&x_" + 'mobile_devices' + '=' + wpcom_mobile_user_agent_info.matchedUserAgentName;
+	
+	if( wpcom_mobile_user_agent_info.isIPad() )
+		mobileStatsQueryString += "&x_" + 'ipad_views' + '=' + 'views';
+
+	if( "" != mobileStatsQueryString ) {
+		new Image().src = document.location.protocol + '//pixel.wp.com/g.gif?v=wpcom-no-pv' + mobileStatsQueryString + '&baba=' + Math.random();
+	}
+	
+}
+</script>
+</body>
+</html>

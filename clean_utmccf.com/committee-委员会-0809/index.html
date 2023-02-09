@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html style="margin-top: 0px !important;	croll-padding-top: 0px !important;"  lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="profile" href="https://gmpg.org/xfn/11">
+
+<title>往届执委会 Past Committees</title>
+<meta name='robots' content='max-image-preview:large' />
+
+<script id="wpcom_remote_login_js">
+var wpcom_remote_login_extra_auth = '';
+function wpcom_remote_login_remove_dom_node_id( element_id ) {
+	var dom_node = document.getElementById( element_id );
+	if ( dom_node ) { dom_node.parentNode.removeChild( dom_node ); }
+}
+function wpcom_remote_login_remove_dom_node_classes( class_name ) {
+	var dom_nodes = document.querySelectorAll( '.' + class_name );
+	for ( var i = 0; i < dom_nodes.length; i++ ) {
+		dom_nodes[ i ].parentNode.removeChild( dom_nodes[ i ] );
+	}
+}
+function wpcom_remote_login_final_cleanup() {
+	wpcom_remote_login_remove_dom_node_classes( "wpcom_remote_login_msg" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_key" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_validate" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_js" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_request_access_iframe" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_request_access_styles" );
+}
+
+// Watch for messages back from the remote login
+window.addEventListener( "message", function( e ) {
+	if ( e.origin === "https://r-login.wordpress.com" ) {
+		var data = {};
+		try {
+			data = JSON.parse( e.data );
+		} catch( e ) {
+			wpcom_remote_login_final_cleanup();
+			return;
+		}
+
+		if ( data.msg === 'LOGIN' ) {
+			// Clean up the login check iframe
+			wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_key" );
+
+			var id_regex = new RegExp( /^[0-9]+$/ );
+			var token_regex = new RegExp( /^.*|.*|.*$/ );
+			if (
+				token_regex.test( data.token )
+				&& id_regex.test( data.wpcomid )
+			) {
+				// We have everything we need to ask for a login
+				var script = document.createElement( "script" );
+				script.setAttribute( "id", "wpcom_remote_login_validate" );
+				script.src = '/remote-login.php?wpcom_remote_login=validate'
+					+ '&wpcomid=' + data.wpcomid
+					+ '&token=' + encodeURIComponent( data.token )
+					+ '&host=' + window.location.protocol
+					+ '//' + window.location.hostname
+					+ '&postid=25'
+					+ '&is_singular=';
+				document.body.appendChild( script );
+			}
+
+			return;
+		}
+
+		// Safari ITP, not logged in, so redirect
+		if ( data.msg === 'LOGIN-REDIRECT' ) {
+			window.location = 'https://wordpress.com/log-in?redirect_to=' + window.location.href;
+			return;
+		}
+
+		// Safari ITP, storage access failed, remove the request
+		if ( data.msg === 'LOGIN-REMOVE' ) {
+			var css_zap = 'html { -webkit-transition: margin-top 1s; transition: margin-top 1s; } /* 9001 */ html { margin-top: 0 !important; } * html body { margin-top: 0 !important; } @media screen and ( max-width: 782px ) { html { margin-top: 0 !important; } * html body { margin-top: 0 !important; } }';
+			var style_zap = document.createElement( 'style' );
+			style_zap.type = 'text/css';
+			style_zap.appendChild( document.createTextNode( css_zap ) );
+			document.body.appendChild( style_zap );
+
+			var e = document.getElementById( 'wpcom_request_access_iframe' );
+			e.parentNode.removeChild( e );
+
+			document.cookie = 'wordpress_com_login_access=denied; path=/; max-age=31536000';
+
+			return;
+		}
+
+		// Safari ITP
+		if ( data.msg === 'REQUEST_ACCESS' ) {
+			console.log( 'request access: safari' );
+
+			// Check ITP iframe enable/disable knob
+			if ( wpcom_remote_login_extra_auth !== 'safari_itp_iframe' ) {
+				return;
+			}
+
+			// If we are in a "private window" there is no ITP.
+			var private_window = false;
+			try {
+				var opendb = window.openDatabase( null, null, null, null );
+			} catch( e ) {
+				private_window = true;
+			}
+
+			if ( private_window ) {
+				console.log( 'private window' );
+				return;
+			}
+
+			var iframe = document.createElement( 'iframe' );
+			iframe.id = 'wpcom_request_access_iframe';
+			iframe.setAttribute( 'scrolling', 'no' );
+			iframe.setAttribute( 'sandbox', 'allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-top-navigation-by-user-activation' );
+			iframe.src = 'https://r-login.wordpress.com/remote-login.php?wpcom_remote_login=request_access&origin=' + encodeURIComponent( data.origin ) + '&wpcomid=' + encodeURIComponent( data.wpcomid );
+
+			var css = 'html { -webkit-transition: margin-top 1s; transition: margin-top 1s; } /* 9001 */ html { margin-top: 46px !important; } * html body { margin-top: 46px !important; } @media screen and ( max-width: 660px ) { html { margin-top: 71px !important; } * html body { margin-top: 71px !important; } #wpcom_request_access_iframe { display: block; height: 71px !important; } } #wpcom_request_access_iframe { border: 0px; height: 46px; position: fixed; top: 0; left: 0; width: 100%; min-width: 100%; z-index: 99999; background: #23282d; } ';
+
+			var style = document.createElement( 'style' );
+			style.type = 'text/css';
+			style.id = 'wpcom_request_access_styles';
+			style.appendChild( document.createTextNode( css ) );
+			document.body.appendChild( style );
+
+			document.body.appendChild( iframe );
+		}
+
+		if ( data.msg === 'DONE' ) {
+			wpcom_remote_login_final_cleanup();
+		}
+	}
+}, false );
+
+// Inject the remote login iframe after the page has had a chance to load
+// more critical resources
+window.addEventListener( "DOMContentLoaded", function( e ) {
+	var iframe = document.createElement( "iframe" );
+	iframe.style.display = "none";
+	iframe.setAttribute( "scrolling", "no" );
+	iframe.setAttribute( "id", "wpcom_remote_login_key" );
+	iframe.src = "https://r-login.wordpress.com/remote-login.php"
+		+ "?wpcom_remote_login=key"
+		+ "&origin=aHR0cHM6Ly91dG1jY2YuY29t"
+		+ "&wpcomid=6991593"
+		+ "&time=1675980130";
+	document.body.appendChild( iframe );
+}, false );
+</script>
+
+
+
+<link href='https://fonts.gstatic.com' crossorigin rel='preconnect' />
+<link rel="alternate" type="application/rss+xml" title=" &raquo; Feed" href="https://utmccf.com/feed/" />
+<link rel="alternate" type="application/rss+xml" title=" &raquo; Comments Feed" href="https://utmccf.com/comments/feed/" />
+<script type="text/javascript">
+		/* <![CDATA[ */
+		function addLoadEvent(func) {
+			var oldonload = window.onload;
+			if (typeof window.onload != 'function') {
+				window.onload = func;
+			} else {
+				window.onload = function () {
+					oldonload();
+					func();
+				}
+			}
+		}
+		/* ]]> */
+	</script>
+<script type="text/javascript">
+window._wpemojiSettings = {"baseUrl":"https:\/\/s0.wp.com\/wp-content\/mu-plugins\/wpcom-smileys\/twemoji\/2\/72x72\/","ext":".png","svgUrl":"https:\/\/s0.wp.com\/wp-content\/mu-plugins\/wpcom-smileys\/twemoji\/2\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/s0.wp.com\/wp-includes\/js\/wp-emoji-release.min.js?m=1652185836h&ver=6.2-alpha-55134"}};
+/*! This file is auto-generated */
+!function(e,a,t){var n,r,o,i=a.createElement("canvas"),p=i.getContext&&i.getContext("2d");function s(e,t){var a=String.fromCharCode,e=(p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,e),0,0),i.toDataURL());return p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,t),0,0),e===i.toDataURL()}function c(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(o=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},r=0;r<o.length;r++)t.supports[o[r]]=function(e){if(p&&p.fillText)switch(p.textBaseline="top",p.font="600 32px Arial",e){case"flag":return s([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])?!1:!s([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!s([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]);case"emoji":return!s([129777,127995,8205,129778,127999],[129777,127995,8203,129778,127999])}return!1}(o[r]),t.supports.everything=t.supports.everything&&t.supports[o[r]],"flag"!==o[r]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[o[r]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(e=t.source||{}).concatemoji?c(e.concatemoji):e.wpemoji&&e.twemoji&&(c(e.twemoji),c(e.wpemoji)))}(window,document,window._wpemojiSettings);
+</script>
+<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 0.07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link crossorigin='anonymous' rel='stylesheet' id='all-css-0-1' href='https://s0.wp.com/_static/??-eJyNkt1uwyAMhV9oxIvWdurFtGcBYlG3hiAMzXj70VSdsv5tN4hjc+zPAExR2TFkDBl8UZGLoyAwRTt6JZ4Y65XqrMgL3LcxHVBgjzlqe1Czujl+OetKkwaTa5mEcOzX3WvXgynEAxge5wIm6VRBcmX8KUTBchlOfQQ8DqSR0c8gCxFZV0yK0WlbO0/hb3vLLfUv02P4mXQxs65jycolGq6w/10i6UzByaOpWwAsaxGyKu8aqtwlXbzK6X5b3Ed9O+QT20SDw3xueN6rjF/PLfNHMSYmFFFt9VT8hbL5Pv1Hv3lfrbbbzVu//waPEe9/?cssminify=yes' type='text/css' media='all' />
+<style id='wp-block-library-inline-css'>
+.has-text-align-justify {
+	text-align:justify;
+}
+.wp-block-cover__image-background.has-parallax {
+	background-size: cover;
+}
+</style>
+<style id='global-styles-inline-css'>
+body{--wp--preset--shadow--natural: 0 .2rem .3rem 0 rgba(0,0,0, 0.3), 0 .5rem .6rem 0 rgba(0,0,0, 0.4);--wp--preset--shadow--sharp: .5rem .5rem 0 0 rgba(0,0,0, 0.4);--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--duotone--dark-grayscale: url('index.html');--wp--preset--duotone--grayscale: url('index.html');--wp--preset--duotone--purple-yellow: url('index.html');--wp--preset--duotone--blue-red: url('index.html');--wp--preset--duotone--midnight: url('index.html');--wp--preset--duotone--magenta-yellow: url('index.html');--wp--preset--duotone--purple-green: url('index.html');--wp--preset--duotone--blue-orange: url('index.html');--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;}:where(.is-layout-flex){gap: 0.5em;}body .is-layout-flow > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}body .is-layout-flow > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}body .is-layout-flow > .aligncenter{margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}body .is-layout-constrained > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}body .is-layout-constrained > .aligncenter{margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)){max-width: var(--wp--style--global--content-size);margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > .alignwide{max-width: var(--wp--style--global--wide-size);}body .is-layout-flex{display: flex;}body .is-layout-flex{flex-wrap: wrap;align-items: center;}body .is-layout-flex > *{margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}
+.wp-block-pullquote{font-size: 1.5em;line-height: 1.6;}
+.wp-block-navigation a:where(:not(.wp-element-button)){color: inherit;}
+</style>
+<link rel='stylesheet' id='edin-pt-sans-css' href='https://fonts-api.wp.com/css?family=PT+Sans%3A400%2C700%2C400italic%2C700italic&#038;subset=latin%2Clatin-ext' media='all' />
+<link rel='stylesheet' id='edin-pt-serif-css' href='https://fonts-api.wp.com/css?family=PT+Serif%3A400%2C700%2C400italic%2C700italic&#038;subset=latin%2Clatin-ext' media='all' />
+<link rel='stylesheet' id='edin-pt-mono-css' href='https://fonts-api.wp.com/css?family=PT+Mono&#038;subset=latin%2Clatin-ext' media='all' />
+<link crossorigin='anonymous' rel='stylesheet' id='all-css-8-1' href='https://s0.wp.com/_static/??-eJydjs0KwjAQhF/IuFS00IP4KBLTbUzNH9mE4tu7rR6CSgVvM8s3swNTFCr4jD5DvqJDglgugL3xMPB9UQxsFdEGKtgVEW3RxhOMmKNUt5eHmEJfVDbBw5mzoNFjMpyj7/Kj+n0H5bvFn9T8aiHFFFVw/w12rCy3TqbXmAkoKCOteE6uzVq9xiBsUHJprI0YrDRpLZrwYoNmqYGpys6hkzs27aHd77qubcYHlRqmhg==?cssminify=yes' type='text/css' media='all' />
+<style id='edin-style-inline-css'>
+ { clip: rect(1px, 1px, 1px, 1px); height: 1px; position: absolute; overflow: hidden; width: 1px; }
+</style>
+<link crossorigin='anonymous' rel='stylesheet' id='print-css-9-1' href='https://s0.wp.com/wp-content/mu-plugins/global-print/global-print.css?m=1465851035h&cssminify=yes' type='text/css' media='print' />
+<style id='jetpack-global-styles-frontend-style-inline-css'>
+:root { --font-headings: unset; --font-base: unset; --font-headings-default: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif; --font-base-default: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;}
+</style>
+<link crossorigin='anonymous' rel='stylesheet' id='all-css-12-1' href='https://s0.wp.com/_static/??-eJyVjUEKwjAQRS9kHCo10IV4FImTkKROZkInQby9bXEjrty9B5/34VkNCrfADUo3lXrMrDCHVh0+Pg51Ed+xZWEoK1FQ0OSW4J33rx0zxyOqHuDf3i0zggpmR4Ykin7JT7OlUNb3NEIkuTvaBtdyGezZjqdpssP8Bj+XTks=?cssminify=yes' type='text/css' media='all' />
+<script id='wpcom-actionbar-placeholder-js-extra'>
+var actionbardata = {"siteID":"6991593","siteURL":"https:\/\/utmccf.com","xhrURL":"https:\/\/utmccf.com\/wp-admin\/admin-ajax.php","nonce":"83f96e105d","isLoggedIn":"","statusMessage":"","subsEmailDefault":"instantly","proxyScriptUrl":"https:\/\/s0.wp.com\/wp-content\/js\/wpcom-proxy-request.js?ver=20211021","shortlink":"https:\/\/wp.me\/PtkPD-p","i18n":{"followedText":"New posts from this site will now appear in your <a href="https://utmccf.com/committee-%e5%a7%94%e5%91%98%e4%bc%9a-0809/\&quot;https:\/\/wordpress.com\/read\&quot;">Reader<\/a>","foldBar":"Collapse this bar","unfoldBar":"Expand this bar"}};
+</script>
+<script crossorigin='anonymous' type='text/javascript' src='https://s0.wp.com/_static/??-eJyFykEOgyAQheELOVIlsmt6FrVTMwQGHCDq7asJXbjq6iXv/9QWYQ6ckbOySfkwkUMoCWVczg+IP6G1qVF3Jy5DlLAfv0Y8u/LGdEW7FpSjTuuJ/yLwtMiYseKXf3bGGD30+tHZL48zO4Y='></script>
+<script type='text/javascript'>
+	window.addEventListener( 'DOMContentLoaded', function() {
+		rltInitialize( {"token":null,"iframeOrigins":["https:\/\/widgets.wp.com"]} );
+	} );
+</script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://utmccf.wordpress.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://s0.wp.com/wp-includes/wlwmanifest.xml" />
+<meta name="generator" content="WordPress.com" />
+<link rel="canonical" href="index.html" />
+<link rel='shortlink' href='https://wp.me/PtkPD-p' />
+<link rel="alternate" type="application/json+oembed" href="https://public-api.wordpress.com/oembed/?format=json&amp;url=https%3A%2F%2Futmccf.com%2Fcommittee-%25e5%25a7%2594%25e5%2591%2598%25e4%25bc%259a-0809%2F&amp;for=wpcom-auto-discovery" /><link rel="alternate" type="application/xml+oembed" href="https://public-api.wordpress.com/oembed/?format=xml&amp;url=https%3A%2F%2Futmccf.com%2Fcommittee-%25e5%25a7%2594%25e5%2591%2598%25e4%25bc%259a-0809%2F&amp;for=wpcom-auto-discovery" />
+
+<meta property="og:type" content="article" />
+<meta property="og:title" content="往届执委会 Past Committees" />
+<meta property="og:url" content="https://utmccf.com/committee-%e5%a7%94%e5%91%98%e4%bc%9a-0809/" />
+<meta property="og:description" content="Committee 20-21 Chair: Esther Du 大家好，我是杜天恩，也可以叫我Esther。我是多大生理学大三的专科生，也是今年的团长。多大国语基督徒团契是一个特别的社团， 在这里你会遇到一群可爱的人，而他们很与众不同，因为他们的相识是因为一个伟大的神，名叫耶和华。也许你有听说过这位神，但是还不认识祂。 我们认识祂，也因为认识祂，我们有很多很多好的事要分享给你！很欢迎你来到…" />
+<meta property="article:published_time" content="2009-03-18T11:46:14+00:00" />
+<meta property="article:modified_time" content="2022-05-24T02:00:33+00:00" />
+<meta property="og:image" content="https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=200" />
+<meta property="og:image:width" content="200" />
+<meta property="og:image:height" content="200" />
+<meta property="og:image:alt" content="" />
+<meta property="og:locale" content="en_US" />
+<meta property="article:publisher" content="https://www.facebook.com/WordPresscom" />
+<meta name="twitter:text:title" content="往届执委会 Past Committees" />
+<meta name="twitter:image" content="https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=240" />
+<meta name="twitter:card" content="summary" />
+
+<link rel='openid.server' href='https://utmccf.com/?openidserver=1' />
+<link rel='openid.delegate' href='../index.html' />
+<link rel="search" type="application/opensearchdescription+xml" href="https://utmccf.com/osd.xml" title="" />
+<link rel="search" type="application/opensearchdescription+xml" href="https://s1.wp.com/opensearch.xml" title="WordPress.com" />
+<meta name="theme-color" content="#ffffff" />
+<meta name="application-name" content="WordPress.com" /><meta name="msapplication-window" content="width=device-width;height=device-height" /><meta name="msapplication-tooltip" content="University of Toronto Mandarin Chinese Christian Fellowship" /><meta name="msapplication-task" content="name=Subscribe;action-uri=https://utmccf.com/feed/;icon-uri=https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=16" /><meta name="msapplication-task" content="name=Sign up for a free blog;action-uri=http://wordpress.com/signup/;icon-uri=https://s0.wp.com/i/favicon.ico" /><meta name="msapplication-task" content="name=WordPress.com Support;action-uri=http://support.wordpress.com/;icon-uri=https://s0.wp.com/i/favicon.ico" /><meta name="msapplication-task" content="name=WordPress.com Forums;action-uri=http://forums.wordpress.com/;icon-uri=https://s0.wp.com/i/favicon.ico" /><meta name="description" content="Committee 20-21 Chair: Esther Du 大家好，我是杜天恩，也可以叫我Esther。我是多大生理学大三的专科生，也是今年的团长。多大国语基督徒团契是一个特别的社团， 在这里你会遇到一群可爱的人，而他们很与众不同，因为他们的相识是因为一个伟大的神，名叫耶和华。也许你有听说过这位神，但是还不认识祂。 我们认识祂，也因为认识祂，我们有很多很多好的事要分享给你！很欢迎你来到我们当中，和我们分享你的难处，让我们和你分享这一位神的大能和同在。真的好期待见到你们每一个人，和你们来更加认识这一位创天造地的神。新的一年在主里多多指教呀! Devotional Leader: Rosa Li Music Worship Leader: Jane Gao 大家好我是Jane，我的专业是土木工程，今年在读四年级（coop实习中~）。我很喜欢我的专业，希望将来能成为一名环境工程师! 很高兴今年能够成为大家的Music Worship Leader，我的职责就是带领和监督每一次团契的音乐敬拜，让小伙伴们都能通过音乐和诗歌来快快乐乐地赞美我们的神，将祂应得的荣耀归给祂！感谢神给我力量和爱心，使我能够在团契服侍，而且还是用我所热爱的音乐来服侍他、服侍弟兄姊妹。希望这一年里，我们可以一起通过敬拜，享受与我们主同在的快乐~也希望每一位来到团契的小伙伴们都能获得一颗实实在在满足、感恩和喜乐的心！ Treasurer: Binyuan Wang Hello 小伙伴，我是Bin。现在就读于多伦多大学二年级的经济和统计专业。我目前在团契担任treasure一职，主要负责与团契相关的财务和账目管理。如果你也因生活或学业上的无助而感到绝望，欢迎你来和我们一起寻找神在我们每个人身上的旨意。这里有来自同学们的理解和帮助，也有从神而来的关爱和力量。相信我们可以成为朋友，因为我们有着和你相似的留学困扰，也体会过身在异国他乡里的绝望，希望我们能够帮助到你！更希望可以将我们的依靠，就是那位也非常爱你的神，介绍给你，使你的人生中有信仰！让我们向神祷告，因为他愿意分担我们的忧虑！ Secretary: Linda Li 大家好，我是Linda，今年大三，专业是英语和哲学。我是今年团契的Secretary，主要负责团契网站和social media的管理，还有每周发送newsletter的工作。我来团契两年了，感谢神把我带到这里，又给我机会服事。在这里能感受到神满满的爱，平时也有弟兄姐妹们的关心。希望这一年里，我在服事的过程中能够带领更多的小伙伴们经历神的爱。不管你是不是基督徒，都欢迎你来参加我们的聚会，学习神的话语。 Committee 19-20 Chair: Kevin Ho 大家好，我是Kevin，物理化学系的学生。除了每天宅在学校的日子外，我还喜欢到处旅游，爬山，露营。今年我在UTMCCF裡做了椅tuán 子zhǎng。感谢神，让我有这个机会能够在这里服侍神也服侍人。我觉得UTMCCF这个团契对我来说就像是个大家庭一样，在这裡你可以认识很多好朋友。但更重要的是，我们每周五在这裡聚集，是因为有一位神，祂是耶稣，祂先爱了我们，所以我们也可以在这裡彼此相爱。在UTMCCF我们一起查考圣经，聊信仰、谈人生。 Vice-Chair: Rosa Li 哈咯，大家好，我是 Rosa，或作肉莎。现在的我是一个二年级的研究生，专业是physiology， 如果大家有关于人体生物，或者多大生物专业的问题欢迎来找我哟哟哟。 今年我是团契的副团长，具体是干嘛的，hmm，好像哪都有我就是了。 。。 至今为止，我已经在团契待了5年了。在这个地方，我认识，经历了神。 也让我深深地相信，神是发生在我生命中最美好的事情。欢迎你们每一位来到团契，一起来认识神，经历这样的美好。 Devotional Leader: Esther Du 大家好！我是Esther。今年大二，是一名生理学的学生。我是这一届的Devotional Leader。我的职责就是帮助大家一起在灵命上成长，所以你们会在查经，祷告会，以及生命小组看到我的身影哦。在多大成千上万的社团中，UTMCCF是我心目中最特别的社团（没有之一）。虽然这个社团里都是一些普通的人，但是让我们与众不同的是：我们有一位不普通的神。这位神非常的爱我们，祂的爱毫无保留，祂的爱不离不弃。这一份爱将一群普普通通的大学生凝聚在一起，让我们成为彼此相爱的一家人。真的很期待你也可以来到我们当中，成为这个属灵大家庭的一员；和我们一起来认识这位不普通的神，和我们一起在祂的爱里成长！ Treasurer:&hellip;" />
+<style type="text/css">
+			.site-title,
+		.site-description {
+			position: absolute;
+			clip: rect(1px, 1px, 1px, 1px);
+		}
+		</style>
+<style type="text/css" id="custom-colors-css">	.hero a.button-minimal {
+		border-color: #fff !important;
+	}
+	#comments #respond .form-submit input#comment-submit,
+	.widget_flickr #flickr_badge_uber_wrapper td a:last-child {
+		background: #c5c5c5 !important;
+		border-color: #c5c5c5 !important;
+	}
+	@media screen and (min-width: 1020px) {
+		body.small-screen.navigation-classic .primary-navigation .menu-primary > ul > li.current-menu-item:before,
+		body.small-screen.navigation-classic .primary-navigation .menu-primary > ul > li.current_page_item:before,
+		body.small-screen.navigation-classic .primary-navigation .menu-item-has-children:hover:before,
+		body.small-screen.navigation-classic .primary-navigation ul ul .menu-item-has-children:before {
+			color: #fff;
+		}
+		body.large-screen.navigation-classic .primary-navigation ul ul ul:before {
+			border-bottom-color: transparent;
+		}
+	}
+	@media screen and (min-width: 1230px) {
+		body.small-screen .menu-toggle.open,
+		body.small-screen .menu-toggle.open:before,
+		body.small-screen .menu-toggle.open:focus,
+		body.small-screen .menu-toggle.open:focus:before {
+			color: #fff;
+		}
+		body.small-screen .menu-toggle.open:before,
+		body.small-screen .menu-toggle.open:focus:before {
+			border-color: #fff;
+		}
+		body.small-screen .menu-toggle.open:before {
+			background: transparent;
+		}
+		body.small-screen .menu-toggle.open:hover,
+		body.small-screen .menu-toggle.open:active,
+		body.small-screen .menu-toggle.open:hover:before,
+		body.small-screen .menu-toggle.open:active:before {
+			color: rgba(255, 255, 255, 0.5);
+		}
+		body.small-screen .menu-toggle.open:hover:before,
+		body.small-screen .menu-toggle.open:active:before {
+			border-color: rgba(255, 255, 255, 0.5);
+		}
+	}
+body { background-color: #ffffff;}
+mark,
+		ins,
+		button,
+		input[type="button"],
+		input[type="reset"],
+		input[type="submit"],
+		a.button,
+		a.button:visited,
+		a.button-minimal:hover,
+		a.button-minimal:focus,
+		a.button-minimal:active,
+		body:not(.small-screen) .menu-toggle.open:before,
+		body:not(.small-screen) .search-toggle.open:before,
+		.navigation-wrapper,
+		.search-wrapper,
+		.widget_nav_menu .dropdown-toggle:hover,
+		.hero.with-featured-image,
+		body[class*="front-page"] .hero,
+		#infinite-handle span,
+		.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li:hover,
+		.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li.current-menu-item > a,
+		.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li.current_page_item > a,
+		.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:hover,
+		.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:focus,
+		.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:active,
+		.large-screen.navigation-classic .primary-navigation ul ul li,
+		.widget_akismet_widget .a-stats a { background-color: #D8111B;}
+a,
+		a.button-minimal,
+		a.button-minimal:visited,
+		.menu-toggle:focus,
+		.search-toggle:focus,
+		.primary-navigation .dropdown-toggle:hover,
+		.footer-navigation a:hover,
+		.footer-navigation a:focus,
+		.footer-navigation a:active,
+		.screen-reader-text:hover,
+		.screen-reader-text:focus,
+		.screen-reader-text:active,
+		.site-footer a:hover,
+		.site-footer a:focus,
+		.site-footer a:active,
+		.format-link .entry-title a:hover:after,
+		.format-link .entry-title a:focus:after,
+		.format-link .entry-title a:active:after,
+		.entry-title a:hover,
+		.entry-title a:focus,
+		.entry-title a:active,
+		.featured-page .entry-title a:hover,
+		.featured-page .entry-title a:focus,
+		.featured-page .entry-title a:active,
+		.grid .entry-title a:hover,
+		.grid .entry-title a:focus,
+		.grid .entry-title a:active,
+		#infinite-footer .blog-credits a:hover,
+		#infinite-footer .blog-credits a:focus,
+		#infinite-footer .blog-credits a:active,
+		#infinite-footer .blog-info a:hover,
+		#infinite-footer .blog-info a:focus,
+		#infinite-footer .blog-info a:active,
+		.small-screen .menu-toggle:hover:before,
+		.small-screen .menu-toggle:active:before,
+		.small-screen .menu-toggle.open:before,
+		.small-screen .menu-toggle.open,
+		.medium-screen .menu-toggle:hover,
+		.medium-screen .menu-toggle:active,
+		.small-screen .search-toggle:hover:before,
+		.small-screen .search-toggle:active:before,
+		.small-screen .search-toggle.open:before,
+		.small-screen .search-toggle.open,
+		.medium-screen .search-toggle:hover,
+		.medium-screen .search-toggle:active,
+		.large-screen.navigation-classic .primary-navigation .menu-item-has-children:before,
+		.large-screen.navigation-classic .secondary-navigation a:hover,
+		.large-screen.navigation-classic .secondary-navigation a:focus,
+		.large-screen.navigation-classic .secondary-navigation a:active,
+		.widget_goodreads div[class^="gr_custom_each_container"] a:hover,
+		.widget_goodreads div[class^="gr_custom_each_container"] a:focus,
+		.widget_goodreads div[class^="gr_custom_each_container"] a:active,
+		.testimonial-entry-title a:hover,
+		.testimonial-entry-title a:focus,
+		.testimonial-entry-title a:active { color: #D8111B;}
+button,
+		input[type="button"],
+		input[type="reset"],
+		input[type="submit"],
+		input[type="text"]:focus,
+		input[type="email"]:focus,
+		input[type="url"]:focus,
+		input[type="password"]:focus,
+		input[type="search"]:focus,
+		textarea:focus,
+		a.button,
+		a.button-minimal,
+		a.button:visited,
+		a.button-minimal:visited,
+		a.button-minimal:hover,
+		a.button-minimal:focus,
+		a.button-minimal:active,
+		#infinite-handle span,
+		.small-screen .menu-toggle:hover:before,
+		.small-screen .menu-toggle:active:before,
+		.small-screen .menu-toggle.open:before,
+		.small-screen .search-toggle:hover:before,
+		.small-screen .search-toggle:active:before,
+		.small-screen .search-toggle.open:before,
+		#comments #respond #comment-form-comment.active,
+		#comments #respond .comment-form-fields div.comment-form-input.active,
+		.widget_akismet_widget .a-stats a { border-color: #D8111B;}
+.search-wrapper .search-field { border-color: #EF989D;}
+.large-screen.navigation-classic .primary-navigation ul ul ul:before,
+		.rtl blockquote,
+		body.rtl .hentry .wpcom-reblog-snapshot .reblogger-note-content blockquote { border-right-color: #D8111B;}
+.footer-navigation a:hover,
+		.footer-navigation a:focus,
+		.footer-navigation a:active,
+		.large-screen.navigation-classic .primary-navigation ul ul:before,
+		.large-screen.navigation-classic .primary-navigation ul ul li:last-of-type,
+		.large-screen.navigation-classic .secondary-navigation a:hover,
+		.large-screen.navigation-classic .secondary-navigation a:focus,
+		.large-screen.navigation-classic .secondary-navigation a:active { border-bottom-color: #D8111B;}
+blockquote,
+		body .hentry .wpcom-reblog-snapshot .reblogger-note-content blockquote { border-left-color: #D8111B;}
+</style>
+<link rel="icon" href="https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=32" sizes="32x32" />
+<link rel="icon" href="https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=192" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=180" />
+<meta name="msapplication-TileImage" content="https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=270" />
+</head>
+<body class="page-template-default page page-id-25 customizer-styles-applied navigation-classic no-sidebar highlander-enabled highlander-light">
+<div id="page" class="hfeed site">
+<a class="skip-link screen-reader-text" href="index.html#content">Skip to content</a>
+<header id="masthead" class="site-header" role="banner">
+<a href="../index.html" class="header-image" rel="home">
+<img src="https://utmccf.files.wordpress.com/2019/05/cropped-header4-1.png" width="1350" height="110" alt="cropped-header4-1-1.png">
+</a>
+<div class="header-wrapper clear">
+<div class="site-branding">
+ <p class="site-title"><a href="../index.html" rel="home"></a></p>
+<p class="site-description">University of Toronto Mandarin Chinese Christian Fellowship</p>
+</div>
+<div id="site-navigation" class="header-navigation">
+<button class="menu-toggle" aria-expanded="false">Menu</button>
+<div class="navigation-wrapper clear">
+<nav class="primary-navigation" role="navigation">
+<div class="menu-primary"><ul id="menu-main-menu" class="clear"><li id="menu-item-2281" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2281"><a href="../index.html">首页 | Home</a></li>
+<li id="menu-item-1630" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1630"><a href="../fellowship.html">聚会 | Gatherings</a>
+<ul class="sub-menu">
+<li id="menu-item-2263" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2263"><a href="../info/index.html">聚会讯息 Time &amp; Location</a></li>
+<li id="menu-item-1633" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1633"><a href="../fellowship.html">本周团契 This Week&#8217;s Event</a></li>
+<li id="menu-item-1631" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1631"><a href="../life/index.html">生命小组 Life Group</a></li>
+<li id="menu-item-1632" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1632"><a href="../代祷事项-prayer-requests/index.html">祷告 Prayer</a></li>
+</ul>
+</li>
+<li id="menu-item-1634" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1634"><a href="http://www.utmccf.com">活动 | events</a>
+<ul class="sub-menu">
+<li id="menu-item-1635" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1635"><a href="../conference/index.html">近期活动 Latest Event</a></li>
+<li id="menu-item-2842" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2842"><a href="../近期活动-2019/index.html">往期活动 | Past Events</a></li>
+</ul>
+</li>
+<li id="menu-item-1623" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-1623"><a href="../about-us-关于我们/index.html">关于我们 | About Us</a>
+<ul class="sub-menu">
+<li id="menu-item-1625" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1625"><a href="../团契历史-mccf-history/index.html">团契历史 History</a></li>
+<li id="menu-item-1882" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1882"><a href="../committee-16-17/index.html">执委会 Committee</a></li>
+<li id="menu-item-1629" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1629"><a href="../about-us-关于我们/index.html">团契宗旨 Constitution</a></li>
+<li id="menu-item-1812" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1812"><a href="../churches/index.html">周边教会 Churches Around Campus</a></li>
+</ul>
+</li>
+</ul></div> </nav>
+</div>
+</div>
+</div>
+</header>
+<div id="content" class="site-content">
+<div class="hero without-featured-image">
+<div class="hero-wrapper"><h1 class="page-title">往届执委会 Past Committees</h1></div>
+</div>
+<div class="content-wrapper clear">
+<div id="primary" class="content-area">
+<main id="main" class="site-main" role="main">
+<article id="post-25" class="post-25 page type-page status-publish hentry">
+<div class="entry-content">
+<div>
+<h2>Committee 20-21</h2>
+<p class="p1"><b>Chair: Esther Du</b></p>
+<p class="p1">大家好，我是杜天恩，也可以叫我Esther。我是多大生理学大三的专科生，也是今年的团长。多大国语基督徒团契是一个特别的社团， 在这里你会遇到一群可爱的人，而他们很与众不同，因为他们的相识是因为一个伟大的神，名叫耶和华。也许你有听说过这位神，但是还不认识祂。 我们认识祂，也因为认识祂，我们有很多很多好的事要分享给你！很欢迎你来到我们当中，和我们分享你的难处，让我们和你分享这一位神的大能和同在。真的好期待见到你们每一个人，和你们来更加认识这一位创天造地的神。新的一年在主里多多指教呀!</p>
+<p class="p1"><b>Devotional Leader: Rosa Li</b></p>
+<p class="p1"><b>Music Worship Leader: Jane Gao</b></p>
+<p class="p1">大家好我是Jane，我的专业是土木工程，今年在读四年级（coop实习中~）。我很喜欢我的专业，希望将来能成为一名环境工程师! 很高兴今年能够成为大家的Music Worship Leader，我的职责就是带领和监督每一次团契的音乐敬拜，让小伙伴们都能通过音乐和诗歌来快快乐乐地赞美我们的神，将祂应得的荣耀归给祂！感谢神给我力量和爱心，使我能够在团契服侍，而且还是用我所热爱的音乐来服侍他、服侍弟兄姊妹。希望这一年里，我们可以一起通过敬拜，享受与我们主同在的快乐~也希望每一位来到团契的小伙伴们都能获得一颗实实在在满足、感恩和喜乐的心！</p>
+<p class="p1"><b>Treasurer: Binyuan Wang</b></p>
+<p class="p1">Hello 小伙伴，我是Bin。现在就读于多伦多大学二年级的经济和统计专业。我目前在团契担任treasure一职，主要负责与团契相关的财务和账目管理。如果你也因生活或学业上的无助而感到绝望，欢迎你来和我们一起寻找神在我们每个人身上的旨意。这里有来自同学们的理解和帮助，也有从神而来的关爱和力量。相信我们可以成为朋友，因为我们有着和你相似的留学困扰，也体会过身在异国他乡里的绝望，希望我们能够帮助到你！更希望可以将我们的依靠，就是那位也非常爱你的神，介绍给你，使你的人生中有信仰！让我们向神祷告，因为他愿意分担我们的忧虑！</p>
+<p class="p1"><b>Secretary: Linda Li</b></p>
+<p class="p4">大家好，我是<span class="s1">Linda</span>，今年大三，专业是英语和哲学。我是今年团契的<span class="s1">Secretary</span>，主要负责团契网站和<span class="s1">social media</span>的管理，还有每周发送<span class="s1">newsletter</span>的工作。我来团契两年了，感谢神把我带到这里，又给我机会服事。在这里能感受到神满满的爱，平时也有弟兄姐妹们的关心。希望这一年里，我在服事的过程中能够带领更多的小伙伴们经历神的爱。不管你是不是基督徒，都欢迎你来参加我们的聚会，学习神的话语。</p>
+<h2>Committee 19-20</h2>
+<p><strong>Chair: Kevin Ho</strong></p>
+<p>大家好，我是Kevin，物理化学系的学生。除了每天宅在学校的日子外，我还喜欢到处旅游，爬山，露营。今年我在UTMCCF裡做了椅tuán 子zhǎng。感谢神，让我有这个机会能够在这里服侍神也服侍人。我觉得UTMCCF这个团契对我来说就像是个大家庭一样，在这裡你可以认识很多好朋友。但更重要的是，我们每周五在这裡聚集，是因为有一位神，祂是耶稣，祂先爱了我们，所以我们也可以在这裡彼此相爱。在UTMCCF我们一起查考圣经，聊信仰、谈人生。</p>
+</div>
+<p><strong>Vice-Chair: Rosa Li</strong></p>
+<p>哈咯，大家好，我是 Rosa，或作肉莎。现在的我是一个二年级的研究生，专业是physiology， 如果大家有关于人体生物，或者多大生物专业的问题欢迎来找我哟哟哟。 今年我是团契的副团长，具体是干嘛的，hmm，好像哪都有我就是了。 。。 至今为止，我已经在团契待了5年了。在这个地方，我认识，经历了神。 也让我深深地相信，神是发生在我生命中最美好的事情。欢迎你们每一位来到团契，一起来认识神，经历这样的美好。</p>
+<p><strong>Devotional Leader: Esther Du</strong></p>
+<p>大家好！我是Esther。今年大二，是一名生理学的学生。我是这一届的Devotional Leader。我的职责就是帮助大家一起在灵命上成长，所以你们会在查经，祷告会，以及生命小组看到我的身影哦。在多大成千上万的社团中，UTMCCF是我心目中最特别的社团（没有之一）。虽然这个社团里都是一些普通的人，但是让我们与众不同的是：我们有一位不普通的神。这位神非常的爱我们，祂的爱毫无保留，祂的爱不离不弃。这一份爱将一群普普通通的大学生凝聚在一起，让我们成为彼此相爱的一家人。真的很期待你也可以来到我们当中，成为这个属灵大家庭的一员；和我们一起来认识这位不普通的神，和我们一起在祂的爱里成长！</p>
+<p><strong>Treasurer: Jason Zhang</strong></p>
+<p>⼤家好，我是Jason。现在就读于多伦多大学⼆年级undergraduate的数学系专业。我目前在团契里的职分是treasurer，主要是负责管理团契的财务和记录团契平日的收⼊支出。如果你有任何关于基督教信仰的疑问，或者是想更多了解关于我们⼤学生基督徒团契生活，甚⾄想询问有关个人生活中出现的困惑，都欢迎你能够来联系我们，我们很愿意解答你的问题，听你倾诉和你一起讨论。我们也真心希望能和你做朋友，能够帮助到你！<br />
+最重要的是我们更希望能够向你介绍⼀位爱你的 上帝！祂也愿意来认识你帮助你分担你的忧虑。这也是我们团契的目的和初衷。</p>
+<p><strong>Secretary: Amber Wang</strong></p>
+<p>大家好！我是Amber，Pharmacy二年级的学生。我是UTMCCF今年的Secretary小秘书，负责在这个网站和团契的Facebook上为大家更新每周团契的活动，以及把每周的Newsletter发送给大家。我深深记得当我作为一个新朋友，茫然地第一次来到团契时，神的同在和大家的热情如何打动了我的心。所以除了上面提到的事务，今天的我更希望自己也能成为在团契里给人带来热情和温暖的人，把最初打动我的那一份在主里的爱传递下去。团契是我更深认识神的地方，是我信主的地方，也是我认识了许多愿意为主委身的弟兄姐妹的地方。总而言之，团契真是个好地方，并且非常期待和欢迎你的到来。</p>
+<div>
+<h2><span style="text-decoration:underline;">Committee 18-19</span></h2>
+<p><strong>Chair: Kevin Ho</strong></p>
+<p>大家好，我是Kevin，四年级物理化学的学生。除了每天宅在学校的日子外，我还喜欢到处旅游，爬山，露营。今年我在UTMCCF裡做了椅tuán 子zhǎng。感谢神，让我有这个机会能够在这里服侍神也服侍人。我觉得UTMCCF这个团契对我来说就像是个大家庭一样，在这裡你可以认识很多好朋友。但更重要的是，我们每周五在这裡聚集，是因为有一位神，祂是耶稣，祂先爱了我们，所以我们也可以在这裡彼此相爱。在UTMCCF我们一起查考圣经，聊信仰、谈人生。</p>
+<p><strong>Vice-Chair: Clarence Li</strong></p>
+<p>Hey Everybody！我叫Clarence，是这一届MCCF Committee的Vice-Chair！我现在是一名大四的土木工程系学生，也是这一届Committee里在团契待的时间最长的人啦！我会很多语言，也去过很多地方。所以你如果也是一个喜欢旅游和各种文化的人欢迎来和我聊！当然，想和我聊其他话题也都随时欢迎。很感谢主今年能再次给我这样一个机会和这么多弟兄姊妹一起在校园团契来服侍我们的神。我们今年将一如既往计划很多的Events哟！所以欢迎大家参与我们新一年里的各种活动，一起来认识我们的神并一同在主内成长。如果你是新朋友那么欢迎你加入我们！如果你是老朋友then Welcome Back！(^_^)</p>
+<p><strong>Devotional Leader: Lydia Jia</strong></p>
+<p>大家好，我叫Lydia, 今年大三，主修国际关系，现在是UTMCCF的Devotional leader. 这个听起来很高(gǎo)大(bù)上(dǒng)的职位是做什么的呢？简单来说，我负责带着大家祷告、学圣经、小组聚会，以及任何和属灵有关的事情。我来到团契已经有将近两年了，直到现在我都可以很确定地说：团契和我们心里想到的社团有很大的不同，而这种不同，是因为神在我们之中，也因为我们想把这样一位神，介绍给你。 所以，在接下来的一年里面，欢迎你来团契，也欢迎你来找我讨论信仰，让我们的属灵生命一起茁壮成长吧！</p>
+<p><strong>Treasurer: Jane Gao</strong></p>
+<p>哈喽大噶好～我是Jane，今年上大二土木工程专业。 我今年会担任你们的小treasurer的职务，真的非常开心能成为咱们团契管钱的！一年前神将我带到UTMCCF，在这里我重新认识了那位爱我们的神，也在这里信了主，现在神又带领我来为你们大家服侍，真的特别感恩也特别激动！才待了一年，我就觉得我未来大学几年已经离不开团契了（妥妥的入坑了～）。这不仅仅是因为团契有爱我、扶持我的弟兄姊妹，更有神满满的恩典和爱。神在我们心里准备这“坑”，我们埋下对真理、爱的渴慕，神就会让它长成参天大树，成为我们心灵永恒的避难所、栖息地，战胜一切的苦难！除了管理我负责的财务事项，我想去认识来到团契的你们，不论你是不是基督徒，都欢迎与我们一起来参与讨论、学习，更多认识这位奇妙、有大能力的主。</p>
+<p><strong>Secretary: Amber Wang</strong></p>
+<p>大家好！我是Amber，Pharmacy一年级的学生。我是UTMCCF今年的Secretary小秘书，负责在这个网站和团契的Facebook上为大家更新每周团契的活动，以及把每周的Newsletter发送给大家。我深深记得当我作为一个慕道友，茫然地第一次来到团契时，神的同在和大家的热情如何打动了我的心。所以除了上面提到的事务，今天的我更希望自己也能成为在团契里给人带来热情和温暖的人，把最初打动我的那一份在主里的爱传递下去。团契是我更深认识神的地方，是我信主的地方，也是我认识了许多愿意为主委身的弟兄姐妹的地方。总而言之，团契真是个好地方，并且非常期待和欢迎你的到来。</p>
+<h2><span style="text-decoration:underline;">Committee 17-18</span></h2>
+<p><strong>Chair: Harry Zhao</strong></p>
+<p>大家好，我是Harry，RC Finance大四，感谢神的恩召，让我今年能够继续在团长的位置上服侍神，也服侍团契可爱的同学们。团长不是一个轻松的职位，在人看来是做领导的位置，但我心里知道，这是一个仆人的位置，是做弟兄姊妹的用人。因为耶稣来世上乃是服侍人(马太福音20：25-28)，甚至把自己的命舍在十字架上，作多人的赎价。希望我今年能够更多效法主耶稣的样式，尽我所能地服侍团契、弟兄姊妹、以及校园当中还没有听过福音的同学们。如果你还不了解为什么耶稣是神，却死在了十字架上，欢迎来团契，我们可以一起认识独一的上帝和他的救恩。我也希望鼓励大家通过读经和祷告与神建立更亲密的关系，并能够在接受耶稣的福音之后活出不一样的生命。如果你想和我们一样，带着信心服侍神，传福音，来联系我吧！我很愿意和你一起同工。如果对团契和信仰有任何问题，也欢迎你来联系我，只要你有时间，我随时奉陪。</p>
+<p><strong>Vice-Chair: Rosa Li</strong></p>
+<p>哈咯 大家好哈哈，我的名字是 Rosa，另称肉莎。 我今年大四了，虽然年龄上怎么样也算是个学姐啦，但我可能还保留着我十八岁时候的心。 我的专业是physiology， 如果大家想知道任何 关于 人体的生物小百科，欢迎来找我哟哟哟。 今年我是团契的副团长，具体是干嘛的，hmm，好像哪都有我就是了。 。。 记得两年前我刚在团契开始服侍的时候，那叫一个开心和激动！ 现在的我，依然为了新的一年感到开心和激动！ 从很早以前我就觉得，神是发生在我生命中最美好的事情。 在我的大学生涯中，有神，有团契，有弟兄姊妹们，我真的很开心，很激动，很感恩！ 也欢迎你们每一位来到团契，一起来认识神，经历这样的美好。</p>
+<p><strong>Secretary: Lydia Jia</strong></p>
+<p>大家好，我叫Lydia, 今年大二，主修国际关系。我现在担任UTMCCF的秘书，主要负责处理团契的一些事务性工作以及每周一封的newsletter. 如果你愿意更多地了解上帝，愿意认识更多校园里的基督徒，又还没有收到过我们的newsletter，就请你们在团契的网站上留下姓名和邮箱，让我可以更方便地找到你^_^ 虽然我来团契只有不到一年的时间，但是我已经可以很确定地说：团契和我们心里想象的社团有很大的不同，无论是活动还是气氛。团契的不同，是因为神在我们之中，也因为我们想把这样一位神，介绍给你。 所以，在接下来的一年里面，欢迎你来团契，让我们一起了解这一位神。</p>
+<p><strong>Devotional Leader: Kevin Ho</strong></p>
+<p>大家好，我是Kevin，三年级物理化学的学生。除了每天宅在学校的日子外，我还喜欢到处旅游，爬山，露营。我在UTMCCF裡是Devotional leader，至于这个职位是做什的呢？简单来说就是带大家查经、祷告还有吃饭（喔不对，没有最后一项）。总之，我觉得UTMCCF这个团契对我来说就像是个大家庭一样，在这裡你可以认识很多好朋友。但更重要的是，我们每周五在这裡聚集，是因为有一位神，祂是耶稣，祂先爱了我们，所以我们也可以在这裡彼此相爱。在UTMCCF我们一起查考圣经，聊信仰、谈人生。</p>
+<p><strong>Treasurer: Angel Li</strong></p>
+<p>大家好,我是李安乔，今年utmccf的treasurer。我读的是Public Accounting，明年大四，今年在做PEY的实习。 很感谢神把我带来了utmccf，让我在同工中感受神满满的爱和恩典。utmccf是个温暖又快乐的大家庭，大家在这里彼此分享，在主内共同成长，成为弟兄姐妹。 在团契的一年多时间中，我的生命有了很大的转变，神赐予我许多恩典和美好，也让我在挑战和困难中学会经历祂，寻求祂。 我很希望每一个多大的学生都能来到我们当中，一起学习神的话语，敬拜祂，信靠祂，归于祂的名下。让我们一天比一天更爱我们的主，utmccf期待你的到来！</p>
+<h2><span style="text-decoration:underline;">Committee 16-17</span></h2>
+<p><strong>Chair: Harry</strong></p>
+<p>大家好，我是Harry，RC Finance大三，我是今年团契的团长。感谢神把我放在这个位置上服侍他，也是做弟兄姊妹的用人，因为耶稣来世上乃是服侍人(马太福音20：25-28)，甚至把自己的命舍在十字架上，作多人的赎价。如果你还不了解为什么耶稣是神，却死在了十字架上，欢迎来团契，我们可以一起认识独一的上帝和他的救恩。我也希望鼓励大家通过读经和祷告与神建立更亲密的关系，并能够在接受耶稣的福音之后活出不一样的生命。如果你想和我们一样，带着信心服侍神，传福音，来联系我吧！我很愿意和你一起同工。如果对团契和信仰有任何问题，也欢迎你来联系我，只要你有时间，我随时奉陪。</p>
+</div>
+<div>
+<p><strong>Vice-Chair: Tom</strong></p>
+<p>大家好，我是Tom，精算跟电脑的大四学生，今年担任MCCF的副椅子，也就是Vice-Chair（-_-::）~呵呵。<br />
+今年我要做的呢就是帮助我们的“正椅子”做事； 简单来说就是他想让我做的； 我就得做，他不想做的，也让我做&#8211;唉。<br />
+眨眼间已经来了团契四年了，也终于成为现在团契里最老的一辈了； 感谢神把我带到这里，可以更多地认识，经历祂，也可以跟着弟兄姐妹一起服侍祂。<br />
+不管你是否已经认识了我们的这位全能的神，都欢迎你来到我们当中，也希望在这接下来的一年中能跟我们在主内建立关系，在神的爱跟话语中成长，更多的认识祂。<br />
+如果有对于我们团契，信仰etc etc有任何问题，欢迎你来找我； 当然也欢迎找我闲聊，哈哈。 Blessings！</p>
+</div>
+<div>
+<p><strong>Secretary: Rosa</strong></p>
+<p>嘻嘻大家好, 我的名字是Rosa, 另称肉莎, 今年担当团契的Secretary。<br />
+小秘书我呢, 负责每周给你们发Newsletter; 请大家定时查收，并且认真阅读!大三的我专业是Physiology, 所以平常我就喜欢给人普及一些关于人体的小百科.。<br />
+除了读经祷告, 学习着怎样更好的服侍神, 我的日常就是看看书泡泡图书馆，平日的我也一直在哈哈笑, 哈哈, 因为我的笑点很低, 哈哈，也因为神赐给了我一颗非常喜乐的心。<br />
+希望在这一年当中, 可以与大家一起在MCCF更多的经历这样从神而来的喜乐和祝福。</p>
+</div>
+<div>
+<p><strong>Devotional Leader: Leon</strong></p>
+<p>大家好，我叫Leon，今年是我在MCCF的第四年，我也是大四地球物理（Geophyiscs）的学生。我今年荣幸成为MCCF的Devotional Leader，虽然我不太知道中文怎么翻译这个词，但是我在团契负责带领大家一起透过查经，生命小组，祷告等等学习上帝的话语。我平时很喜欢读书，包括狄更斯和杰克伦敦的小说以及一些神学和信仰的书籍，它们带给了我快乐，思考与知识，但是有一本书却带给了我生命&#8212;那就是圣经。亲爱的朋友，你看圣经它只是白纸黑字的一本书，但是它却是“生命的粮”（约6:35）。我希望在接下来的这一年里，我们一起透过圣经，去了解，学习并认识我们独一的救主耶稣基督！</p>
+</div>
+<div>
+<p><strong>Treasurer: Judy</strong></p>
+<p>大家好，我是Judy，是Architecture大三学生。<br />
+今年是我来MCCF的第三年，感谢神带我来到这里，带领我一点点认识祂、经历祂，并从慕道友成为基督徒。认识神、信靠神真是最感恩的事！<br />
+在这一年中我将担任Treasurer一职，主要负责管理团契的财务，嘿嘿嘿~ 嗯，团契是个好地方，期待在这里与你们一起学习圣经、探讨信仰、共同成长。</p>
+<h2><span style="text-decoration:underline;">Committee 15-16</span></h2>
+<p><strong>Chair: Leon Li </strong></p>
+<p>大家好，我是Leon，平时别人也会叫我“大象的好朋友”，虽然我不知道为什么。我是今年MCCF的椅子，顾名思义，椅子是给人坐的，所以我在团契里的职责就是帮助和服侍大家，最重要的是，神用我这把椅子来侍奉祂。我今年大三，是地球物理系的学生（Geophysics），我平时不在学校的时候就会和教授同学去实地做Geophysical survey，所以我很喜欢冒险和野外的生活。平时呢，我也喜欢读书，我很喜欢狄更斯和杰克伦敦的小说，我也喜欢读一些神学和信仰类的书籍，这些都能给我在疲惫和孤单的时候带来安慰。我也欢迎你来和我一起探讨神的话语，因为这是我们生命的食粮。我鼓励大家少花一些时间在娱乐和网络和吃什么上，而多花一些时间在思考神的话语上，因为耶稣说：“我就是生命的粮”（约6:35）。最后，我希望在今年的时间里，我们一起在神的话语里成长和塑造，让我们在MCCF里也有一段难忘的时间。</p>
+<p style="text-align:left;"><strong>Vice-chair: Marina Ying</strong></p>
+<p>HEY EVEYONE!!! 我是Marina～～ 现在是Rotman Commerce大四学Accounting的学生.今年在团契我还是Vice-Chair, 主要任务呢，就是帮助楼上那位“大象的好朋友”管理团契；其实呢，就是什么事情都做一做，俗称“打杂的” XD，所以有任何关于团契的问题除了找我们的“椅子”，也可以来找我。时间真的过的很快，这是我来MCCF的第四年了，很荣幸我成为了这个团队里“最老”的人。我很感谢神，把我带来团契，在这里，通过查经，与弟兄姐妹的分享还有侍奉让我更深入的了解我们的神。我真的很希望把我所信靠，所经历的神来介绍给你们，因为他的太好了！认识他，是我这一生中最美的祝福！不管你是不是基督徒，我们都欢迎你来加入我们团契，与我们一起诗歌敬拜，一起查经，一起探讨我们的信仰，一起经历我们的神！让我们一起在主爱中成长~~</p>
+<p style="text-align:left;"><strong>Secretary: Judy Zheng</strong></p>
+<p>大家好，我是Judy，是Architecture大二学生。今年是我来MCCF的第二年，感谢神带我在大一最开始的时候就来到这里，带领我一点点认识祂、经历祂，从慕道友成为基督徒，认识神、信靠神真的是我最开心最感恩事！在这一年中我将担任secretary一职，每周都会定期向大家发newsletter的email，以通知和提醒大家团契近期的活动安排，还望大家不要嫌我唠叨哦~ 团契是个好地方，因为在这里我们可以一起学习圣经、探讨信仰、共同成长。期待你们来团契加入我们 🙂</p>
+<p style="text-align:left;"><strong>Devotional Leader: Tom He</strong></p>
+<p>大家好，我是Tom，今年是actuarial &amp; computer science的大三学生，也是MCCF的devotional leader。感谢神把我带到团契，也给了我这个机会来侍奉祂。我主要要做的，就是鼓励大家来跟我们一起更多的认识我们的神，来跟随祂。如果有对于我们的信仰，或圣经的疑问，欢迎你来找我。我们可以<br />
+一起思考，讨论，烦恼（^o^）。我期待着跟大家一起学习神的话语，一起祷告，一起来与神更靠近。Blessings！</p>
+<p style="text-align:left;"><strong>Music Worship Leader: Harry Zhao</strong></p>
+<p>大家好，在下赵彦翔，英文名是Mr. Potter的Harry，不才非常荣幸地担任了2015-2016学年MCCF的Music Worship Leader。作为团契committee里最年轻的弟兄，我的角色自然是——苦力，苦力，苦力！Music Worship Leader的部分职务是看管团契的音乐设备，所以搬运和安置这些设备就成了我每周一练的健身项目(也感谢同样强壮的同工们的帮忙)。但我最喜欢的工作还是和弟兄姊妹们一起通过音乐及其他方式将敬拜赞美归给我们在天上的父。音乐是一种敬拜的方式，但敬拜不仅仅局限于音乐。我非常乐意跟弟兄姊妹们一起，通过生活中的每一件小事来敬拜爱我们的主。Worship is a lifestyle.让我们一起加油，在新的学年每一日与耶稣基督同行，经历祂的丰盛与美好。阿门！</p>
+<p style="text-align:left;"><strong>Event Coordinator: Clarence Li</strong></p>
+<p>Waats Up Guys！！！我叫Clarence，是这一届MCCF Committee的Event Coordin<br />
+ator！我现在是一名大三的土木工程系学生，也是这一届Committee里唯一的工科生哟！我会很多语言，也去过很多地方。所以你如果也是一个喜欢旅游和各种文化的人欢迎来和我聊！当然，想和我聊其他话题也都随时欢迎。很感谢主今年能有这样一个机会和这么多弟兄姊妹一起在校园团契来服侍我们的神。我们今年有计划很多特殊的Events哟！我们除了会请讲员以及进行Bible Studies，还会有Music Worship Night，Games Night，弟兄&amp;姊妹Sports Weekends等等。欢迎大家参与我们新一年里的各种活动，一起来认识我们的神并倚靠着他有所成长。如果你是新朋友那么欢迎你加入我们！如果你是老朋友then Welcome Back！(^_^)</p>
+<h2></h2>
+<h2></h2>
+<h2><span style="text-decoration:underline;">Committee 14-15</span></h2>
+<p>Chair: Peter Hu</p>
+<p>大家好，我是Peter，現在是大四機械工程系的學生。我是MCCF今年的Chair或者椅子。我最主要的責任就是帶領團契，鼓勵大家親近神與了解神的話語。如果你是基督徒，我很希望和你一起在聖經中紮根、在基督裏成長，如果你還沒有信主耶稣，我很希望與你分享神的話語、和你一起討論信仰上的疑問，所以歡迎你來和我們一起查經、敬拜、禱告、參與各種活動。如果你在信仰或聖經上有任何疑惑或興趣，我都歡迎你來找我。我很樂意和大家一起探討神的道，和你分享我的經歷。又或著你只是覺得我很白癡想找我聊天，我也是很歡迎啦。如果你有信心有負擔參與團契的服侍，請不客氣地聯系我吧！</p>
+<p><strong>Vice Chair: Marina Ying</strong></p>
+<p>大家好，我是Marina，现在是Commerce 大三学accounting的学生。我是今年的Vice-Chair，主要呢，就是帮助Chair管理团契；其实呢，就是什么事情都做一做，俗称“打杂的”:P。今年是我在MCCF的第三年，我很感谢神，把我带来团契，在这里，通过查经，与弟兄姐妹的分享还有侍奉让我更深入的了解我们的神。我真的很希望把我所信靠，所经历的神来介绍给你们，因为他的太好了！认识他，是我这一生中最美的祝福！不管你是不是基督徒，我们都欢迎你来加入我们团契，与我们一起诗歌敬拜，一起查经，一起探讨我们的信仰，一起经历我们的神！让我们一起在主爱中成长~~</p>
+<p><strong>Secretary: Grace Guo</strong></p>
+<p>hello，大家好，我是Grace，今年是pharmacy的一年级学生，如果有想要考pharmacy的同学可以来问我哦 ：）<br />
+感谢神让我在大一的时候加入到MCCF这个温暖的家庭里，两年之后也感谢他给我负担让我成为今年团契的secretary。大家每周收到的newsletter就是来自于我。如果以后在团契你们看到一个经常询问大家邮箱或者有没有收到email的那也应该还是我啦。本人超级喜欢日本电视剧和动漫的一切，欢迎大家来和我聊天啊!<br />
+最后希望以后能在团契经常见到大家，一起学习和探讨圣经，在神里面成长, 有任何信仰方面的疑问和想法都可以来找我讨论</p>
+<p><strong>Devotional Leader: Qoqo Ong</strong></p>
+<p>羅 馬 書 5:6-8</p>
+<p>因 我 們 還 軟 弱 的 時 候 ， 基 督 就 按 所 定 的 日 期 為 罪 人 死 。 為 義 人 死 ， 是 少 有 的 ； 為 仁 人 死 、 或 者 有 敢 做 的 。 惟 有 基 督 在 我 們 還 作 罪 人 的 時 候 為 我 們 死 ， 神 的 愛 就 在 此 向 我 們 顯 明 了 。</p>
+<p>神是谁？基督是谁？我们为什么是罪人？祂为什么爱我们？十字架跟罪有什么联系？ 或许你还不认识祂，祂却知道你的一切。鼓励你来认识这位爱你的天父。</p>
+<p><strong>Worship Leader: Leon Li</strong></p>
+<p>大家好，我是今年团契的worship leader, 我帮助团契规划和安排每次的敬拜，来赞美我们的上帝。约翰福音 4:23-24 这么说：“&#8230;真正要敬拜父的，要用心灵和诚实敬拜他，因为父要这样的人敬拜他。” 如何出自内心地去敬拜我们的上帝，我会带领大家一起在敬拜中寻找答案和认识。除此，如果你对我们团契的音乐敬拜上有疑问和负担的话，鼓励你来找我我们一起来侍奉我们的主。</p>
+<h2><span style="text-decoration:underline;">Committee 13-14</span></h2>
+<p><strong>Chair: </strong>Peter Hu</p>
+<p>大家好，我是Peter，現在是PEY機械工程系的學生。我是MCCF今年的Chair或者椅子。我最主要的責任就是帶領團契，鼓勵大家親近神與了解神的話語。如果你是基督徒，我很希望和你一起在聖經中紮根、在基督裏成長，如果你還沒有信主耶稣，我很希望與你分享神的話語、和你一起討論信仰上的疑問，所以歡迎你來和我們一起查經、敬拜、禱告、參與各種活動。如果你在信仰或聖經上有任何疑惑或興趣，我都歡迎你來找我。我很樂意和大家一起探討神的道，和你分享我的經歷。又或著你只是覺得我很白癡想找我聊天，我也是很歡迎啦。如果你有信心有負擔參與團契的服侍，請不客氣地聯系我吧！</p>
+<p><strong>Vice-Chair:</strong> Jia Zhang</p>
+<p>大家好，我叫张嘉彦，张嘉彦的张，张嘉彦的嘉，张嘉彦的彦，大家一般叫我嘉。我是Life Science大四的学生, 在MCCF今年的职责是副椅子 （Vice-Chair), 主要的工作就是帮助楼上的椅子什么事情都做做。非常感谢主，我的生命的引领者和保护者，在两年前带领我来多大，让我可以认识一群一起在大学拼搏的弟兄姐妹们~ 我的兴趣爱好呢包括听音乐，唱歌，看书，看电影。我很愿意和大家交朋友，所以欢迎大家有学业上生活上问题来找我。也欢迎大家如果有关于基督教信仰或圣经的问题可以来问我。我不一定可以回答得出，但我很愿意跟大家来分享、学习神的话语。我们可以一起寻找答案，一<a href="https://utmccf.files.wordpress.com/2009/08/ran1.jpg"><br />
+</a>起成长~ 希望大家可以通过我们的团契，在大学生活中更加来了解我们的主和我们的信仰!</p>
+<p><strong>Secretary:</strong> Alice Wang</p>
+<p>每周，都会有一封不知发件人姓名的邮件不期而至，静静地躺在你的邮箱中，提醒你这周五团契里各种丰富多彩的活动。怎样，有没有一种怦然心动的感觉？ ;D 写这封秘密书信的人就是我，秘书，秘书，就是这么来的！<br />
+在下不才，多村书院 East Asian Studies东亚研究系 (没错，就是那个你大学生涯中一定会从中选过一门鸟课的那个系！）清新学姐一枚！ 感谢神让我对画画如此着迷！我最喜欢画带故事情节的小卡通！生活当中的每一分每一秒每一人每一物都可入画。一颦一笑，除了用相机记录，最好就是通过想像的润色，从笔尖流于纸上。如果你喜欢画画，我们可以切磋，如果你不会画画，我们可以一起探索。如果你灰常会画，请允许我抱住您的大腿。总之一句话，没事来找我呀！<br />
+最后来个总结： 爱画画，爱照相，东亚文化狂爱者。 我是Alice，团契秘书。我为自己代言</p>
+<p><strong>Devotional Leader:</strong> Hannah Zhang</p>
+<p>大家好！我是Hannah， 是一个在读社会学，心理学，和数学的大三学生。感谢神，带领我到这个团契，认识了一个这么可爱的家庭。今年，因着神的恩惠，我会担任devotional leader 的职位。我呢，基本上就是鼓励大家更加紧密地跟随我们神的脚步。我也很期待可以跟大家一起学习神的话语，更加深入的认识他，爱上他。如果各位有任何关于信仰或圣经的疑问，或灵命上的问题，欢迎来找我。我们可以一起讨论，分享，祷告, 成长! 😀</p>
+<p><strong>Worship Leader: </strong>Marina Ying</p>
+<p>大家好，我是Marina，现在是多大commerce的学生.今年我在MCCF担任Worship Leader, 主要呢，就是带领大家用诗歌一起来敬拜赞美我们的神。如果你对诗歌敬拜很有兴趣的话，非常欢迎你来加入我们。感谢神，在一年前把我从中国带到MCCF，在这里弟兄姊妹们一起敬拜，一起查经，一起探讨神的话语，一起经历神的同在，这真的让我真的觉得温暖，有家的感觉。 非常欢迎各位一起加入我们这个大家庭，让我们一同来享受在主里的美好！！</p>
+<p><strong>Event Coordinator:</strong> Tian Ran</p>
+<p>HEYYY GUYS 😀 我是田然。I will be working as the Events Coordinator at MCCF this year！ 我是一个大三International Relations 和Economics的学生。 我从小在魁北克的蒙特利尔长大，法语算是我的第一语言。 所以如果你们有拿法语课的话，有问题可以来找我哦。今年很高兴可以在MCCF和大家一起来服侍神。今年除了每个月的Speaker Events and Bible Study我们会有很多活动像是 Game Night，Stream of Praises Concert，Worship Night，Drama Night， and many more! 希望你们可以加入我们一起认识神。如果你们有任何问题或者分享都可以来找我聊天。Can’t wait to see you all! 🙂</p>
+<h2><span style="text-decoration:underline;">Committee 12-13</span></h2>
+<p><strong>Chair: </strong>Yang Xia</p>
+<p>大家好，我是小阳，今年团契的团长。我是Neuroscience 和 Psycology double major 的大四学生，在大四这忙碌的一年带领团契对我来说一个挑战，却也是让我在祂里面成长的一个机会。对我来说，在大学的四年里MCCF就是一个温暖的家，有着非常非常关爱我的弟兄姐妹们，也有更多我可以去认识去关怀的同学们。 如果你是基督徒，我很希望和你一起在圣经中扎根、在基督里成长，如果你还没有信主耶稣，我很希望与你分享我的经历、和你一起解决信仰上的疑问，所以欢迎你来和我们一起查经、敬拜、祷告、参与各种游戏活动！让我们一起来度过一个彼此关怀扶持、温暖如家的一年，共同用我们的生命来荣耀神吧！如果你有信心有负担参与团契的服侍，请不客气地联系我吧！P.S.我平时很喜欢动漫和小说，业余时间我会看动漫，画画，听歌，弹琴什么的，相同爱好的同学们可以来找我聊哦~</p>
+<p><strong>Vice-Chair:</strong> Jia Zhang</p>
+<p>大家好，我叫张嘉彦，张嘉彦的张，张嘉彦的嘉，张嘉彦的彦，大家一般叫我嘉。我是Life Science大三的学生, 在MCCF今年的职责是副椅子 （Vice-Chair), 主要的工作呢，就是帮助我们可爱的椅子什么事情都做做。非常感谢主，我的生命的引领者和保护者，在两年前带领我来多大，让我可以认识一群活泼的弟兄姐妹们~ 我的兴趣爱好呢包括听音乐，唱歌，看书，看电影。我很愿意和大家交朋友，所以欢迎大家有学业上生活上问题来找我。也欢迎大家如果有关于基督教信仰或圣经的问题可以来问我。我不一定可以回答得出，但我很愿意跟大家来分享、学习神的话语。我们可以一起寻找答案，一起成长~</p>
+<p><strong>Secretary:</strong> Yue Qi</p>
+<p>大家好!!我是祁月,大家可以叫我月月~~我是neuroscience和psychology第四年. 我的爱好嘛,就是看电视,旅游,还有发呆~~所以和我志同道合的兄弟姐妹们快来找我吧！！我在MCCF的职位是secretary. 我的责任是发newsletter给大家,以及预定我们活动需要的房间. 我很高兴可以在MCCF这个大家庭生活,并且为这个温馨的家庭出一份自己的力. 亲爱的兄弟姐妹们, 你们的加入充实了这个家庭,你们的欢声笑语温暖着这个家庭. 就让我们共同在主的看护下, 在这个洒满阳光的家庭中, 为了更加美好的明天, 一起奋斗!</p>
+<p><strong>Devotional Leader:</strong> Peter Hu</p>
+<p>大家好，我是Peter，現在是大三機械工程系的學生。我是MCCF今年的Devotional Leader。我最主要的責任就是鼓勵大家親近神與了解神的話語。如果你在信仰或聖經上有任何疑惑或興趣，我都歡迎你來找我。我很樂意和大家一起探討神的道，和你分享我的經歷。又或着你只是覺得我很白癡想找我聊天，我也是很歡迎啦。</p>
+<p><strong>Worship Leader:</strong> Sky Tang</p>
+<p>大家好，我叫Sky , 现在是UT ECE 大二的学生。很高兴可以加入UTMCCF的大家庭，那么在这一年里，我会担当worship leader的职位。具体点说呢，就是带领大家一同赞美敬拜神，方式可以有很多，比如：唱歌，弹琴等等。在这里我们有琴声，鼓声，歌声，和笑声，在温馨中含着感动，在欢乐中透着轻松，欢迎有兴趣的弟兄姐妹们来加入敬拜小组哦。至于兴趣爱好嘛，其实蛮多的，比较主要的有打羽毛球，听音乐，弹吉他和唱歌。最后呢，欢迎大家来到MCCF，这不但是我的家，同样也是你的！！！</p>
+<p><strong>Male Caring Leader:</strong> Daniel Lee</p>
+<p>大家好, 我叫Daniel. 你們可以叫我大牛. 本人目前讀完了第三年的ECE, 現在在做PEY. 基本上呢, 有不爽, 來找我, 我們可以一起哭, 有煩惱, 我們可以一起想辦法, 有高興, 來找我, 我們可以一起笑, 有問題, 如果我答不出來, 我們可以一起問. 結論就是, 覺得寂寞無聊, 找我就對了. 我的興趣從籃球, 演戲, 音樂, 打電動, 到桌遊. 希望透過快樂還有煩惱, 我們可以一起探討基督教這個信仰到底是什麼.</p>
+<h2><span style="text-decoration:underline;">Committee 11-12</span></h2>
+<p><strong>Chair: </strong>David Feng</p>
+<p>大家好，我是David Feng，你们可以叫我大卫，因为我很爱吃。=P 我今年大四，在多伦多大学读土木工程系。今年我会在UTMCCF里负责团长的职位，带领UTMCCF的同工们一起服侍大家，也一起在耶稣基督里建造一个合一团体并让周围的同学们有机会了解福音与认识上帝。我喜欢弹钢琴、敬拜神、看电影、发呆和&#8230;..哦，当然啦，还有吃东西！ 欢迎大家来跟我一起敬拜神、讨论圣经和&#8230;吃饭。UTMCCF跟别的社团和组织的不同就是我们希望这里成为你们的家。所以，不论你是新生还是老生、基督徒或不是基督徒，我们都欢迎大家来到UTMCCF这个充满爱与欢乐的大家庭，和我们一起哭、一起笑、一起聊天、一起敬拜、一起唱歌、一起运动、一起学习并一起建立真诚的友谊。</p>
+<p><strong>Vice-Chair:</strong> Yang Xia</p>
+<p>大家好，我是小阳，今年是Neuroscience 和 Psycology double major 的大三学生。 首先要感谢神又给我一次在MCCF里服侍的机会！对我来说，这里就是一个温暖的家，有着非常非常关爱我的弟兄姐妹们。我今年的职位是副团长，可实际上就是在团契里打杂的，哪里需要的话就去哪里~ 平时的爱好是上网、读破案小说、看日剧、看漫画，有同样兴趣的同学可以找我聊天哦。 不论你是不是基督徒，不论你来mccf想要寻找什么，我希望能把主的爱与真诚的友谊带给你~ 欢迎你来加入我们的查经、敬拜、祷告、和各项游戏活动哦！让我们一起来度过一个彼此关怀扶持、温暖如家一年吧！</p>
+<p><strong>Secretary:</strong> Catherine Fu</p>
+<p>大家好, 我是Catherine, 现在是大四的学生, 在UT读数学&amp;统计. 这已经是我第三年参加MCCF了, 很开心今年可以在MCCF参与服事. MCCF是我在多伦多的第二个家, 这里有很多可爱的兄弟姐妹, 我们大家一起吃, 一起玩, 一起学习, 一起分享, 因为有MCCF的陪伴, 我的生活变得快乐而充实!! 欢迎有兴趣的你一起加入我们, 和我们一同感受家的温暖~~</p>
+<p><strong>Treasurer:</strong> Maria Wang</p>
+<p>各位看官，小女子Maria这厢有礼了~ 我从冰城哈尔滨来（东北人儿，纯的），今年读大四的Commerce—Accounting。平时比较宅，喜欢在家打打游戏看看电影读读小说，也喜欢和弟兄姐妹们在一起聊天分享。我是一个很乐观开朗的人，喜欢开玩笑，自认为比较好接触。真诚的欢迎各位来到MCCF这个融洽的大家庭，让我们一起跟随着神的话语，彼此交心，坦诚相待，在主里做美妙的见证吧！</p>
+<p><strong>Worship Leader:</strong> Jia Zhang</p>
+<p>大家好，我是嘉 (Jia), 是多大Life Science 二年级的学生。感谢主，今年我有机会在UTMCCF侍奉，担当Worship Leader这个职位。在今年的团契活动中我将带领各位弟兄姐妹们一起用诗歌敬拜赞美主。欢迎更多新的朋友们，弟兄姐妹们来参加今年我们喜乐的敬拜小组。我的兴趣爱好广泛，但主要是唱歌，听音乐，和看小说。如果有也喜欢唱歌，音乐和小说的朋友们，欢迎你们随时来找我聊天。如果有不是很喜欢音乐或小说的朋友们也欢迎你们随时来找我聊天，因为我还有很多其它的兴趣爱好~  最后欢迎大家，无论是基督徒或非基督徒，来参加MCCF, 我们一起交朋友，一起敬拜，一起读圣经，一起在团契中享受主内美好时光~</p>
+<p><strong>Female Caring Leader:</strong> Susanna Yan</p>
+<p>大家好我是Susanna, 现在是UT Rotman Commerce大三的学生。我今年将主要负责女生的关怀。 我平时喜欢看电影，唱歌（虽说我很热爱，但是水平极度有限），旅游，当然最喜爱欢的就是和姐妹们在主里交流。无论你在生活或是学习上有任何的困惑还是烦心事，我都愿意做一个好的倾听者和你一起分享，一起读经，一起祷告，并学着把耶稣基督的爱传给周围的每一个人。怎么样，赶快来加入我们爱的大家族吧，让我在爱中成长，彼此建造！</p>
+<p><strong>Male Caring Leader: </strong>Yinming Sun</p>
+<p>你喜欢一起打球或玩游戏吗？你喜欢聊关于学业或爱好吗？ 无论你的专业与爱好是什么，我都希望在各样的 MCCF活动中能真诚的认识你。这里是神的家，是我的家，也是为你预备的家。我是Yinming，Engineering Science  + PEY 的毕业生，现在本校读研。团契家庭里，我没什么固定的工作，就是希望能帮大家学习和玩的开心，也认识到基督信仰是一种有盼望，有平安，有喜乐的生活。</p>
+<h2><span style="text-decoration:underline;">Committee 10-11</span></h2>
+<p><strong>Chair: </strong>Bradley Liou</p>
+<p>大 家好，我是 Bradley Liou。 你們可以叫我 Brad，上年就讀多大ECE (Eletrical Computer Engineering)大三，今年是IBM的實習工程師。 我今年再次的擔當了 MCCF (Mandarin Chinese Christian Fellowship) 的團長，也就是 Chair，翻中文是 “椅子”，所以理所當然，你們也可以稱呼我為 “今年MCCF的椅子”。 我今年在MCCF的工作呢，就是什麼都做一些 &#8211; 畢竟椅子本來就是要拿來(做)坐的，然後盡量和大家有更深的關係。我很喜歡唱歌，讀聖經，和打籃球，所以如果你也喜歡唱歌，讀聖經，或是打籃球 的話，請歡迎隨時約我出去。我們MCCF這裡是充滿著神的愛的地方。 不論你是第一次來到多大，還是已經在多大讀書，不論你是基督徒，或是非基督徒，不論你是想要認識更多有關基督教的信仰，或是單純的來Make Friends，我們都非常歡迎你的到來! ps. 別被我的照片嚇到，其實我是很可愛的 🙂</p>
+<p><strong>Vice-Chair: </strong>Yang Sun</p>
+<p>职责：小羊们的副看守者</p>
+<p>资格：从神而来的力量和帮助</p>
+<p>爱好：跟姐妹弟兄们一起走过人生的种种阶段，观察神的作为，见证他的信实与力量。</p>
+<p>工作：祷告，聊天</p>
+<p><strong>Secretary: </strong>Yinming Sun</p>
+<p>Hi everyone, my name is Yinming Sun.  I’m a 2<sup>nd</sup> year master’s student in biomedical engineering.  In addition to spending long hours doing classified research, I enjoy archery and many other kinds of projectile sports such as badminton.   I’m really happy that God has given me the opportunity to serve in MCCF for another year.  There’s still much for me to learn about how to live a life committed to Christ, but as the secretary for fellowship, I will be able to see and help with many aspects of a fellowship founded in His name.   It is a joy to see the Gospel spread on the university campus and I look forward to meeting many new faces at our planned events.</p>
+<p><strong>Treasurer: </strong>Haojun Liu</p>
+<p>大 家好，我是刘浩竣，在多大读电子工程第四年。我今年的职务是会计。平时我喜欢旅游，摄影，唱歌等其它的爱好（想要更多的了解就来和我来聊天吧）。我也很 喜欢弟兄姐妹和大家分享神的话语。希望今年能更多的认识大家。无论你有专业上的困难还是校园生活的不顺利，我都愿意与你同行。</p>
+<p><strong>Devotional Leader: </strong>David Feng</p>
+<p>大 家好，我是David。我今年大三，读多大土木工程。我会在MCCF负责灵修，帮助弟兄姐妹们灵命的成长并带领大家查考圣经。如果你对圣经有什么问题或你 想了解基督教是什么，我会尽力回答你的问题。不管是信仰上的疑问还是生活上的难题，我都愿意帮你解答给你建议。欢迎你来到MCCF，让我们一起做朋友、一 起学习神的话语、一起度过美好的时光！</p>
+<p><strong>Worship Leader:</strong> Sam Wang</p>
+<p>Hello, 我是今年的worship leader, 我的名字是Sam. 讀多大commerce四年級今年會幫助團契以及大家來帶領敬拜讚美,我的興趣非常的廣大,如果有人對音樂或唱歌有興趣,或著妳們對敬拜是什麼有任何的疑 問,非常歡迎妳們來找我聊聊.也很歡迎妳們來MCCF跟我們一起體驗U OF T 還有團契的生活.</p>
+<p><strong>Special Events Coordinator: </strong>Tony Yin</p>
+<p>Tony Yin, Junior in Life Science and Economics. 在中国天津长大, 14 岁来到多伦多. 16岁那年生命和 理想发生重大改变, 从此决心要做一个为社会作出贡献, 帮助贫苦 悲痛的人们打开心灵的窗口, 认识那位生命的主宰. 放弃从商,立志当一名无国界医生. 要在那一片战火不断,疾病肆虐的贫苦土地活出人生真正意义. 用医术解决身体的疾痛, 用福音医治心灵的创伤.</p>
+<p>酷爱参加各种校园活动,羽毛球与游泳.</p>
+<p><strong>Caring Leader: </strong>Yang Xia</p>
+<p>大 家好，我是小阳，今年是Life Sci大二的学生~喜欢上网、读破案小说、看日剧、看漫画，但是最最喜爱的就是亲近这位为我们舍弃生命的主耶稣基督。今年负责关怀小组的就是本人啦，不论 你是不是基督徒，不论你来mccf想要寻找什么，我希望能把主的爱与真诚的友谊带给你~让我们一起来度过一个彼此关怀扶持、温暖如家一年吧！</p>
+<h2><span style="text-decoration:underline;">Committee 09-10</span></h2>
+<p><strong>Chair:</strong> Bradley Liou</p>
+<p>大家好，我是 Bradley Liou。 你們可以叫我 Brad，目前就讀多大ECE (Eletrical Computer Engineering)大三。我是今年 MCCF (Mandarin Chinese Christian Fellowship) 的團長，也就是 Chair，翻中文是 “椅子”，所以我想，你們也可以稱呼我為 “今年MCCF的椅子”。 我今年在MCCF的工作呢，就是什麼都做一些，然後盡量和大家有更深的關係。我很喜歡唱歌，讀聖經，和打籃球，所以如果你也喜歡唱歌，讀聖經，或是打籃球 的話，請歡迎隨時約我出去。我們MCCF這裡是充滿著神的愛的地方。 不論你是第一次來到多大，還是已經在多大讀書，不論你是基督徒，或是非基督徒，不論你是想要認識更多有關基督教的信仰，或是單純的來Make Friends，我們都非常歡迎你的到來。</p>
+<p><strong>Vice-Chair:</strong> Lemuel Tong</p>
+<p>大家好，我是Lemuel，今年是Engineering Science 的纳米(Nano)工程系大四…应该是大五因为我去年做了一年实习。我很高兴可以在今年的团契服侍大家，我的职位是vice椅子。I’m really looking forward to this upcoming year and getting to everyone at MCCF. Some of the things I enjoy doing include working out, biking, playing the piano and learning different cultures and languages. Whether you’re a frosh or a fourth year we welcome you to come join us in a time of prayer, Bible study, praise and worship and of course community. See you soon!</p>
+<p><strong>Secretary:</strong> Louisa Hong</p>
+<p>Louisa is a 3rd year life science student. She was introduced to church by her parents, and she was baptized on Easter Sunday 09.  Since it hasn’t been long since she accepted Christ; she is eager to learn more about the Scriptures, and to meet more Christian friends. Louisa has been on a short-term mission trip to China before, and she hopes to share the gospel with everyone, including people in Canada and China.</p>
+<p><strong>Treasurer:</strong> Yinming Sun</p>
+<p>My name is Yinming Sun, literal translation for morning tiger.  My past has been 45% spent in Beijing, where I was born, and 55% spent in North America, where I am currently continuing my study in biomedical engineering as a U of T graduate.  In addition to my academic interests, I enjoy traveling, playing the flute, doing pencil sketches, and any sport that involves projectiles.   I am thrilled to be part of the MCCF committee and hope to be closer to God and His people through contributing more to fellowship works.</p>
+<p><strong>Devotional Leader:</strong> Anye Xu</p>
+<p>大家好，我是安耶，Life Sci第四年的！今年团契灵修的导航人就是在下，主要帮助弟兄姐妹生命的成长和负责查考圣经！如果你对生命的意义有什么疑问，如果你想要更加了解基督教是 什么，如果你有很多感动想要分享，如果你愿意多认识一个朋友，那么我会在这里尽力回答你的问题，告诉你更多关于我们的故事，静静聆听你的心声，也愿意成为 你的朋友！</p>
+<p><strong>Worship Leader:</strong> David Feng</p>
+<p>I am David Feng and I’m in my second year of Civil Engineering. I am very thankful that God has given us our voices to worship Him. I am also very thankful that the LORD has given us so many talented people who are willing to serve Him.</p>
+<p><strong>Special Events Coordinator:</strong> Sun Yang</p>
+<p>有的时候，我会觉得我是一个没有根的人。0岁到九岁的时候，我在中国西安长大，在那里度过了美好的童年。后来我和家人移民去新加坡，又有了一个小妹 妹（它比我小13岁！）在新加坡的一所教会小学里，我认识了上帝与耶稣。后来在中学和高中里，是班里地一些真挚，热情的基督徒让我认识到我也需要让耶稣做 我生命的主。现在我又来到多伦多，在主里成长，成熟了很多。这么多年，主一直在我身边安慰我，保护我，教导我。这一切都让我深深地认识到，在我还没出生以 前，主已经在看护我，爱我。我知道，我的根就在主里。不论我将来走到哪里，遇到什么困难，他必与我同在。</p>
+<p><strong>Caring Leader:</strong> Sophie Zhao</p>
+<p>怎么也没有想到,自己的“决志蜜月期”会那么长。我常常挂在脸上的微笑是主的爱满满浇灌在心中,几乎溢出的表达。不管你是否跟我一样刚刚认识神,还是你已经与神用很多年时间建立了稳定美满的关系,希望我们能一起呵护关爱彼此,爱人如己。</p>
+<p><strong>Advisor: </strong>T.K. Feng</p>
+<p>My name is T.K.  I am a Master&#8217;s student in Industrial Engineering.  I studied Engineering Science in undergrad here at UofT.  This year I am serving on MCCF as the advisor.  I have attended MCCF for four years and have served in different positions.  I feel MCCF is like a loving family where my heart is always at ease.  I am looking forward to meeting with you at MCCF this year. 生命中有很多决定我希望重新来过。但是，来到ＭＣＣＦ是一个可爱的决定，因为ＭＣＣＦ中充满了可爱的同学。神将我们一个个不可爱的人变成了一个个有生命， 有希望，可爱的同学。</p>
+<h2><span style="text-decoration:underline;">Committee 08-09</span></h2>
+<p><strong>President:</strong> T. K. Feng</p>
+<p><strong>Vice President:</strong> Anye Xu</p>
+<p><strong>Secretary: </strong>Yao Xue</p>
+<p><strong>Treasurer:</strong> Cheng Jin</p>
+<p><strong>Devotional Leader:</strong> Steven Gong</p>
+<p><strong>Worship Leader:</strong> Bradley Liou</p>
+<p><strong>Male Caring Leader:</strong> Tony Kao</p>
+<p><strong>Female Caring Leader:</strong> Vicky Li</p>
+<h2><span style="text-decoration:underline;">Committee 07-08</span></h2>
+<p><strong>President:</strong> Johnny Wu</p>
+<h2><span style="text-decoration:underline;">Committee 06-07</span></h2>
+<p><strong>President:</strong> Johnny Wu</p>
+<h2><span style="text-decoration:underline;">Committee 05-06</span></h2>
+<p><strong>Chair: </strong>Carol Yang</p>
+<p><strong>Social/ Caring :</strong> Francis Li</p>
+<p><strong>Administration : </strong>Michelle Hua</p>
+<p><strong>Devotional Leaders:</strong> Johnny Wu and Grace Yan</p>
+<p>_________________________________________________________</p>
+<p>For next year&#8217;s committee, please download the description of the <a href="https://utmccf.files.wordpress.com/2009/03/utmccf-09-10-committee-roles.pdf">UTMCCF Committee Positions</a>.</p>
+</div>
+<div id="jp-post-flair" class="sharedaddy sd-like-enabled sd-sharing-enabled"><div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon-text sd-sharing"><h3 class="sd-title">Share this:</h3><div class="sd-content"><ul><li class="share-twitter"><a rel="nofollow noopener noreferrer" data-shared="sharing-twitter-25" class="share-twitter sd-button share-icon" href="https://utmccf.com/committee-%e5%a7%94%e5%91%98%e4%bc%9a-0809/?share=twitter" target="_blank" title="Click to share on Twitter"><span>Twitter</span></a></li><li class="share-facebook"><a rel="nofollow noopener noreferrer" data-shared="sharing-facebook-25" class="share-facebook sd-button share-icon" href="https://utmccf.com/committee-%e5%a7%94%e5%91%98%e4%bc%9a-0809/?share=facebook" target="_blank" title="Click to share on Facebook"><span>Facebook</span></a></li><li class="share-end"></li></ul></div></div></div><div class='sharedaddy sd-block sd-like jetpack-likes-widget-wrapper jetpack-likes-widget-unloaded' id='like-post-wrapper-6991593-25-63e56d62e8fc2' data-src='//widgets.wp.com/likes/index.html?ver=20220105#blog_id=6991593&amp;post_id=25&amp;origin=utmccf.wordpress.com&amp;obj_id=6991593-25-63e56d62e8fc2&amp;domain=utmccf.com' data-name='like-post-frame-6991593-25-63e56d62e8fc2' data-title='Like or Reblog'><h3 class='sd-title'>Like this:</h3><div class='likes-widget-placeholder post-likes-widget-placeholder' style='height: 55px;'><span class='button'><span>Like</span></span> <span class="loading">Loading...</span></div><span class='sd-text-color'></span><a class='sd-link-color'></a></div></div> </div>
+</article>
+</main>
+</div>
+</div>
+</div>
+<div id="tertiary" class="footer-widget-area" role="complementary">
+<div class="footer-widget-wrapper clear">
+<div class="footer-widget">
+<aside id="widget_contact_info-10" class="widget widget_contact_info"><h2 class="widget-title">Location</h2><div itemscope itemtype="http://schema.org/LocalBusiness"><div class="confit-address" itemscope itemtype="http://schema.org/PostalAddress" itemprop="address"><a href="https://maps.google.com/maps?z=16&#038;q=hart%2Bhouse%2Bdebate%2Broom" target="_blank" rel="noopener noreferrer">Hart House Debate Room</a></div><div class="confit-hours" itemprop="openingHours">Friday 6-8 PM</div></div></aside><aside id="text-6" class="widget widget_text"><h2 class="widget-title">email</h2> <div class="textwidget"><p><a href="../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="5a33343c351a2f2e3739393c74393537">[email&#160;protected]</a></p>
+</div>
+</aside> </div>
+<div class="footer-widget">
+<aside id="block-23" class="widget widget_block"><b>其他团契 OTHER FELLOWSHIPS</b></aside><aside id="block-22" class="widget widget_block">
+<ul>
+<li><a href="http://www.tccf.ca/">多大粤语基督徒团契 TCCF (Cantonese)</a></li>
+<li><a rel="noreferrer noopener" href="https://utccf.carrd.co/" target="_blank">多大华人基督徒团契 CCF (English)</a></li>
+</ul>
+</aside><aside id="linkcat-289787266" class="widget widget_links"><h2 class="widget-title">支持机构 Organizations</h2>
+<ul class='xoxo blogroll'>
+<li><a href="http://www.afccanada.org/" rel="noopener" target="_blank">加拿大福音使者协会 AFC</a></li>
+<li><a href="http://ccef-oc.org/" rel="noopener" target="_blank">加拿大校園福音團契 CCEF</a></li>
+</ul>
+</aside>
+<aside id="linkcat-18223485" class="widget widget_links"><h2 class="widget-title">有关链接 Related Links</h2>
+<ul class='xoxo blogroll'>
+<li><a href="https://www.biblegateway.com" rel="noopener" title="Online Bible Reference" target="_blank">Bible Gateway</a></li>
+<li><a href="https://www.facebook.com/groups/uoftmccf/?ref=bookmarks" rel="noopener" target="_blank">团契 Facebook</a></li>
+</ul>
+</aside>
+</div>
+<div class="footer-widget">
+<aside id="pages-7" class="widget widget_pages"><h2 class="widget-title">Pages</h2>
+<ul>
+<li class="page_item page-item-1750"><a href="../churches/index.html">周边教会 Churches Around&nbsp;Campus</a></li>
+<li class="page_item page-item-503"><a href="../团契历史-mccf-history/index.html">团契历史 MCCF History</a></li>
+<li class="page_item page-item-29"><a href="../about-us-关于我们/index.html">团契宗旨 Constitution</a></li>
+<li class="page_item page-item-2815"><a href="../近期活动-2019/index.html">往期活动 | Past&nbsp;Events</a></li>
+</ul>
+</aside><aside id="jetpack_widget_social_icons-3" class="widget jetpack_widget_social_icons"><h2 class="widget-title">Follow Us</h2>
+<ul class="jetpack-social-widget-list size-large">
+<li class="jetpack-social-widget-item">
+<a href="https://www.facebook.com/groups/uoftmccf/?ref=bookmarks" target="_blank" rel="noopener noreferrer"><span class="screen-reader-text">Facebook</span><svg class="icon icon-facebook" aria-hidden="true" role="presentation"> <use href="#icon-facebook" xlink:href="#icon-facebook"></use> </svg> </a>
+</li>
+<li class="jetpack-social-widget-item">
+<a href="https://www.youtube.com/channel/UCjTZhoLEgJbU4rpL0znbdIw" target="_blank" rel="noopener noreferrer"><span class="screen-reader-text">YouTube</span><svg class="icon icon-youtube" aria-hidden="true" role="presentation"> <use href="#icon-youtube" xlink:href="#icon-youtube"></use> </svg> </a>
+</li>
+<li class="jetpack-social-widget-item">
+<a href="https://www.instagram.com/uoft_mccf" target="_blank" rel="noopener noreferrer"><span class="screen-reader-text">Instagram</span><svg class="icon icon-instagram" aria-hidden="true" role="presentation"> <use href="#icon-instagram" xlink:href="#icon-instagram"></use> </svg> </a>
+</li>
+</ul>
+</aside> </div>
+</div>
+</div>
+<footer id="colophon" class="site-footer" role="contentinfo">
+<div class="footer-wrapper clear">
+
+</div>
+</footer>
+</div>
+
+<script data-cfasync="false" src="../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src='https://0.gravatar.com/js/gprofiles.js?ver=202306z' id='grofiles-cards-js'></script>
+<script id='wpgroho-js-extra'>
+var WPGroHo = {"my_hash":""};
+</script>
+<script crossorigin='anonymous' type='text/javascript' src='https://s0.wp.com/wp-content/mu-plugins/gravatar-hovercards/wpgroho.js?m=1610363240h'></script>
+<script>
+		// Initialize and attach hovercards to all gravatars
+		( function() {
+			function init() {
+				if ( typeof Gravatar === 'undefined' ) {
+					return;
+				}
+
+				if ( typeof Gravatar.init !== 'function' ) {
+					return;
+				}
+
+				Gravatar.profile_cb = function ( hash, id ) {
+					WPGroHo.syncProfileData( hash, id );
+				};
+
+				Gravatar.my_hash = WPGroHo.my_hash;
+				Gravatar.init( 'body', '#wp-admin-bar-my-account' );
+			}
+
+			if ( document.readyState !== 'loading' ) {
+				init();
+			} else {
+				document.addEventListener( 'DOMContentLoaded', init );
+			}
+		} )();
+	</script>
+<div style="display:none">
+</div>
+<div id="actionbar" style="display: none;" class="actnbr-pub-edin actnbr-has-follow">
+<ul>
+<li class="actnbr-btn actnbr-hidden">
+<a class="actnbr-action actnbr-actn-follow " href="index.html">
+<svg class="gridicon gridicons-reader-follow" height="24" width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 16v2h-3v3h-2v-3h-3v-2h3v-3h2v3h3zM20 2v9h-4v3h-3v4H4c-1.1 0-2-.9-2-2V2h18zM8 13v-1H4v1h4zm3-3H4v1h7v-1zm0-2H4v1h7V8zm7-4H4v2h14V4z" /></g></svg><span>Follow</span>
+</a>
+<a class="actnbr-action actnbr-actn-following  no-display" href="index.html">
+<svg class="gridicon gridicons-reader-following" height="24" width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 13.482L15.508 21 12 17.4l1.412-1.388 2.106 2.188 6.094-6.094L23 13.482zm-7.455 1.862L20 10.89V2H2v14c0 1.1.9 2 2 2h4.538l4.913-4.832 2.095 2.176zM8 13H4v-1h4v1zm3-2H4v-1h7v1zm0-2H4V8h7v1zm7-3H4V4h14v2z" /></g></svg><span>Following</span>
+</a>
+<div class="actnbr-popover tip tip-top-left actnbr-notice" id="follow-bubble">
+<div class="tip-arrow"></div>
+<div class="tip-inner actnbr-follow-bubble">
+<ul>
+<li class="actnbr-sitename">
+<a href="../index.html">
+<img alt='' src='https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=50' class='avatar avatar-50' height='50' width='50' /> utmccf.com </a>
+</li>
+<form method="post" action="https://subscribe.wordpress.com" accept-charset="utf-8" style="display: none;">
+<div>
+<input type="email" name="email" placeholder="Enter your email address" class="actnbr-email-field" aria-label="Enter your email address" />
+</div>
+<input type="hidden" name="action" value="subscribe" />
+<input type="hidden" name="blog_id" value="6991593" />
+<input type="hidden" name="source" value="https://utmccf.com/committee-%e5%a7%94%e5%91%98%e4%bc%9a-0809/" />
+<input type="hidden" name="sub-type" value="actionbar-follow" />
+<input type="hidden" id="_wpnonce" name="_wpnonce" value="33981363eb" /> <div class="actnbr-button-wrap">
+<button type="submit" value="Sign me up">
+Sign me up </button>
+</div>
+</form>
+<li class="actnbr-login-nudge">
+<div>
+Already have a WordPress.com account? <a href="https://wordpress.com/log-in?redirect_to=https%3A%2F%2Fr-login.wordpress.com%2Fremote-login.php%3Faction%3Dlink%26back%3Dhttps%253A%252F%252Futmccf.com%252Fcommittee-%2525e5%2525a7%252594%2525e5%252591%252598%2525e4%2525bc%25259a-0809%252F">Log in now.</a> </div>
+</li>
+</ul>
+</div>
+</div>
+</li>
+<li class="actnbr-ellipsis actnbr-hidden">
+<svg class="gridicon gridicons-ellipsis" height="24" width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M7 12c0 1.104-.896 2-2 2s-2-.896-2-2 .896-2 2-2 2 .896 2 2zm12-2c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2zm-7 0c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2z" /></g></svg> <div class="actnbr-popover tip tip-top-left actnbr-more">
+<div class="tip-arrow"></div>
+<div class="tip-inner">
+<ul>
+<li class="actnbr-sitename">
+<a href="../index.html">
+<img alt='' src='https://utmccf.files.wordpress.com/2017/05/cropped-cross.png?w=50' class='avatar avatar-50' height='50' width='50' /> utmccf.com </a>
+</li>
+<li class="actnbr-folded-customize">
+<a href="https://utmccf.wordpress.com/wp-admin/customize.php?url=https%3A%2F%2Futmccf.wordpress.com%2Fcommittee-%25e5%25a7%2594%25e5%2591%2598%25e4%25bc%259a-0809%2F">
+<svg class="gridicon gridicons-customize" height="20" width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M2 6c0-1.505.78-3.08 2-4 0 .845.69 2 2 2 1.657 0 3 1.343 3 3 0 .386-.08.752-.212 1.09.74.594 1.476 1.19 2.19 1.81L8.9 11.98c-.62-.716-1.214-1.454-1.807-2.192C6.753 9.92 6.387 10 6 10c-2.21 0-4-1.79-4-4zm12.152 6.848l1.34-1.34c.607.304 1.283.492 2.008.492 2.485 0 4.5-2.015 4.5-4.5 0-.725-.188-1.4-.493-2.007L18 9l-2-2 3.507-3.507C18.9 3.188 18.225 3 17.5 3 15.015 3 13 5.015 13 7.5c0 .725.188 1.4.493 2.007L3 20l2 2 6.848-6.848c1.885 1.928 3.874 3.753 5.977 5.45l1.425 1.148 1.5-1.5-1.15-1.425c-1.695-2.103-3.52-4.092-5.448-5.977z" /></g></svg> <span>Customize</span>
+</a>
+</li>
+<li class="actnbr-folded-follow">
+<a class="actnbr-action actnbr-actn-follow " href="index.html">
+<svg class="gridicon gridicons-reader-follow" height="24" width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 16v2h-3v3h-2v-3h-3v-2h3v-3h2v3h3zM20 2v9h-4v3h-3v4H4c-1.1 0-2-.9-2-2V2h18zM8 13v-1H4v1h4zm3-3H4v1h7v-1zm0-2H4v1h7V8zm7-4H4v2h14V4z" /></g></svg><span>Follow</span>
+</a>
+<a class="actnbr-action actnbr-actn-following  no-display" href="index.html">
+<svg class="gridicon gridicons-reader-following" height="24" width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 13.482L15.508 21 12 17.4l1.412-1.388 2.106 2.188 6.094-6.094L23 13.482zm-7.455 1.862L20 10.89V2H2v14c0 1.1.9 2 2 2h4.538l4.913-4.832 2.095 2.176zM8 13H4v-1h4v1zm3-2H4v-1h7v1zm0-2H4V8h7v1zm7-3H4V4h14v2z" /></g></svg><span>Following</span>
+</a>
+</li>
+<li class="actnbr-signup"><a href="https://wordpress.com/start/">Sign up</a></li>
+<li class="actnbr-login"><a href="https://wordpress.com/log-in?redirect_to=https%3A%2F%2Fr-login.wordpress.com%2Fremote-login.php%3Faction%3Dlink%26back%3Dhttps%253A%252F%252Futmccf.com%252Fcommittee-%2525e5%2525a7%252594%2525e5%252591%252598%2525e4%2525bc%25259a-0809%252F">Log in</a></li>
+<li class="actnbr-shortlink"><a href="https://wp.me/PtkPD-p">Copy shortlink</a></li>
+<li class="flb-report"><a href="https://en.wordpress.com/abuse/">Report this content</a></li>
+<li class="actnbr-reader">
+<a href="https://wordpress.com/read/blogs/6991593/posts/25">
+View post in Reader </a>
+</li>
+<li class="actnbr-subs">
+<a href="https://subscribe.wordpress.com/">Manage subscriptions</a>
+</li>
+<li class="actnbr-fold"><a href="index.html">Collapse this bar</a></li>
+</ul>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<script>
+window.addEventListener( "load", function( event ) {
+	var link = document.createElement( "link" );
+	link.href = "https://s0.wp.com/wp-content/mu-plugins/actionbar/actionbar.css?v=20210915";
+	link.type = "text/css";
+	link.rel = "stylesheet";
+	document.head.appendChild( link );
+
+	var script = document.createElement( "script" );
+	script.src = "https://s0.wp.com/wp-content/mu-plugins/actionbar/actionbar.js?v=20220329";
+	script.defer = true;
+	document.body.appendChild( script );
+} );
+</script>
+<script type="text/javascript">
+		window.WPCOM_sharing_counts = {"https:\/\/utmccf.com\/committee-%e5%a7%94%e5%91%98%e4%bc%9a-0809\/":25};
+	</script>
+<script id='edin-navigation-js-extra'>
+var screen_reader_text = {"expand":"<span class=\"screen-reader-text\">expand child menu<\/span>","collapse":"<span class=\"screen-reader-text\">collapse child menu<\/span>"};
+</script>
+<script id='edin-script-js-extra'>
+var screen_reader_text = {"expand":"<span class=\"screen-reader-text\">expand child menu<\/span>","collapse":"<span class=\"screen-reader-text\">collapse child menu<\/span>"};
+</script>
+<script id='sharing-js-js-extra'>
+var sharing_js_options = {"lang":"en","counts":"1","is_stats_active":"1"};
+</script>
+<script crossorigin='anonymous' type='text/javascript' src='https://s0.wp.com/_static/??-eJyNkN1uwjAMhV9owZq0FbiY9iiTG5vWbeJm+WHj7XERFwimiSufyMcnnw78JOcXrawVYnMptEG0wMQ1oZ+vb0h5oearLArRVOAC6xH66g5LjjAVWKcr9WS7zVRe4CbXtsRH8Zx+71c3XwaZLfa7ceMRlQLne3MdOZoltR6YjMpyFY8y4Ar2hLnMklwQnQ3at+IO8sDzx9U6/8FGiqKuxwwRS+VsytVs3T3U8FS9X6Ie+iaBoIyYmZDodJGiwyZeUD7jx2u3fd93u27/Np0BDAioQA=='></script>
+<script type='text/javascript'>
+var windowOpen;
+			( function () {
+				function matches( el, sel ) {
+					return !! (
+						el.matches && el.matches( sel ) ||
+						el.msMatchesSelector && el.msMatchesSelector( sel )
+					);
+				}
+
+				document.body.addEventListener( 'click', function ( event ) {
+					if ( ! event.target ) {
+						return;
+					}
+
+					var el;
+					if ( matches( event.target, 'a.share-twitter' ) ) {
+						el = event.target;
+					} else if ( event.target.parentNode && matches( event.target.parentNode, 'a.share-twitter' ) ) {
+						el = event.target.parentNode;
+					}
+
+					if ( el ) {
+						event.preventDefault();
+
+						// If there's another sharing window open, close it.
+						if ( typeof windowOpen !== 'undefined' ) {
+							windowOpen.close();
+						}
+						windowOpen = window.open( el.getAttribute( 'href' ), 'wpcomtwitter', 'menubar=1,resizable=1,width=600,height=350' );
+						return false;
+					}
+				} );
+			} )();
+var windowOpen;
+			( function () {
+				function matches( el, sel ) {
+					return !! (
+						el.matches && el.matches( sel ) ||
+						el.msMatchesSelector && el.msMatchesSelector( sel )
+					);
+				}
+
+				document.body.addEventListener( 'click', function ( event ) {
+					if ( ! event.target ) {
+						return;
+					}
+
+					var el;
+					if ( matches( event.target, 'a.share-facebook' ) ) {
+						el = event.target;
+					} else if ( event.target.parentNode && matches( event.target.parentNode, 'a.share-facebook' ) ) {
+						el = event.target.parentNode;
+					}
+
+					if ( el ) {
+						event.preventDefault();
+
+						// If there's another sharing window open, close it.
+						if ( typeof windowOpen !== 'undefined' ) {
+							windowOpen.close();
+						}
+						windowOpen = window.open( el.getAttribute( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+						return false;
+					}
+				} );
+			} )();
+</script>
+<script type="text/javascript">
+// <![CDATA[
+(function() {
+try{
+  if ( window.external &&'msIsSiteMode' in window.external) {
+    if (window.external.msIsSiteMode()) {
+      var jl = document.createElement('script');
+      jl.type='text/javascript';
+      jl.async=true;
+      jl.src='/wp-content/plugins/ie-sitemode/custom-jumplist.php';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(jl, s);
+    }
+  }
+}catch(e){}
+})();
+// ]]>
+</script> <iframe src='https://widgets.wp.com/likes/master.html?ver=20220105#ver=20220105&amp;origin=https://utmccf.com' scrolling='no' id='likes-master' name='likes-master' style='display:none;'></iframe>
+<div id='likes-other-gravatars'>
+<div class="likes-text">
+<span>%d</span> bloggers like this: </div>
+<ul class="wpl-avatars sd-like-gravatars"></ul>
+</div>
+<script src="https://stats.wp.com/w.js?63" defer></script> <script type="text/javascript">
+_tkq = window._tkq || [];
+_stq = window._stq || [];
+_tkq.push(['storeContext', {'blog_id':'6991593','blog_tz':'-5','user_lang':'en','blog_lang':'en','user_id':'0'}]);
+_stq.push(['view', {'blog':'6991593','v':'wpcom','tz':'-5','user_id':'0','post':'25','subd':'utmccf'}]);
+_stq.push(['extra', {'crypt':'UE40eW5QN0p8M2Y/RE1mNzc2NTVTamdsd0xoLz9RQkM2K298TXY9bERQMXc2MjhEaVZfb2wwakRoSj0mUkp1THptM1NdbkV1WjZIcU9mVWQmPUIvMlN6Jk8wW3NYVEJ3dWZOWExuWD8rZDJfUmZbTHYuQ1p5c085WXlLX2ZYdmZdNmFDekNmX2VTeXFtOV1FSlQxemhoTzB3MzYrJTV6UVhsdW1EfjNHYmxGLFNqMWZdT2F+MGZkWWJBJjdTY1JfeU0lYT1DUG9oUkM0JjR2eTZFLzUud3N4TXJ4al0lQXRDNTMlP2xKdXx5L2dQU0RobDdiaWt3R2pXX2NOWDE/dTVoLnNzNHFwdXo/d3J4RGJ5cUwzSXV8SWU2OVtoRVZqWlhNMnRMdWFaa2l6WTE0T1Z5Yy4='}]);
+_stq.push([ 'clickTrackerInit', '6991593', '25' ]);
+	</script>
+<noscript><img src="https://pixel.wp.com/b.gif?v=noscript" style="height:1px;width:1px;overflow:hidden;position:absolute;bottom:1px;" alt="" /></noscript>
+<script>
+if ( 'object' === typeof wpcom_mobile_user_agent_info ) {
+
+	wpcom_mobile_user_agent_info.init();
+	var mobileStatsQueryString = "";
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedPlatformName )
+		mobileStatsQueryString += "&x_" + 'mobile_platforms' + '=' + wpcom_mobile_user_agent_info.matchedPlatformName;
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedUserAgentName )
+		mobileStatsQueryString += "&x_" + 'mobile_devices' + '=' + wpcom_mobile_user_agent_info.matchedUserAgentName;
+	
+	if( wpcom_mobile_user_agent_info.isIPad() )
+		mobileStatsQueryString += "&x_" + 'ipad_views' + '=' + 'views';
+
+	if( "" != mobileStatsQueryString ) {
+		new Image().src = document.location.protocol + '//pixel.wp.com/g.gif?v=wpcom-no-pv' + mobileStatsQueryString + '&baba=' + Math.random();
+	}
+	
+}
+</script>
+</body>
+</html>
