@@ -1,0 +1,148 @@
+--2023-02-09 16:30:05--  https://utmccf.com/
+Resolving utmccf.com (utmccf.com)... 172.64.80.1
+Connecting to utmccf.com (utmccf.com)|172.64.80.1|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [text/html]
+Saving to: 'utmccf.com/index.html'
+
+     0K .......... .......... .......... .......... .......... 1.13M
+    50K .........                                              1.94M=0.05s
+
+Last-modified header missing -- time-stamps turned off.
+2023-02-09 16:30:06 (1.21 MB/s) - 'utmccf.com/index.html' saved [60754]
+
+Loading robots.txt; please ignore errors.
+--2023-02-09 16:30:06--  https://utmccf.com/robots.txt
+Reusing existing connection to utmccf.com:443.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [text/plain]
+Saving to: 'utmccf.com/robots.txt.tmp'
+
+     0K                                                        38.9M=0s
+
+2023-02-09 16:30:06 (38.9 MB/s) - 'utmccf.com/robots.txt.tmp' saved [620]
+
+Removing utmccf.com/robots.txt.tmp.
+--2023-02-09 16:30:06--  https://utmccf.com/xmlrpc.php
+Reusing existing connection to utmccf.com:443.
+HTTP request sent, awaiting response... 405 Method Not Allowed
+2023-02-09 16:30:06 ERROR 405: Method Not Allowed.
+
+--2023-02-09 16:30:06--  https://utmccf.com/%5C%22https:%5C/%5C/wordpress.com%5C/read%5C%22
+Reusing existing connection to utmccf.com:443.
+HTTP request sent, awaiting response... 301 Moved Permanently
+Location: https://utmccf.com/%5C%22https:%5C/%5C/wordpress.com%5C/read%5C [following]
+--2023-02-09 16:30:06--  https://utmccf.com/%5C%22https:%5C/%5C/wordpress.com%5C/read%5C
+Reusing existing connection to utmccf.com:443.
+HTTP request sent, awaiting response... 404 Not Found
+2023-02-09 16:30:06 ERROR 404: Not Found.
+
+--2023-02-09 16:30:06--  https://utmccf.com/fellowship
+Reusing existing connection to utmccf.com:443.
+HTTP request sent, awaiting response... 301 Moved Permanently
+Location: https://utmccf.com/fellowship/ [following]
+--2023-02-09 16:30:07--  https://utmccf.com/fellowship/
+Reusing existing connection to utmccf.com:443.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [text/html]
+Saving to: 'utmccf.com/fellowship.html'
+
+     0K .......... .......... .......... .......... .......... 5.27M
+    50K .......... ....                                        10.3M=0.01s
+
+2023-02-09 16:30:07 (5.93 MB/s) - 'utmccf.com/fellowship.html' saved [66490]
+
+--2023-02-09 16:30:07--  https://utmccf.com/info/
+Reusing existing connection to utmccf.com:443.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [text/html]
+Saving to: 'utmccf.com/info/index.html'
+
+     0K .......... .......... .......... .......... .......... 6.64M
+    50K ....                                                   84.0G=0.007s
+
+Last-modified header missing -- time-stamps turned off.
+2023-02-09 16:30:07 (7.23 MB/s) - 'utmccf.com/info/index.html' saved [55711]
+
+--2023-02-09 16:30:07--  https://utmccf.com/life/
+Reusing existing connection to utmccf.com:443.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [text/html]
+Saving to: 'utmccf.com/life/index.html'
+
+     0K .......... .......... .......... .......... .......... 3.49M
+    50K ...                                                    64.3G=0.01s
+
+Last-modified header missing -- time-stamps turned off.
+2023-02-09 16:30:07 (3.73 MB/s) - 'utmccf.com/life/index.html' saved [54652]
+
+--2023-02-09 16:30:07--  https://utmccf.com/%C3%A4%C2%BB%C2%A3%C3%A7%C2%A5%C2%B7%C3%A4%C2%BA%E2%80%B9%C3%A9%C2%A1%C2%B9-prayer-requests/
+Reusing existing connection to utmccf.com:443.
+HTTP request sent, awaiting response... 404 Not Found
+2023-02-09 16:30:07 ERROR 404: Not Found.
+
+--2023-02-09 16:30:07--  https://utmccf.com/conference/
+Reusing existing connection to utmccf.com:443.
+HTTP request sent, awaiting response... 200 OK
+Server ignored If-Modified-Since header for file 'utmccf.com/conference/index.html'.
+You might want to add --no-if-modified-since option.
+
+--2023-02-09 16:30:07--  https://utmccf.com/%C3%A8%C2%BF%E2%80%98%C3%A6%C5%93%C5%B8%C3%A6%C2%B4%C2%BB%C3%A5%C5%A0%C2%A8-2019/
+Connecting to utmccf.com (utmccf.com)|172.64.80.1|:443... connected.
+HTTP request sent, awaiting response... 404 Not Found
+2023-02-09 16:30:08 ERROR 404: Not Found.
+
+--2023-02-09 16:30:08--  https://utmccf.com/about-us-%C3%A5%E2%80%A6%C2%B3%C3%A4%C2%BA%C5%BD%C3%A6%CB%86%E2%80%98%C3%A4%C2%BB%C2%AC/
+Reusing existing connection to utmccf.com:443.
+HTTP request sent, awaiting response... 404 Not Found
+2023-02-09 16:30:08 ERROR 404: Not Found.
+
+--2023-02-09 16:30:08--  https://utmccf.com/%C3%A5%E2%80%BA%C2%A2%C3%A5%C2%A5%E2%80%98%C3%A5%C5%BD%E2%80%A0%C3%A5%C2%8F%C2%B2-mccf-history/
+Reusing existing connection to utmccf.com:443.
+HTTP request sent, awaiting response... 404 Not Found
+2023-02-09 16:30:08 ERROR 404: Not Found.
+
+--2023-02-09 16:30:08--  https://utmccf.com/committee-16-17/
+Reusing existing connection to utmccf.com:443.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [text/html]
+Saving to: 'utmccf.com/committee-16-17/index.html'
+
+     0K .......... .......... .......... .......... .......... 6.13M
+    50K .......... .......... ....                             14.0M=0.01s
+
+Last-modified header missing -- time-stamps turned off.
+2023-02-09 16:30:08 (7.50 MB/s) - 'utmccf.com/committee-16-17/index.html' saved [75898]
+
+--2023-02-09 16:30:08--  https://utmccf.com/churches/
+Reusing existing connection to utmccf.com:443.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [text/html]
+Saving to: 'utmccf.com/churches/index.html'
+
+     0K .......... .......... .......... .......... .......... 9.66M
+    50K .......                                                 109M=0.005s
+
+Last-modified header missing -- time-stamps turned off.
+2023-02-09 16:30:08 (11.0 MB/s) - 'utmccf.com/churches/index.html' saved [59230]
+
+--2023-02-09 16:30:08--  https://utmccf.com/cdn-cgi/l/email-protection
+Reusing existing connection to utmccf.com:443.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [text/html]
+Saving to: 'utmccf.com/cdn-cgi/l/email-protection.html'
+
+     0K ....                                                    596M=0s
+
+Last-modified header missing -- time-stamps turned off.
+2023-02-09 16:30:08 (596 MB/s) - 'utmccf.com/cdn-cgi/l/email-protection.html' saved [4686]
+
+nofollow attribute found in utmccf.com/cdn-cgi/l/email-protection.html. Will not follow any links on this page
+--2023-02-09 16:30:08--  https://utmccf.com/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js
+Reusing existing connection to utmccf.com:443.
+HTTP request sent, awaiting response... 304 Not Modified
+File 'utmccf.com/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js' not modified on server. Omitting download.
+
+--2023-02-09 16:30:08--  https://utmccf.com/info/%5C%22https:%5C/%5C/wordpress.com%5C/read%5C%22
+Reusing existing connection to utmccf.com:443.
+HTTP request sent, awaiting response... ^C
