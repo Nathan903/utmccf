@@ -32,5 +32,5 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action bot"
           git add -A
-          git commit -am "Audo cloned website"
+          git commit -am "Auto cloned website"
           git push
