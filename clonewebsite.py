@@ -11,8 +11,11 @@ tagsToRemove=(
   #remove the blank space above main menu e.g.   <a href="index.html" class="site-logo-link" rel="home" itemprop="url"></a>
   r"""<a href=.*?site-logo-link.*?>.*?</a>""", 
   #footer ad, e.g. <div class="site-info"><a href="https://wordpress.com/?ref=footer_blog" rel="nofollow">Blog at WordPress.com.</a></div>
-  r"""<div.class=.site-info.>[\s\S]*?log at WordPress.com[\s\S]*?</div>""", 
- 
+  r"""<div.class=.site-info.>[\s\S]*?log at WordPress.com[\s\S]*?</div>""",
+  
+  r"""<script id="wpcom_remote_login_js">[\s\S]*?<\/script>""", #wp login  
+  r"""<script\b[^>]*>[^>]*?actionbar[\s\S]*?<\/script\b[^>]*>""",
+
   #r"""<script[\s\S]*?>[\s\S]*?<\/script>""", #all <script> tags
   ############below are optional optimization####################
   r"""<link.*rel=.pingback..*?>""", #pingbacks like <link rel="pingback" href="https://tendertastytester.wordpress.com/xmlrpc.php">
