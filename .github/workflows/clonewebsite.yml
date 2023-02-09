@@ -1,4 +1,3 @@
-YAML
 name: Clone website
 
 # **What it does**: Renders the content of every page and check all internal links.
