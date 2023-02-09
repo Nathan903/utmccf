@@ -2,7 +2,7 @@ domain = "utmccf.com"
 
 downloadAgain=True
 resultzip=False
-verbose=True
+verbose=False
 testOnlyOneFile=False
 
 tagsToRemove=(
