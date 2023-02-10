@@ -10,146 +10,7 @@
 <meta name='robots' content='max-image-preview:large' />
 
 <!-- Async WordPress.com Remote Login -->
-<script id="wpcom_remote_login_js">
-var wpcom_remote_login_extra_auth = '';
-function wpcom_remote_login_remove_dom_node_id( element_id ) {
-	var dom_node = document.getElementById( element_id );
-	if ( dom_node ) { dom_node.parentNode.removeChild( dom_node ); }
-}
-function wpcom_remote_login_remove_dom_node_classes( class_name ) {
-	var dom_nodes = document.querySelectorAll( '.' + class_name );
-	for ( var i = 0; i < dom_nodes.length; i++ ) {
-		dom_nodes[ i ].parentNode.removeChild( dom_nodes[ i ] );
-	}
-}
-function wpcom_remote_login_final_cleanup() {
-	wpcom_remote_login_remove_dom_node_classes( "wpcom_remote_login_msg" );
-	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_key" );
-	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_validate" );
-	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_js" );
-	wpcom_remote_login_remove_dom_node_id( "wpcom_request_access_iframe" );
-	wpcom_remote_login_remove_dom_node_id( "wpcom_request_access_styles" );
-}
 
-// Watch for messages back from the remote login
-window.addEventListener( "message", function( e ) {
-	if ( e.origin === "https://r-login.wordpress.com" ) {
-		var data = {};
-		try {
-			data = JSON.parse( e.data );
-		} catch( e ) {
-			wpcom_remote_login_final_cleanup();
-			return;
-		}
-
-		if ( data.msg === 'LOGIN' ) {
-			// Clean up the login check iframe
-			wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_key" );
-
-			var id_regex = new RegExp( /^[0-9]+$/ );
-			var token_regex = new RegExp( /^.*|.*|.*$/ );
-			if (
-				token_regex.test( data.token )
-				&& id_regex.test( data.wpcomid )
-			) {
-				// We have everything we need to ask for a login
-				var script = document.createElement( "script" );
-				script.setAttribute( "id", "wpcom_remote_login_validate" );
-				script.src = '/remote-login.php?wpcom_remote_login=validate'
-					+ '&wpcomid=' + data.wpcomid
-					+ '&token=' + encodeURIComponent( data.token )
-					+ '&host=' + window.location.protocol
-					+ '//' + window.location.hostname
-					+ '&postid=152'
-					+ '&is_singular=1';
-				document.body.appendChild( script );
-			}
-
-			return;
-		}
-
-		// Safari ITP, not logged in, so redirect
-		if ( data.msg === 'LOGIN-REDIRECT' ) {
-			window.location = 'https://wordpress.com/log-in?redirect_to=' + window.location.href;
-			return;
-		}
-
-		// Safari ITP, storage access failed, remove the request
-		if ( data.msg === 'LOGIN-REMOVE' ) {
-			var css_zap = 'html { -webkit-transition: margin-top 1s; transition: margin-top 1s; } /* 9001 */ html { margin-top: 0 !important; } * html body { margin-top: 0 !important; } @media screen and ( max-width: 782px ) { html { margin-top: 0 !important; } * html body { margin-top: 0 !important; } }';
-			var style_zap = document.createElement( 'style' );
-			style_zap.type = 'text/css';
-			style_zap.appendChild( document.createTextNode( css_zap ) );
-			document.body.appendChild( style_zap );
-
-			var e = document.getElementById( 'wpcom_request_access_iframe' );
-			e.parentNode.removeChild( e );
-
-			document.cookie = 'wordpress_com_login_access=denied; path=/; max-age=31536000';
-
-			return;
-		}
-
-		// Safari ITP
-		if ( data.msg === 'REQUEST_ACCESS' ) {
-			console.log( 'request access: safari' );
-
-			// Check ITP iframe enable/disable knob
-			if ( wpcom_remote_login_extra_auth !== 'safari_itp_iframe' ) {
-				return;
-			}
-
-			// If we are in a "private window" there is no ITP.
-			var private_window = false;
-			try {
-				var opendb = window.openDatabase( null, null, null, null );
-			} catch( e ) {
-				private_window = true;
-			}
-
-			if ( private_window ) {
-				console.log( 'private window' );
-				return;
-			}
-
-			var iframe = document.createElement( 'iframe' );
-			iframe.id = 'wpcom_request_access_iframe';
-			iframe.setAttribute( 'scrolling', 'no' );
-			iframe.setAttribute( 'sandbox', 'allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-top-navigation-by-user-activation' );
-			iframe.src = 'https://r-login.wordpress.com/remote-login.php?wpcom_remote_login=request_access&origin=' + encodeURIComponent( data.origin ) + '&wpcomid=' + encodeURIComponent( data.wpcomid );
-
-			var css = 'html { -webkit-transition: margin-top 1s; transition: margin-top 1s; } /* 9001 */ html { margin-top: 46px !important; } * html body { margin-top: 46px !important; } @media screen and ( max-width: 660px ) { html { margin-top: 71px !important; } * html body { margin-top: 71px !important; } #wpcom_request_access_iframe { display: block; height: 71px !important; } } #wpcom_request_access_iframe { border: 0px; height: 46px; position: fixed; top: 0; left: 0; width: 100%; min-width: 100%; z-index: 99999; background: #23282d; } ';
-
-			var style = document.createElement( 'style' );
-			style.type = 'text/css';
-			style.id = 'wpcom_request_access_styles';
-			style.appendChild( document.createTextNode( css ) );
-			document.body.appendChild( style );
-
-			document.body.appendChild( iframe );
-		}
-
-		if ( data.msg === 'DONE' ) {
-			wpcom_remote_login_final_cleanup();
-		}
-	}
-}, false );
-
-// Inject the remote login iframe after the page has had a chance to load
-// more critical resources
-window.addEventListener( "DOMContentLoaded", function( e ) {
-	var iframe = document.createElement( "iframe" );
-	iframe.style.display = "none";
-	iframe.setAttribute( "scrolling", "no" );
-	iframe.setAttribute( "id", "wpcom_remote_login_key" );
-	iframe.src = "https://r-login.wordpress.com/remote-login.php"
-		+ "?wpcom_remote_login=key"
-		+ "&origin=aHR0cHM6Ly91dG1jY2YuY29t"
-		+ "&wpcomid=6991593"
-		+ "&time=1675982016";
-	document.body.appendChild( iframe );
-}, false );
-</script>
 
 
 
@@ -222,9 +83,7 @@ body{--wp--preset--shadow--natural: 0 .2rem .3rem 0 rgba(0,0,0, 0.3), 0 .5rem .6
 <script id='jetpack_related-posts-js-extra'>
 var related_posts_js_options = {"post_heading":"h4"};
 </script>
-<script id='wpcom-actionbar-placeholder-js-extra'>
-var actionbardata = {"siteID":"6991593","siteURL":"https:\/\/utmccf.com","xhrURL":"https:\/\/utmccf.com\/wp-admin\/admin-ajax.php","nonce":"83f96e105d","isLoggedIn":"","statusMessage":"","subsEmailDefault":"instantly","proxyScriptUrl":"https:\/\/s0.wp.com\/wp-content\/js\/wpcom-proxy-request.js?ver=20211021","shortlink":"https:\/\/wp.me\/ptkPD-2s","i18n":{"followedText":"New posts from this site will now appear in your <a href="https://utmccf.com/2008/10/17/%e6%9f%a5%e7%bb%8f%ef%bc%9a%e5%a4%9c%e5%ae%bf%e6%98%af%e8%b0%81%ef%bc%9fbible-study-who-is-jesus/\&quot;https:\/\/wordpress.com\/read\&quot;">Reader<\/a>","foldBar":"Collapse this bar","unfoldBar":"Expand this bar"}};
-</script>
+
 <script crossorigin='anonymous' type='text/javascript' src='https://s2.wp.com/_static/??-eJx1jt0KwjAMRl/ILM7h7sRHka2NI7V/tim6t7dChSl4Fb58h5PgI4IKXsgLmowuzGwJSqY0LXUH7K+hM3mHG84ViLYs7DMakjipW8sYU9BFCQePF/YK58JWYyI7CWmIIUv+Tp1j/6uvbyQrUF3P9dNVmS2a8rs090JpbWMr+AuB4yXVow0+u1M/juNwPAz73rwAclZf4w=='></script>
 <script type='text/javascript'>
 	window.addEventListener( 'DOMContentLoaded', function() {
@@ -517,7 +376,7 @@ blockquote,
 <strong>地点/</strong><strong>LOCATION: BA</strong>2165  <a class="external text" title="http://maps.google.ca/maps?f=q&amp;source=s q&amp;hl=en&amp;q=5 Hoskin Ave, Toronto, Toronto Division, Ontario&amp;sll=49.891235,-97.15369&amp;sspn=26.011816,79.101563&amp;ie=UTF8&amp;cd=1&amp;geocode=Fe9FmgId3ohE-w&amp;split=0&amp;ll=43.666056,-79.394588&amp;spn=0.007109,0.019312&amp;z=16&amp;iwloc=addr" rel="nofollow" href="http://maps.google.ca/maps?f=q&amp;source=s_q&amp;hl=en&amp;q=5+Hoskin+Ave,+Toronto,+Toronto+Division,+Ontario&amp;sll=49.891235,-97.15369&amp;sspn=26.011816,79.101563&amp;ie=UTF8&amp;cd=1&amp;geocode=Fe9FmgId3ohE-w&amp;split=0&amp;ll=43.666056,-79.394588&amp;spn=0.007109,0.019312&amp;z=16&amp;iwloc=addr">(</a><a title="Map" href="http://maps.google.ca/maps?f=q&amp;source=s_q&amp;hl=en&amp;q=40+St+George+St,+Toronto,+Toronto+Division,+Ontario&amp;sll=49.891235,-97.15369&amp;sspn=41.826308,79.101563&amp;ie=UTF8&amp;cd=5&amp;geocode=FesymgIdS4BE-w&amp;split=0&amp;z=16&amp;iwloc=addr"><span class="external text">Map</span></a><a class="external text" title="http://maps.google.ca/maps?f=q&amp;source=s q&amp;hl=en&amp;q=5 Hoskin Ave, Toronto, Toronto Division, Ontario&amp;sll=49.891235,-97.15369&amp;sspn=26.011816,79.101563&amp;ie=UTF8&amp;cd=1&amp;geocode=Fe9FmgId3ohE-w&amp;split=0&amp;ll=43.666056,-79.394588&amp;spn=0.007109,0.019312&amp;z=16&amp;iwloc=addr" rel="nofollow" href="http://maps.google.ca/maps?f=q&amp;source=s_q&amp;hl=en&amp;q=5+Hoskin+Ave,+Toronto,+Toronto+Division,+Ontario&amp;sll=49.891235,-97.15369&amp;sspn=26.011816,79.101563&amp;ie=UTF8&amp;cd=1&amp;geocode=Fe9FmgId3ohE-w&amp;split=0&amp;ll=43.666056,-79.394588&amp;spn=0.007109,0.019312&amp;z=16&amp;iwloc=addr">)</a></p>
 <p>想必你现在一定是处在水深火热之中。星期五晚上正是一个可以让你休息的好时刻。如果你从来没有听过耶稣基督是谁？和你有什么关系？认识了他之后到底对你又有什么好处？我们诚心邀请你和我们一起查考耶稣基督的降生。除此之外，我们有十二件事情要请你们来和我们参与，哪些事情来之后就知道了！</p>
 <p>Thought you had a tough one this week？ Then this Friday will definitely be a great time for you to take a break from all of that. Have you ever heard of Jesus Christ? Or maybe you have heard of him but have wondered what He had to do with you? Perhaps you would like to know more about what it means to be a follower of Christ? We sincerely invite you to explore the birth of Jesus with us. We also have 12 things for you to do this Friday. Wanna know what they are? See you this Friday!</p>
-<div id="jp-post-flair" class="sharedaddy sd-like-enabled sd-sharing-enabled"><div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon-text sd-sharing"><h3 class="sd-title">Share this:</h3><div class="sd-content"><ul><li class="share-twitter"><a rel="nofollow noopener noreferrer" data-shared="sharing-twitter-152" class="share-twitter sd-button share-icon" href="https://utmccf.com/2008/10/17/%e6%9f%a5%e7%bb%8f%ef%bc%9a%e5%a4%9c%e5%ae%bf%e6%98%af%e8%b0%81%ef%bc%9fbible-study-who-is-jesus/?share=twitter" target="_blank" title="Click to share on Twitter" ><span>Twitter</span></a></li><li class="share-facebook"><a rel="nofollow noopener noreferrer" data-shared="sharing-facebook-152" class="share-facebook sd-button share-icon" href="https://utmccf.com/2008/10/17/%e6%9f%a5%e7%bb%8f%ef%bc%9a%e5%a4%9c%e5%ae%bf%e6%98%af%e8%b0%81%ef%bc%9fbible-study-who-is-jesus/?share=facebook" target="_blank" title="Click to share on Facebook" ><span>Facebook</span></a></li><li class="share-end"></li></ul></div></div></div><div class='sharedaddy sd-block sd-like jetpack-likes-widget-wrapper jetpack-likes-widget-unloaded' id='like-post-wrapper-6991593-152-63e574c0c06ac' data-src='//widgets.wp.com/likes/index.html?ver=20220105#blog_id=6991593&amp;post_id=152&amp;origin=utmccf.wordpress.com&amp;obj_id=6991593-152-63e574c0c06ac&amp;domain=utmccf.com' data-name='like-post-frame-6991593-152-63e574c0c06ac' data-title='Like or Reblog'><h3 class='sd-title'>Like this:</h3><div class='likes-widget-placeholder post-likes-widget-placeholder' style='height: 55px;'><span class='button'><span>Like</span></span> <span class="loading">Loading...</span></div><span class='sd-text-color'></span><a class='sd-link-color'></a></div>
+<div id="jp-post-flair" class="sharedaddy sd-like-enabled sd-sharing-enabled"><div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon-text sd-sharing"><h3 class="sd-title">Share this:</h3><div class="sd-content"><ul><li class="share-twitter"><a rel="nofollow noopener noreferrer" data-shared="sharing-twitter-152" class="share-twitter sd-button share-icon" href="https://utmccf.com/2008/10/17/%e6%9f%a5%e7%bb%8f%ef%bc%9a%e5%a4%9c%e5%ae%bf%e6%98%af%e8%b0%81%ef%bc%9fbible-study-who-is-jesus/?share=twitter" target="_blank" title="Click to share on Twitter" ><span>Twitter</span></a></li><li class="share-facebook"><a rel="nofollow noopener noreferrer" data-shared="sharing-facebook-152" class="share-facebook sd-button share-icon" href="https://utmccf.com/2008/10/17/%e6%9f%a5%e7%bb%8f%ef%bc%9a%e5%a4%9c%e5%ae%bf%e6%98%af%e8%b0%81%ef%bc%9fbible-study-who-is-jesus/?share=facebook" target="_blank" title="Click to share on Facebook" ><span>Facebook</span></a></li><li class="share-end"></li></ul></div></div></div><div class='sharedaddy sd-block sd-like jetpack-likes-widget-wrapper jetpack-likes-widget-unloaded' id='like-post-wrapper-6991593-152-63e588e42577e' data-src='//widgets.wp.com/likes/index.html?ver=20220105#blog_id=6991593&amp;post_id=152&amp;origin=utmccf.wordpress.com&amp;obj_id=6991593-152-63e588e42577e&amp;domain=utmccf.com' data-name='like-post-frame-6991593-152-63e588e42577e' data-title='Like or Reblog'><h3 class='sd-title'>Like this:</h3><div class='likes-widget-placeholder post-likes-widget-placeholder' style='height: 55px;'><span class='button'><span>Like</span></span> <span class="loading">Loading...</span></div><span class='sd-text-color'></span><a class='sd-link-color'></a></div>
 <div id='jp-relatedposts' class='jp-relatedposts' >
 	
 </div></div>	</div><!-- .entry-content -->
@@ -736,20 +595,7 @@ var WPGroHo = {"my_hash":""};
 		</ul>
 	</div>
 	
-<script>
-window.addEventListener( "load", function( event ) {
-	var link = document.createElement( "link" );
-	link.href = "https://s0.wp.com/wp-content/mu-plugins/actionbar/actionbar.css?v=20210915";
-	link.type = "text/css";
-	link.rel = "stylesheet";
-	document.head.appendChild( link );
 
-	var script = document.createElement( "script" );
-	script.src = "https://s0.wp.com/wp-content/mu-plugins/actionbar/actionbar.js?v=20220329";
-	script.defer = true;
-	document.body.appendChild( script );
-} );
-</script>
 
 	
 	<script type="text/javascript">
@@ -862,11 +708,11 @@ _tkq = window._tkq || [];
 _stq = window._stq || [];
 _tkq.push(['storeContext', {'blog_id':'6991593','blog_tz':'-5','user_lang':'en','blog_lang':'en','user_id':'0'}]);
 _stq.push(['view', {'blog':'6991593','v':'wpcom','tz':'-5','user_id':'0','post':'152','subd':'utmccf'}]);
-_stq.push(['extra', {'crypt':'UE40eW5QN0p8M2Y/RE1mNzc2NTVTamdsd0xoLz9RQkM2K298TXY9bERQMXc2MjhEaVZfb2wwakRoSj0mUkp1THptM1NdbkV1WjZIcU9mVWQmPUIvMlN6Jk8wW3NYVEJ3dWZOWExuWD8rZDJfUmZbTHYuQ1p5c085WXlLX2ZYdmZdNmFDekNmX2VTeXFtOV1FSlQxemhoTzB3MzYrJVpSYT93dWR5ekdRMXA4JnZCem5dUW80VSw5UGJbVTRpM25NUXpZSTktdEdyQissemxfVDIxcFtyY1hBX2N3LE04LkRqfF8zRyVQSFJ0VmtzW2UsZUFsUFItN2pOZm1fUVZ3Slc4XUR3PUphNU9KVz9udTItQlk2SWQwZHlmQkNlVEl1cURdR341U2tHXzFMeiZ5Uj9pQ2dVQWp0cld6eURTM1RRTHB5eUVpWkNr'}]);
+_stq.push(['extra', {'crypt':'UE40eW5QN0p8M2Y/RE1mNzc2NTVTamdsd0xoLz9RQkM2K298TXY9bERQMXc2MjhEaVZfb2wwakRoSj0mUkp1THptM1NdbkV1WjZIcU9mVWQmPUIvMlN6Jk8wW3NYVEJ3dWZOWExuWD8rZDJfUmZbTHYuQ1p5c085WXlLX2ZYdmZdNmFDekNmX2VTeXFtM1E9UThLP3gyUDg2NCxTd2hPZHBlcEVfRExDTnpPMGkuYj05ZUYwLHJDcCZySU12T1hYbC8wcEEmWTkyZHlmSTg3ZEFwc3BweE1mQjB+Z2kyTGNfbnd+ZHFuWUNSaXRlc3Y4ZE16L1t3NlZ3W1Nxa2pbdXhLdT1XTUxJOCVpcTNrMnBCV3ZkdVN6Vl9QYUdRKy0tNmRqLEgwLHpUWUZIdWpXRFYuN1BzNDF3a3A2Myx5cFZUUWNhOE4uTElfcQ=='}]);
 _stq.push([ 'clickTrackerInit', '6991593', '152' ]);
 	</script>
 <noscript><img src="https://pixel.wp.com/b.gif?v=noscript" style="height:1px;width:1px;overflow:hidden;position:absolute;bottom:1px;" alt="" /></noscript>
-<script defer id="bilmur" data-customproperties="{&quot;enq_jquery&quot;:&quot;1&quot;,&quot;logged_in&quot;:&quot;0&quot;,&quot;wptheme&quot;:&quot;pub\/edin&quot;}" data-provider="wordpress.com" data-service="simple"  src="https://utmccf.com/wp-content/js/bilmur.min.js?i=7&amp;m=202306"></script><script>
+<script>
 if ( 'object' === typeof wpcom_mobile_user_agent_info ) {
 
 	wpcom_mobile_user_agent_info.init();

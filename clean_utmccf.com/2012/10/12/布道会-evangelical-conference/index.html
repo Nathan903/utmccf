@@ -10,146 +10,7 @@
 <meta name='robots' content='max-image-preview:large' />
 
 <!-- Async WordPress.com Remote Login -->
-<script id="wpcom_remote_login_js">
-var wpcom_remote_login_extra_auth = '';
-function wpcom_remote_login_remove_dom_node_id( element_id ) {
-	var dom_node = document.getElementById( element_id );
-	if ( dom_node ) { dom_node.parentNode.removeChild( dom_node ); }
-}
-function wpcom_remote_login_remove_dom_node_classes( class_name ) {
-	var dom_nodes = document.querySelectorAll( '.' + class_name );
-	for ( var i = 0; i < dom_nodes.length; i++ ) {
-		dom_nodes[ i ].parentNode.removeChild( dom_nodes[ i ] );
-	}
-}
-function wpcom_remote_login_final_cleanup() {
-	wpcom_remote_login_remove_dom_node_classes( "wpcom_remote_login_msg" );
-	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_key" );
-	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_validate" );
-	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_js" );
-	wpcom_remote_login_remove_dom_node_id( "wpcom_request_access_iframe" );
-	wpcom_remote_login_remove_dom_node_id( "wpcom_request_access_styles" );
-}
 
-// Watch for messages back from the remote login
-window.addEventListener( "message", function( e ) {
-	if ( e.origin === "https://r-login.wordpress.com" ) {
-		var data = {};
-		try {
-			data = JSON.parse( e.data );
-		} catch( e ) {
-			wpcom_remote_login_final_cleanup();
-			return;
-		}
-
-		if ( data.msg === 'LOGIN' ) {
-			// Clean up the login check iframe
-			wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_key" );
-
-			var id_regex = new RegExp( /^[0-9]+$/ );
-			var token_regex = new RegExp( /^.*|.*|.*$/ );
-			if (
-				token_regex.test( data.token )
-				&& id_regex.test( data.wpcomid )
-			) {
-				// We have everything we need to ask for a login
-				var script = document.createElement( "script" );
-				script.setAttribute( "id", "wpcom_remote_login_validate" );
-				script.src = '/remote-login.php?wpcom_remote_login=validate'
-					+ '&wpcomid=' + data.wpcomid
-					+ '&token=' + encodeURIComponent( data.token )
-					+ '&host=' + window.location.protocol
-					+ '//' + window.location.hostname
-					+ '&postid=1089'
-					+ '&is_singular=1';
-				document.body.appendChild( script );
-			}
-
-			return;
-		}
-
-		// Safari ITP, not logged in, so redirect
-		if ( data.msg === 'LOGIN-REDIRECT' ) {
-			window.location = 'https://wordpress.com/log-in?redirect_to=' + window.location.href;
-			return;
-		}
-
-		// Safari ITP, storage access failed, remove the request
-		if ( data.msg === 'LOGIN-REMOVE' ) {
-			var css_zap = 'html { -webkit-transition: margin-top 1s; transition: margin-top 1s; } /* 9001 */ html { margin-top: 0 !important; } * html body { margin-top: 0 !important; } @media screen and ( max-width: 782px ) { html { margin-top: 0 !important; } * html body { margin-top: 0 !important; } }';
-			var style_zap = document.createElement( 'style' );
-			style_zap.type = 'text/css';
-			style_zap.appendChild( document.createTextNode( css_zap ) );
-			document.body.appendChild( style_zap );
-
-			var e = document.getElementById( 'wpcom_request_access_iframe' );
-			e.parentNode.removeChild( e );
-
-			document.cookie = 'wordpress_com_login_access=denied; path=/; max-age=31536000';
-
-			return;
-		}
-
-		// Safari ITP
-		if ( data.msg === 'REQUEST_ACCESS' ) {
-			console.log( 'request access: safari' );
-
-			// Check ITP iframe enable/disable knob
-			if ( wpcom_remote_login_extra_auth !== 'safari_itp_iframe' ) {
-				return;
-			}
-
-			// If we are in a "private window" there is no ITP.
-			var private_window = false;
-			try {
-				var opendb = window.openDatabase( null, null, null, null );
-			} catch( e ) {
-				private_window = true;
-			}
-
-			if ( private_window ) {
-				console.log( 'private window' );
-				return;
-			}
-
-			var iframe = document.createElement( 'iframe' );
-			iframe.id = 'wpcom_request_access_iframe';
-			iframe.setAttribute( 'scrolling', 'no' );
-			iframe.setAttribute( 'sandbox', 'allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-top-navigation-by-user-activation' );
-			iframe.src = 'https://r-login.wordpress.com/remote-login.php?wpcom_remote_login=request_access&origin=' + encodeURIComponent( data.origin ) + '&wpcomid=' + encodeURIComponent( data.wpcomid );
-
-			var css = 'html { -webkit-transition: margin-top 1s; transition: margin-top 1s; } /* 9001 */ html { margin-top: 46px !important; } * html body { margin-top: 46px !important; } @media screen and ( max-width: 660px ) { html { margin-top: 71px !important; } * html body { margin-top: 71px !important; } #wpcom_request_access_iframe { display: block; height: 71px !important; } } #wpcom_request_access_iframe { border: 0px; height: 46px; position: fixed; top: 0; left: 0; width: 100%; min-width: 100%; z-index: 99999; background: #23282d; } ';
-
-			var style = document.createElement( 'style' );
-			style.type = 'text/css';
-			style.id = 'wpcom_request_access_styles';
-			style.appendChild( document.createTextNode( css ) );
-			document.body.appendChild( style );
-
-			document.body.appendChild( iframe );
-		}
-
-		if ( data.msg === 'DONE' ) {
-			wpcom_remote_login_final_cleanup();
-		}
-	}
-}, false );
-
-// Inject the remote login iframe after the page has had a chance to load
-// more critical resources
-window.addEventListener( "DOMContentLoaded", function( e ) {
-	var iframe = document.createElement( "iframe" );
-	iframe.style.display = "none";
-	iframe.setAttribute( "scrolling", "no" );
-	iframe.setAttribute( "id", "wpcom_remote_login_key" );
-	iframe.src = "https://r-login.wordpress.com/remote-login.php"
-		+ "?wpcom_remote_login=key"
-		+ "&origin=aHR0cHM6Ly91dG1jY2YuY29t"
-		+ "&wpcomid=6991593"
-		+ "&time=1675981991";
-	document.body.appendChild( iframe );
-}, false );
-</script>
 
 
 
@@ -223,9 +84,7 @@ body{--wp--preset--shadow--natural: 0 .2rem .3rem 0 rgba(0,0,0, 0.3), 0 .5rem .6
 <script id='jetpack_related-posts-js-extra'>
 var related_posts_js_options = {"post_heading":"h4"};
 </script>
-<script id='wpcom-actionbar-placeholder-js-extra'>
-var actionbardata = {"siteID":"6991593","siteURL":"https:\/\/utmccf.com","xhrURL":"https:\/\/utmccf.com\/wp-admin\/admin-ajax.php","nonce":"83f96e105d","isLoggedIn":"","statusMessage":"","subsEmailDefault":"instantly","proxyScriptUrl":"https:\/\/s0.wp.com\/wp-content\/js\/wpcom-proxy-request.js?ver=20211021","shortlink":"https:\/\/wp.me\/ptkPD-hz","i18n":{"followedText":"New posts from this site will now appear in your <a href="https://utmccf.com/2012/10/12/%e5%b8%83%e9%81%93%e4%bc%9a-evangelical-conference/\&quot;https:\/\/wordpress.com\/read\&quot;">Reader<\/a>","foldBar":"Collapse this bar","unfoldBar":"Expand this bar"}};
-</script>
+
 <script crossorigin='anonymous' type='text/javascript' src='https://s2.wp.com/_static/??-eJx1jt0KwjAMRl/ILM7h7sRHka2NI7V/tim6t7dChSl4Fb58h5PgI4IKXsgLmowuzGwJSqY0LXUH7K+hM3mHG84ViLYs7DMakjipW8sYU9BFCQePF/YK58JWYyI7CWmIIUv+Tp1j/6uvbyQrUF3P9dNVmS2a8rs090JpbWMr+AuB4yXVow0+u1M/juNwPAz73rwAclZf4w=='></script>
 <script type='text/javascript'>
 	window.addEventListener( 'DOMContentLoaded', function() {
@@ -535,7 +394,7 @@ blockquote,
 <strong>地点</strong><strong>/LOCATION: </strong><a title="See Campus Map" href="http://rrs.osm.utoronto.ca/map/f?p=110:1:3769257513066346" target="_blank">Gerstein Library</a> (study room 2105)</p>
 <p>生命小组是我们新增加的一个活动，在今后的每周五都会在同一时间，同一地点进行。这里将会帮助基督徒朋友们加深对圣经的学习和理解，在灵命上有所成长，也同样帮助未信主的朋友们更加了解基督教，了解耶稣的救恩，了解自己。相信我们~这里将会是让你受益匪浅，同时又倍感温馨的小课堂~~~</p>
 <p>Life group is a new activity. It will be held every Friday in Gerstein study room. If you are a Christian, this can be a good opportunity for you to go deeper into the Bible alongside other fellowship members. If you are not a Christian, you are also welcome, since it might be able to help you know more about the Bible and God~~~~believe us, it will be a great experience of learning and sharing!!</p>
-<div id="jp-post-flair" class="sharedaddy sd-like-enabled sd-sharing-enabled"><div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon-text sd-sharing"><h3 class="sd-title">Share this:</h3><div class="sd-content"><ul><li class="share-twitter"><a rel="nofollow noopener noreferrer" data-shared="sharing-twitter-1089" class="share-twitter sd-button share-icon" href="https://utmccf.com/2012/10/12/%e5%b8%83%e9%81%93%e4%bc%9a-evangelical-conference/?share=twitter" target="_blank" title="Click to share on Twitter" ><span>Twitter</span></a></li><li class="share-facebook"><a rel="nofollow noopener noreferrer" data-shared="sharing-facebook-1089" class="share-facebook sd-button share-icon" href="https://utmccf.com/2012/10/12/%e5%b8%83%e9%81%93%e4%bc%9a-evangelical-conference/?share=facebook" target="_blank" title="Click to share on Facebook" ><span>Facebook</span></a></li><li class="share-end"></li></ul></div></div></div><div class='sharedaddy sd-block sd-like jetpack-likes-widget-wrapper jetpack-likes-widget-unloaded' id='like-post-wrapper-6991593-1089-63e574a79fe6f' data-src='//widgets.wp.com/likes/index.html?ver=20220105#blog_id=6991593&amp;post_id=1089&amp;origin=utmccf.wordpress.com&amp;obj_id=6991593-1089-63e574a79fe6f&amp;domain=utmccf.com' data-name='like-post-frame-6991593-1089-63e574a79fe6f' data-title='Like or Reblog'><h3 class='sd-title'>Like this:</h3><div class='likes-widget-placeholder post-likes-widget-placeholder' style='height: 55px;'><span class='button'><span>Like</span></span> <span class="loading">Loading...</span></div><span class='sd-text-color'></span><a class='sd-link-color'></a></div>
+<div id="jp-post-flair" class="sharedaddy sd-like-enabled sd-sharing-enabled"><div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon-text sd-sharing"><h3 class="sd-title">Share this:</h3><div class="sd-content"><ul><li class="share-twitter"><a rel="nofollow noopener noreferrer" data-shared="sharing-twitter-1089" class="share-twitter sd-button share-icon" href="https://utmccf.com/2012/10/12/%e5%b8%83%e9%81%93%e4%bc%9a-evangelical-conference/?share=twitter" target="_blank" title="Click to share on Twitter" ><span>Twitter</span></a></li><li class="share-facebook"><a rel="nofollow noopener noreferrer" data-shared="sharing-facebook-1089" class="share-facebook sd-button share-icon" href="https://utmccf.com/2012/10/12/%e5%b8%83%e9%81%93%e4%bc%9a-evangelical-conference/?share=facebook" target="_blank" title="Click to share on Facebook" ><span>Facebook</span></a></li><li class="share-end"></li></ul></div></div></div><div class='sharedaddy sd-block sd-like jetpack-likes-widget-wrapper jetpack-likes-widget-unloaded' id='like-post-wrapper-6991593-1089-63e588c7ed158' data-src='//widgets.wp.com/likes/index.html?ver=20220105#blog_id=6991593&amp;post_id=1089&amp;origin=utmccf.wordpress.com&amp;obj_id=6991593-1089-63e588c7ed158&amp;domain=utmccf.com' data-name='like-post-frame-6991593-1089-63e588c7ed158' data-title='Like or Reblog'><h3 class='sd-title'>Like this:</h3><div class='likes-widget-placeholder post-likes-widget-placeholder' style='height: 55px;'><span class='button'><span>Like</span></span> <span class="loading">Loading...</span></div><span class='sd-text-color'></span><a class='sd-link-color'></a></div>
 <div id='jp-relatedposts' class='jp-relatedposts' >
 	
 </div></div>	</div><!-- .entry-content -->
@@ -754,20 +613,7 @@ var WPGroHo = {"my_hash":""};
 		</ul>
 	</div>
 	
-<script>
-window.addEventListener( "load", function( event ) {
-	var link = document.createElement( "link" );
-	link.href = "https://s0.wp.com/wp-content/mu-plugins/actionbar/actionbar.css?v=20210915";
-	link.type = "text/css";
-	link.rel = "stylesheet";
-	document.head.appendChild( link );
 
-	var script = document.createElement( "script" );
-	script.src = "https://s0.wp.com/wp-content/mu-plugins/actionbar/actionbar.js?v=20220329";
-	script.defer = true;
-	document.body.appendChild( script );
-} );
-</script>
 
 	
 	<script type="text/javascript">
@@ -880,11 +726,11 @@ _tkq = window._tkq || [];
 _stq = window._stq || [];
 _tkq.push(['storeContext', {'blog_id':'6991593','blog_tz':'-5','user_lang':'en','blog_lang':'en','user_id':'0'}]);
 _stq.push(['view', {'blog':'6991593','v':'wpcom','tz':'-5','user_id':'0','post':'1089','subd':'utmccf'}]);
-_stq.push(['extra', {'crypt':'UE40eW5QN0p8M2Y/RE1mNzc2NTVTamdsd0xoLz9RQkM2K298TXY9bERQMXc2MjhEaVZfb2wwakRoSj0mUkp1THptM1NdbkV1WjZIcU9mVWQmPUIvMlN6Jk8wW3NYVEJ3dWZOWExuWD8rZDJfUmZbTHYuQ1p5c085WXlLX2ZYdmZdNmFDekNmX2VTeXFtOV1FSlQxemhoTzB3MzYrJVd1L0U0amJLfF8rfEgycVY3cUZCVlNMST1tT3kzcTJzZmppRENIWFpvYT8lVE0yZGJDOX5HdHhMUEMlbFdbdy9oZ2l0ZHE9fGtFRjFqK1tRMGoyYX5VWV9TOWV8aGlVbXZbV0VoTWloMFlZSHVjdFVIanhWVGV3Jk5reVUwbXl0TUt0JisvSXdjRGZ5Jj9mcVImfFU5VUV8Zldla2diSUJRaG1pUHF6WC5oSVk4'}]);
+_stq.push(['extra', {'crypt':'UE40eW5QN0p8M2Y/RE1mNzc2NTVTamdsd0xoLz9RQkM2K298TXY9bERQMXc2MjhEaVZfb2wwakRoSj0mUkp1THptM1NdbkV1WjZIcU9mVWQmPUIvMlN6Jk8wW3NYVEJ3dWZOWExuWD8rZDJfUmZbTHYuQ1p5c085WXlLX2ZYdmZdNmFDekNmX2VTeXFtM1E9UThLP3gyUDg2NCxTd2hQRHhYWWFkbzgmMVhnW0JhTiUvLlBmdyxHRmRbVS1NUDFVZFZ+dTRHYyslbDE2VT1tPywuLWVKQVZMVGhmdW1yd0hiRX5oekdIUEl6dllXXUIyeS1Sb3g2JVQ0MmlSNFczWWt6cCxIWltxQVs5Jnc2PWNdLkJHcFpSU0dFZU5Ndk1WclVFJVBrNFgrcEp1Z0ZQVnZKKy5CM1JoTE9raHImYVQtbVdjUmI9VENmVg=='}]);
 _stq.push([ 'clickTrackerInit', '6991593', '1089' ]);
 	</script>
 <noscript><img src="https://pixel.wp.com/b.gif?v=noscript" style="height:1px;width:1px;overflow:hidden;position:absolute;bottom:1px;" alt="" /></noscript>
-<script>
+<script defer id="bilmur" data-customproperties="{&quot;enq_jquery&quot;:&quot;1&quot;,&quot;logged_in&quot;:&quot;0&quot;,&quot;wptheme&quot;:&quot;pub\/edin&quot;}" data-provider="wordpress.com" data-service="simple"  src="https://utmccf.com/wp-content/js/bilmur.min.js?i=7&amp;m=202306"></script><script>
 if ( 'object' === typeof wpcom_mobile_user_agent_info ) {
 
 	wpcom_mobile_user_agent_info.init();
