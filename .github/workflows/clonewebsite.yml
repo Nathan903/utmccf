@@ -5,7 +5,7 @@ name: Clone website
 # **Who does it impact**: Docs content.
 
 on:
-  push:
+  #push:
     #branches:
     #  - main
   ##schedule:
