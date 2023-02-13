@@ -1,4 +1,4 @@
-domain = "utmccf.com"
+domain = "edit.utmccf.com"
 
 downloadAgain=True
 resultzip=False

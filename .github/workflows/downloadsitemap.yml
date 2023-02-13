@@ -1,36 +1,35 @@
-name: Download sitemap
-
-# **What it does**: Renders the content of every page and check all internal links.
-# **Why we have it**: To make sure all links connect correctly.
-# **Who does it impact**: Docs content.
+name: Check sitemap and clone website
 
 on:
   workflow_dispatch:
-  #push:
-  #  branches:
-  #    - main
-  #schedule:
-  #  - cron:  '*/10 * * * *'
-
+  push:
+  schedule:
+    - cron:  '*/20 8-23,0-2 * * *'
+    #run every 20minutes, between 8AM to 23PM and also 0AM to 2AM
+  
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout repo content
+      - name: checkout repo 
         uses: actions/checkout@v3 # checkout the repository content
 
-#      - name: setup python
-#        uses: actions/setup-python@v4
-#        with:
-#          python-version: '3.10' # install the python version needed
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10' # install the python version needed
 
-      - name: download sitemap
-        run: curl -O https://utmccf.com/sitemap.xml
-    
-      - name: commit files
+      - name: download sitemap and split each tag into a new line 
+        run: curl https://edit.utmccf.com/sitemap.xml | sed --expression='s/</\n</g' > sitemap.xml
+      - name: clone website and commit files if there are any differences
         run: |
+          git add -A 
+          git diff --quiet && git diff --staged --quiet && echo "💤💤💤NO CHANGE💤💤💤" && exit 0 
+
+          echo "🛠️🛠️🛠️change found🛠️🛠️🛠️"
+          python clonewebsite.py > clonewebsite.py.log
+          git add -A 
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action bot"
-          git add -A
-          git commit -am "Auto downloaded sitemap.xml"
+          git commit -am "Auto cloned website after finding change in sitemap.xml"
           git push
