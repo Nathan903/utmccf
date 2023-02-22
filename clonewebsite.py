@@ -1,10 +1,10 @@
-domain = "edit.utmccf.com"
+domain = "utmccf.wordpress.com"
 
 downloadAgain=True
 resultzip=False
 verbose=False
 testOnlyOneFile=False
-
+removeExtraFiles=False
 tagsToRemove=(
   #marketing bar
   r"""<div id="marketingbar".*?marketing_bar"><\/a><\/div>""", 
@@ -35,7 +35,7 @@ def clean(filepath):
     #https://stackoverflow.com/questions/500864/case-insensitive-regular-expression-without-re-compile
   
   for tagToRemove in tagsToRemove:
-    if verbose:
+    if verbose :
       print(f'\x1b[0;30;47m{tagToRemove}\x1b[0m')
       for i in (re.findall(tagToRemove,text)):
         """
@@ -55,10 +55,10 @@ def clean(filepath):
     indexInsert=text.index('<html')+ len('<html')
     text=text[:indexInsert]+' style="margin-top: 0px !important;	croll-padding-top: 0px !important;" '+text[indexInsert:]
   except:
-    print("error cannot find <html> tag in file")
+    print(f"error cannot find <html> tag in file @ {filepath}")
   text=text.replace("Blog at WordPress.com","Blog not at WordPress.com")
   if original==text:
-    return("no change")
+    print(f"Warning: no change @ {filepath}")
   with open(filepath,'w',encoding="utf-8") as f:
     f.write(text)
 
@@ -74,7 +74,7 @@ copy_tree(domain, resultPath)
 for subdir, dirs, files in os.walk(resultPath):
   for file in files:
     path=os.path.join(subdir, file)
-    if '?' in path or 'feed' in path:
+    if removeExtraFiles and ('?' in path or 'feed' in path):
       os.remove(path)
       print(path)
     else:

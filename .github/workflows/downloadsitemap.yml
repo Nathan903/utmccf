@@ -20,14 +20,17 @@ jobs:
           python-version: '3.10' # install the python version needed
 
       - name: download sitemap and split each tag into a new line 
-        run: curl https://edit.utmccf.com/sitemap.xml | sed --expression='s/</\n</g' > sitemap.xml
+        run: curl https://utmccf.wordpress.com/sitemap.xml | sed --expression='s/</\n</g' | tail -n +2 > clean_utmccf.wordpress.com/sitemap.xml
       - name: clone website and commit files if there are any differences
         run: |
+          #if there is no difference, return 0 and stop 
+
           git add -A 
           git diff --quiet && git diff --staged --quiet && echo "💤💤💤NO CHANGE💤💤💤" && exit 0 
 
+          #if program did not stop:
           echo "🛠️🛠️🛠️change found🛠️🛠️🛠️"
-          python clonewebsite.py > clonewebsite.py.log
+          (date +%Y-%m-%d_%H:%M ; python clonewebsite.py) > clean_utmccf.wordpress.com/log 
           git add -A 
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action bot"
