@@ -1,6 +1,6 @@
 domain = "utmccf.wordpress.com"
 
-downloadAgain=False
+downloadAgain=True
 resultzip=False
 verbose=False
 testOnlyOneFile=False

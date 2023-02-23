@@ -1,9 +1,9 @@
-2023-02-22_01:20
-Finished download (at: 185 seconds)
-error cannot find <html style="margin-top: 0px !important; scroll-padding-top: 0px !important;"  style="margin-top: 0px !important; scroll-padding-top: 0px !important;"  style="margin-top: 0px !important; scroll-padding-top: 0px !important;"  style="margin-top: 0px !important; scroll-padding-top: 0px !important;" > tag in file @ clean_utmccf.wordpress.com/robots.txt
-Warning: no change @ clean_utmccf.wordpress.com/robots.txt
-error cannot find <html> tag in file @ clean_utmccf.wordpress.com/sitemap.xml
-Warning: no change @ clean_utmccf.wordpress.com/sitemap.xml
-error cannot find <html> tag in file @ clean_utmccf.wordpress.com/log
-Warning: no change @ clean_utmccf.wordpress.com/log
-Finished processing (at: 190 seconds)
+2023-02-22_08:13
+!Error: cannot find <html> tag in file @ clean_utmccf.wordpress.com/robots.txt
+!Warning: no change @ clean_utmccf.wordpress.com/robots.txt
+!Error: cannot find <html> tag in file @ clean_utmccf.wordpress.com/sitemap.xml
+!Warning: no change @ clean_utmccf.wordpress.com/sitemap.xml
+!Error: cannot find <html> tag in file @ clean_utmccf.wordpress.com/log
+!Warning: no change @ clean_utmccf.wordpress.com/log
+Finished processing (at: 5 seconds)
+DONE.
