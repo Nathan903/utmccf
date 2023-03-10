@@ -4,14 +4,6 @@
 
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <url>
-<loc>https://utmccf.wordpress.com/2011/09/02/%e8%b5%9e%e7%be%8e%e4%b9%8b%e6%b3%89%e6%bc%94%e5%94%b1%e4%bc%9astreams-of-praise-concert/
-</loc>
-<lastmod>2023-02-17T18:14:46+00:00
-</lastmod>
-<changefreq>monthly
-</changefreq>
-</url>
-<url>
 <loc>https://utmccf.wordpress.com/%e4%bb%a3%e7%a5%b7%e4%ba%8b%e9%a1%b9-prayer-requests/
 </loc>
 <image:image>
@@ -26,12 +18,20 @@
 <image:title>Prayer
 </image:title>
 </image:image>
-<lastmod>2023-02-14T02:21:53+00:00
+<lastmod>2023-03-10T08:56:17+00:00
 </lastmod>
 <changefreq>weekly
 </changefreq>
 <priority>0.6
 </priority>
+</url>
+<url>
+<loc>https://utmccf.wordpress.com/2011/09/02/%e8%b5%9e%e7%be%8e%e4%b9%8b%e6%b3%89%e6%bc%94%e5%94%b1%e4%bc%9astreams-of-praise-concert/
+</loc>
+<lastmod>2023-02-17T18:14:46+00:00
+</lastmod>
+<changefreq>monthly
+</changefreq>
 </url>
 <url>
 <loc>https://utmccf.wordpress.com/2023/02/08/%e5%87%86%e6%af%95%e4%b8%9a%e7%94%9f%e8%ae%b2%e5%ba%a7%ef%bc%9a%e8%b7%af%e5%9c%a8%e4%bd%95%e6%96%b9/
@@ -2356,7 +2356,7 @@
 </changefreq>
 <priority>1.0
 </priority>
-<lastmod>2023-02-17T18:14:46+00:00
+<lastmod>2023-03-10T08:56:17+00:00
 </lastmod>
 </url>
 </urlset>
