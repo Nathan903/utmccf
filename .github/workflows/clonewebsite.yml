@@ -5,11 +5,14 @@ name: Clone website
 # **Who does it impact**: Docs content.
 
 on:
-  #push:
+  push:
+    paths:
+      - '**.py'
     #branches:
     #  - main
   schedule:
-    - cron:  '0 0 * * 0'
+    - cron:  '0 0 * * 5'
+
   workflow_dispatch:
 
 jobs:
