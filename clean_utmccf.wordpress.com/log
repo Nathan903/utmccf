@@ -1,9 +1,11 @@
-2023-03-24_08:30
+2023-03-24_08:49
+ARG: --downloadAgain
+Finished download (at: 100 seconds)
 !Error: cannot find <html> tag in file @ clean_utmccf.wordpress.com/robots.txt
 !Warning: no change @ clean_utmccf.wordpress.com/robots.txt
 !Error: cannot find <html> tag in file @ clean_utmccf.wordpress.com/log
 !Warning: no change @ clean_utmccf.wordpress.com/log
 !Error: cannot find <html> tag in file @ clean_utmccf.wordpress.com/sitemap.xml
 !Warning: no change @ clean_utmccf.wordpress.com/sitemap.xml
-Finished processing (at: 1 seconds)
+Finished processing (at: 103 seconds)
 DONE.
