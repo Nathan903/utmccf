@@ -30,7 +30,7 @@ jobs:
 
           #if program did not stop:
           echo "🛠️🛠️🛠️change found🛠️🛠️🛠️"
-          (date +%Y-%m-%d_%H:%M ; python clonewebsite.py) > clean_utmccf.wordpress.com/log 
+          (date +%Y-%m-%d_%H:%M ; python clonewebsite.py --downloadAgain) > clean_utmccf.wordpress.com/log 
           git add -A 
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action bot"

@@ -31,7 +31,7 @@ jobs:
         run: curl https://utmccf.wordpress.com/sitemap.xml | sed --expression='s/</\n</g' | tail -n +2 > clean_utmccf.wordpress.com/sitemap.xml
       - name: clone website 
         run: |
-          (date +%Y-%m-%d_%H:%M ; python clonewebsite.py) > clean_utmccf.wordpress.com/log 
+          (date +%Y-%m-%d_%H:%M ; python clonewebsite.py --downloadAgain) > clean_utmccf.wordpress.com/log 
           git add -A 
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action bot"

@@ -5,6 +5,13 @@ resultzip=False
 verbose=False
 testOnlyOneFile=False
 removeExtraFiles=False
+
+import sys
+if len(sys.argv) > 1:
+  print(f"ARG: {sys.argv[1]}")
+  if sys.argv[1]=="--downloadAgain":
+    downloadAgain=True
+  
 tagsToRemove=(
   #marketing bar
   r"""<div id="marketingbar".*?marketing_bar"><\/a><\/div>""",
