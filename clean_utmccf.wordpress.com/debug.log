@@ -1,0 +1,9 @@
+		INFO: ARG=--downloadAgain
+		SUCCESS: Finished download (at: 105 seconds)
+		INFO: downloaded file [clean_utmccf.wordpress.com/status.log] is not an HTML. It is not processed for ad/tracker cleaning
+		INFO: downloaded file [clean_utmccf.wordpress.com/debug.log] is not an HTML. It is not processed for ad/tracker cleaning
+		INFO: downloaded file [clean_utmccf.wordpress.com/sitemap.xml] is not an HTML. It is not processed for ad/tracker cleaning
+		INFO: downloaded file [clean_utmccf.wordpress.com/robots.txt] is not an HTML. It is not processed for ad/tracker cleaning
+		SUCCESS: Finished processing (at: 107 seconds)
+		DONE: clonewebsite.py finished with 0 warnings and 0 errors. Last updated 2023-04-29 22:31:27 EDT
+ 
