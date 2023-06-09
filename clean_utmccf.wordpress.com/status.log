@@ -1,15 +1,6 @@
 WARNING: This page 『 utmccf.wordpress.com/fellowship.html 』 contains these absolute url links:
 	- 【 https://utmccf.com/conference/ 】	fix it by changing it to:【 /conference/ 】
 
-WARNING: This page 『 utmccf.wordpress.com/2012/10/12/布道会-evangelical-conference 』 contains these absolute url links:
-	- 【 http://utmccf.com/conference/ 】	fix it by changing it to:【 /conference/ 】
-
-WARNING: This page 『 utmccf.wordpress.com/近期活动-2019 』 contains these absolute url links:
-	- 【 https://utmccf.com/2022/08/25/past-events-20182019/ 】	fix it by changing it to:【 /2022/08/25/past-events-20182019/ 】
-
-WARNING: This page 『 utmccf.wordpress.com/近期活动-2019 』 contains these absolute url links:
-	- 【 https://utmccf.com/2022/08/25/2022-summer-%e6%b4%bb%e5%8a%a8%e6%80%bb%e9%9b%86/ 】	fix it by changing it to:【 /2022/08/25/2022-summer-%e6%b4%bb%e5%8a%a8%e6%80%bb%e9%9b%86/ 】
-
 WARNING: This page 『 utmccf.wordpress.com/2022/08/25/2022-summer-活动总集 』 contains these absolute url links:
 	- 【 https://utmccf.com/?attachment_id=2825 】	fix it by changing it to:【 /?attachment_id=2825 】
 	- 【 https://utmccf.com/?attachment_id=2833 】	fix it by changing it to:【 /?attachment_id=2833 】
@@ -23,6 +14,15 @@ WARNING: This page 『 utmccf.wordpress.com/2022/08/25/2022-summer-活动总集 
 	- 【 https://utmccf.com/conference/16101658206922_-pic/ 】	fix it by changing it to:【 /conference/16101658206922_-pic/ 】
 	- 【 https://utmccf.com/?attachment_id=2827 】	fix it by changing it to:【 /?attachment_id=2827 】
 
+WARNING: This page 『 utmccf.wordpress.com/近期活动-2019 』 contains these absolute url links:
+	- 【 https://utmccf.com/2022/08/25/past-events-20182019/ 】	fix it by changing it to:【 /2022/08/25/past-events-20182019/ 】
+
+WARNING: This page 『 utmccf.wordpress.com/近期活动-2019 』 contains these absolute url links:
+	- 【 https://utmccf.com/2022/08/25/2022-summer-%e6%b4%bb%e5%8a%a8%e6%80%bb%e9%9b%86/ 】	fix it by changing it to:【 /2022/08/25/2022-summer-%e6%b4%bb%e5%8a%a8%e6%80%bb%e9%9b%86/ 】
+
+WARNING: This page 『 utmccf.wordpress.com/2012/10/12/布道会-evangelical-conference 』 contains these absolute url links:
+	- 【 http://utmccf.com/conference/ 】	fix it by changing it to:【 /conference/ 】
+
 WARNING: This page 『 utmccf.wordpress.com/info 』 contains these absolute url links:
 	- 【 https://utmccf.com/conference/ 】	fix it by changing it to:【 /conference/ 】
 
@@ -35,7 +35,7 @@ WARNING: This page 『 utmccf.wordpress.com/2010/04/02/本周起团契活动暂�
 WARNING: This page 『 utmccf.wordpress.com/2010/04/02/本周起团契活动暂停-no-fellowship-this-friday 』 contains these absolute url links:
 	- 【 http://www.utmccf.com/ 】	fix it by changing it to:【 / 】
 
-DONE: website published with 9 warnings and 0 errors. Last updated 2023-06-01 21:25:26 EDT
+DONE: website published with 9 warnings and 0 errors. Last updated 2023-06-08 21:26:10 EDT
 
 
 * Website is published with warnings/errors. Please check all affected pages. If nothing is broken, ignore the warnings/errors
