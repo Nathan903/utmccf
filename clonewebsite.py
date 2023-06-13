@@ -64,11 +64,12 @@ scriptKeywords=(
   "google_analytics",
   "google-analytics",
   "Advertisements",
+  "s.pubmine.com",
   "advertising",
   "sascdn.com",
   "smartadserver",
   "outbrain",
-  "gdpr"
+  # "gdpr"
 )
 socialMediaIconSvg = {
   ############insert svg icon for social medias##################
@@ -162,7 +163,15 @@ if downloadAgain:
 
 #copy everything downloaded in /utmccf.wordpress.com into /clean_utmccf.wordpress.com
 from distutils.dir_util import copy_tree
-copy_tree(domain, resultPath)
+if testOnlyOneFile:
+  from distutils import file_util
+  source_file = domain+"/index.html"
+  destination_file = resultPath+"/index.html"
+  file_util.copy_file(source_file, destination_file)
+  clean(destination_file)
+  exit()
+else:
+  copy_tree(domain, resultPath)
 
 extensionToExcludeFromProduction = ('.py','.')
 keywordsToExcludeFromProduction = ('/?', '/feed/')
@@ -184,9 +193,6 @@ for subdir, dirs, files in os.walk(resultPath):
       print_debug_info(f"downloaded file [{path}] is not an HTML. It is not processed for ad/tracker cleaning")
     else:
       print_warning(f"downloaded file [{path}] is not an HTML. It is not processed for ad/tracker cleaning")
-
-    #for debugging
-    if testOnlyOneFile: exit()
 
 print_success(f"Finished processing (at: {int(time.time()-startTime)} seconds)")
 if resultzip:
