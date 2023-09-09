@@ -4,6 +4,20 @@
 
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <url>
+<loc>https://utmccf.wordpress.com/2023/09/09/2023%e8%bf%8e%e6%96%b0%e8%b6%b4%ef%bc%81/
+</loc>
+<image:image>
+<image:loc>https://utmccf.files.wordpress.com/2023/09/3.png
+</image:loc>
+<image:title>3
+</image:title>
+</image:image>
+<lastmod>2023-09-09T11:17:55+00:00
+</lastmod>
+<changefreq>monthly
+</changefreq>
+</url>
+<url>
 <loc>https://utmccf.wordpress.com/info/
 </loc>
 <image:image>
@@ -2384,7 +2398,7 @@
 </changefreq>
 <priority>1.0
 </priority>
-<lastmod>2023-07-23T03:13:13+00:00
+<lastmod>2023-09-09T11:17:55+00:00
 </lastmod>
 </url>
 </urlset>
