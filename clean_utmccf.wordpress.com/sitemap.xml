@@ -4,6 +4,14 @@
 
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <url>
+<loc>https://utmccf.wordpress.com/2010/04/02/%e6%9c%ac%e5%91%a8%e8%b5%b7%e5%9b%a2%e5%a5%91%e6%b4%bb%e5%8a%a8%e6%9a%82%e5%81%9c-no-fellowship-this-friday/
+</loc>
+<lastmod>2023-09-14T17:44:20+00:00
+</lastmod>
+<changefreq>monthly
+</changefreq>
+</url>
+<url>
 <loc>https://utmccf.wordpress.com/%e8%bf%91%e6%9c%9f%e6%b4%bb%e5%8a%a8-2019/
 </loc>
 <image:image>
@@ -2054,14 +2062,6 @@
 </changefreq>
 </url>
 <url>
-<loc>https://utmccf.wordpress.com/2010/04/02/%e6%9c%ac%e5%91%a8%e8%b5%b7%e5%9b%a2%e5%a5%91%e6%b4%bb%e5%8a%a8%e6%9a%82%e5%81%9c-no-fellowship-this-friday/
-</loc>
-<lastmod>2010-06-10T14:59:44+00:00
-</lastmod>
-<changefreq>monthly
-</changefreq>
-</url>
-<url>
 <loc>https://utmccf.wordpress.com/2010/03/26/%e6%95%ac%e6%8b%9c%e4%b9%8b%e5%a4%9c-worship-night-2/
 </loc>
 <lastmod>2010-04-01T14:56:01+00:00
@@ -2404,7 +2404,7 @@
 </changefreq>
 <priority>1.0
 </priority>
-<lastmod>2023-09-14T17:42:54+00:00
+<lastmod>2023-09-14T17:44:20+00:00
 </lastmod>
 </url>
 </urlset>
