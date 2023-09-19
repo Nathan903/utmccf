@@ -22,7 +22,24 @@ jobs:
         run: pip install pytz
 
       - name: download sitemap and split each tag into a new line 
-        run: curl https://utmccf.wordpress.com/sitemap.xml | sed --expression='s/</\n</g' | tail -n +2 > clean_utmccf.wordpress.com/sitemap.xml
+        run: curl https://utmccf.wordpress.com/sitemap.xml | sed --expression='s/</\n</g' | tail -n +2 > clean_utmccf.wordpress.com/sitemap.xml.new
+
+      - name: run diff on sitemap and save result
+        run: |
+          # Run the diff command and save the result to a temporary file
+          diff clean_utmccf.wordpress.com/sitemap.xml clean_utmccf.wordpress.com/sitemap.xml.new > sitemap_diff.txt || true
+
+          # Check if the temporary diff file is not empty
+          if [ -s "sitemap_diff.txt" ]; then
+            mv sitemap_diff.txt clean_utmccf.wordpress.com/sitemap.xml.diff
+          else
+            # If there are no differences, remove the temporary diff file
+            rm sitemap_diff.txt
+          fi
+
+          # Replace the previously downloaded sitemap with the current one
+          mv clean_utmccf.wordpress.com/sitemap.xml.new clean_utmccf.wordpress.com/sitemap.xml
+
       - name: clone website and commit files if there are any differences
         run: |
           #if there is no difference, return 0 and stop 
