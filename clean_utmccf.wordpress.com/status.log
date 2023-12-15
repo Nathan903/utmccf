@@ -2,9 +2,6 @@ WARNING: This page 『 utmccf.wordpress.com/fellowship.html 』 contains these a
 	- 【 https://utmccf.com/conference/ 】	fix it by changing it to:【 /conference/ 】
 
 WARNING: downloaded file [clean_utmccf.wordpress.com/sitemap.xml.diff] is not an HTML. It is not processed for ad/tracker cleaning
-WARNING: This page 『 utmccf.wordpress.com/2012/10/12/布道会-evangelical-conference 』 contains these absolute url links:
-	- 【 http://utmccf.com/conference/ 】	fix it by changing it to:【 /conference/ 】
-
 WARNING: This page 『 utmccf.wordpress.com/info 』 contains these absolute url links:
 	- 【 https://utmccf.com/conference/ 】	fix it by changing it to:【 /conference/ 】
 
@@ -24,7 +21,10 @@ WARNING: This page 『 utmccf.wordpress.com/2022/08/25/2022-summer-活动总集 
 	- 【 https://utmccf.com/conference/16101658206922_-pic/ 】	fix it by changing it to:【 /conference/16101658206922_-pic/ 】
 	- 【 https://utmccf.com/?attachment_id=2827 】	fix it by changing it to:【 /?attachment_id=2827 】
 
-DONE: website published with 6 warnings and 0 errors. Last updated 2023-12-07 19:39:34 EST
+WARNING: This page 『 utmccf.wordpress.com/2012/10/12/布道会-evangelical-conference 』 contains these absolute url links:
+	- 【 http://utmccf.com/conference/ 】	fix it by changing it to:【 /conference/ 】
+
+DONE: website published with 6 warnings and 0 errors. Last updated 2023-12-14 19:39:53 EST
 
 
 * Website is published with warnings/errors. Please check all affected pages. If nothing is broken, ignore the warnings/errors
