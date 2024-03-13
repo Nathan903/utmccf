@@ -4,6 +4,20 @@
 
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <url>
+<loc>https://utmccf.wordpress.com/2024/03/13/%e8%81%8c%e4%b8%9a%e8%a7%84%e5%88%92%e5%88%86%e4%ba%ab%ef%bd%9e/
+</loc>
+<image:image>
+<image:loc>https://utmccf.files.wordpress.com/2024/03/e8818ce4b89ae8a784e58892e58886e4baabe4b98b-e4b998e9a38ee7a0b4e6b5aae79a84e5908ce5ada6-1.png
+</image:loc>
+<image:title>e8818ce4b89ae8a784e58892e58886e4baabe4b98b-e4b998e9a38ee7a0b4e6b5aae79a84e5908ce5ada6-1
+</image:title>
+</image:image>
+<lastmod>2024-03-13T16:00:48+00:00
+</lastmod>
+<changefreq>monthly
+</changefreq>
+</url>
+<url>
 <loc>https://utmccf.wordpress.com/2024/02/06/%e6%98%a5%e8%8a%82%e6%b4%bb%e5%8a%a8-%e5%8c%85%e9%a5%ba%e5%ad%90/
 </loc>
 <image:image>
@@ -2424,7 +2438,7 @@
 </changefreq>
 <priority>1.0
 </priority>
-<lastmod>2024-02-07T02:13:11+00:00
+<lastmod>2024-03-13T16:00:48+00:00
 </lastmod>
 </url>
 </urlset>
