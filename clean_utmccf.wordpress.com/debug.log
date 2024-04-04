@@ -2656,3 +2656,39 @@ WARNING: This page 『 utmccf.wordpress.com/2012/10/12/布道会-evangelical-con
 		DONE: website published with 6 warnings and 0 errors. Last updated 2024-03-28 20:37:11 EDT
 
  
+		INFO: ARG=--downloadAgain
+		SUCCESS: Finished download (at: 0 seconds)
+		INFO: downloaded file [clean_utmccf.wordpress.com/status.log] is not an HTML. It is not processed for ad/tracker cleaning
+		INFO: downloaded file [clean_utmccf.wordpress.com/robots.txt] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/sitemap.xml.diff] is not an HTML. It is not processed for ad/tracker cleaning
+		INFO: downloaded file [clean_utmccf.wordpress.com/sitemap.xml] is not an HTML. It is not processed for ad/tracker cleaning
+		INFO: downloaded file [clean_utmccf.wordpress.com/debug.log] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: This page 『 utmccf.wordpress.com/fellowship.html 』 contains these absolute url links:
+	- 【 https://utmccf.com/conference/ 】	fix it by changing it to:【 /conference/ 】
+
+WARNING: This page 『 utmccf.wordpress.com/2022/08/25/2022-summer-活动总集 』 contains these absolute url links:
+	- 【 https://utmccf.com/?attachment_id=2825 】	fix it by changing it to:【 /?attachment_id=2825 】
+	- 【 https://utmccf.com/?attachment_id=2833 】	fix it by changing it to:【 /?attachment_id=2833 】
+	- 【 https://utmccf.com/?attachment_id=2834 】	fix it by changing it to:【 /?attachment_id=2834 】
+	- 【 https://utmccf.com/?attachment_id=2832 】	fix it by changing it to:【 /?attachment_id=2832 】
+	- 【 https://utmccf.com/?attachment_id=2837 】	fix it by changing it to:【 /?attachment_id=2837 】
+	- 【 https://utmccf.com/?attachment_id=2835 】	fix it by changing it to:【 /?attachment_id=2835 】
+	- 【 https://utmccf.com/?attachment_id=2830 】	fix it by changing it to:【 /?attachment_id=2830 】
+	- 【 https://utmccf.com/fellowship/nl-615/ 】	fix it by changing it to:【 /fellowship/nl-615/ 】
+	- 【 https://utmccf.com/conference/wechatimg560/ 】	fix it by changing it to:【 /conference/wechatimg560/ 】
+	- 【 https://utmccf.com/conference/16101658206922_-pic/ 】	fix it by changing it to:【 /conference/16101658206922_-pic/ 】
+	- 【 https://utmccf.com/?attachment_id=2827 】	fix it by changing it to:【 /?attachment_id=2827 】
+
+WARNING: This page 『 utmccf.wordpress.com/info 』 contains these absolute url links:
+	- 【 https://utmccf.com/conference/ 】	fix it by changing it to:【 /conference/ 】
+
+WARNING: This page 『 utmccf.wordpress.com/info 』 contains these absolute url links:
+	- 【 http://utmccf.com/fellowship/ 】	fix it by changing it to:【 /fellowship/ 】
+
+WARNING: This page 『 utmccf.wordpress.com/2012/10/12/布道会-evangelical-conference 』 contains these absolute url links:
+	- 【 http://utmccf.com/conference/ 】	fix it by changing it to:【 /conference/ 】
+
+		SUCCESS: Finished processing (at: 1 seconds)
+		DONE: website published with 6 warnings and 0 errors. Last updated 2024-04-04 13:07:50 EDT
+
+ 
