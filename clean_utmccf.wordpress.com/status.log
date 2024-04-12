@@ -2,6 +2,15 @@ WARNING: downloaded file [clean_utmccf.wordpress.com/sitemap.xml.diff] is not an
 WARNING: This page 『 utmccf.wordpress.com/fellowship.html 』 contains these absolute url links:
 	- 【 https://utmccf.com/conference/ 】	fix it by changing it to:【 /conference/ 】
 
+WARNING: This page 『 utmccf.wordpress.com/info 』 contains these absolute url links:
+	- 【 https://utmccf.com/conference/ 】	fix it by changing it to:【 /conference/ 】
+
+WARNING: This page 『 utmccf.wordpress.com/info 』 contains these absolute url links:
+	- 【 http://utmccf.com/fellowship/ 】	fix it by changing it to:【 /fellowship/ 】
+
+WARNING: This page 『 utmccf.wordpress.com/2012/10/12/布道会-evangelical-conference 』 contains these absolute url links:
+	- 【 http://utmccf.com/conference/ 】	fix it by changing it to:【 /conference/ 】
+
 WARNING: This page 『 utmccf.wordpress.com/2022/08/25/2022-summer-活动总集 』 contains these absolute url links:
 	- 【 https://utmccf.com/?attachment_id=2825 】	fix it by changing it to:【 /?attachment_id=2825 】
 	- 【 https://utmccf.com/?attachment_id=2833 】	fix it by changing it to:【 /?attachment_id=2833 】
@@ -15,16 +24,7 @@ WARNING: This page 『 utmccf.wordpress.com/2022/08/25/2022-summer-活动总集 
 	- 【 https://utmccf.com/conference/16101658206922_-pic/ 】	fix it by changing it to:【 /conference/16101658206922_-pic/ 】
 	- 【 https://utmccf.com/?attachment_id=2827 】	fix it by changing it to:【 /?attachment_id=2827 】
 
-WARNING: This page 『 utmccf.wordpress.com/info 』 contains these absolute url links:
-	- 【 https://utmccf.com/conference/ 】	fix it by changing it to:【 /conference/ 】
-
-WARNING: This page 『 utmccf.wordpress.com/info 』 contains these absolute url links:
-	- 【 http://utmccf.com/fellowship/ 】	fix it by changing it to:【 /fellowship/ 】
-
-WARNING: This page 『 utmccf.wordpress.com/2012/10/12/布道会-evangelical-conference 』 contains these absolute url links:
-	- 【 http://utmccf.com/conference/ 】	fix it by changing it to:【 /conference/ 】
-
-DONE: website published with 6 warnings and 0 errors. Last updated 2024-04-04 20:37:54 EDT
+DONE: website published with 6 warnings and 0 errors. Last updated 2024-04-11 20:38:15 EDT
 
 
 * Website is published with warnings/errors. Please check all affected pages. If nothing is broken, ignore the warnings/errors
