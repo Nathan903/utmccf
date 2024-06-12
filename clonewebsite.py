@@ -157,11 +157,13 @@ def clean(filepath):
 
   
 if downloadAgain:
+  downloadCommand=f'wget --reject xml,txt --reject-regex "(.*)\?(.*)|(.*)/feed/(.*)" --mirror --convert-links --adjust-extension --page-requisites --no-parent https://{domain}/404 --content-on-error'
+  os.system(downloadCommand +doNotShowShellResult)
   downloadCommand=f'wget --reject xml,txt --reject-regex "(.*)\?(.*)|(.*)/feed/(.*)" --mirror --convert-links --adjust-extension --page-requisites --no-parent https://{domain}/'
   os.system(downloadCommand +doNotShowShellResult)
   print_success(f"Finished download (at: {int(time.time()-startTime)} seconds)")
 
-#copy everything downloaded in /utmccf.wordpress.com into /clean_utmccf.wordpress.com
+#copy everything downloaded in /utmccf.wordpress.com and /manually_made_extra_files into /clean_utmccf.wordpress.com
 from distutils.dir_util import copy_tree
 if testOnlyOneFile:
   from distutils import file_util
@@ -172,6 +174,7 @@ if testOnlyOneFile:
   exit()
 else:
   copy_tree(domain, resultPath)
+  copy_tree("manually_made_extra_files", resultPath)
 
 extensionToExcludeFromProduction = ('.py','.')
 keywordsToExcludeFromProduction = ('/?', '/feed/')
