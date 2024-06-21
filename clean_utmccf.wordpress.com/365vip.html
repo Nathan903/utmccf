@@ -64,11 +64,24 @@ body {
 
 </body>
 <script type="text/javascript">
-    window.onload = function() {
+window.onload = function() {
     // Function to get the value of a query parameter
     function getQueryParameter(name) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(name);
+    }
+
+    // Function to animate the div
+    function animateDiv(div, callback) {
+        div.style.transition = 'transform 0.2s ease-in,background-color 0.2s ease-in';
+        div.style.transform = 'scale(1.2)';
+        div.style.backgroundColor= '#ffd0d0' ;
+
+        setTimeout(() => {
+            div.style.transition = 'transform 0.1s ease-out'
+            div.style.transform = 'scale(1)';
+            setTimeout(callback, 100); // Wait for the animation to complete before redirecting
+        }, 200);
     }
 
     // Get the value of the 'day' parameter
@@ -79,7 +92,9 @@ body {
         const divs = document.querySelectorAll('div');
         for (let div of divs) {
             if (div.textContent.trim() === day) {
-                div.click();
+                animateDiv(div, () => {
+                    div.click();
+                });
                 break;
             }
         }
