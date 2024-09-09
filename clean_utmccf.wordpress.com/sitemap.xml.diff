@@ -1,36 +1,169 @@
-6a7,66
+7c7
+< <loc>https://utmccf.wordpress.com/info/
+---
+> <loc>https://utmccf.wordpress.com/fellowship/
+10c10
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2019/05/header4-1.png
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/09/wechatimg391.png
+12c12
+< <image:title>header4
+---
+> <image:title>WechatIMG391
+16c16
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2019/05/photo-1534151994878-fb5f151a9f12-e1558901697498.jpg
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2023/09/3-1.png
+18c18
+< <image:title>photo-1534151994878-fb5f151a9f12
+---
+> <image:title>3-1
+22c22
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2019/05/photo-1553085118-5a5c02cbcf2f.jpg
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2023/05/summer-poster.png
+24c24
+< <image:title>photo-1553085118-5a5c02cbcf2f
+---
+> <image:title>summer-poster
+28c28
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2019/05/photo-1534151994878-fb5f151a9f12-e1558900531221.png
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/09/2022e5bc80e5ada6e6b5b7e68aa5.png
+30c30
+< <image:title>photo-1534151994878-fb5f151a9f12
+---
+> <image:title>2022e5bc80e5ada6e6b5b7e68aa5
+34c34
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2018/11/img_0016.jpg
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/09/2022f-orientation.png
+36c36
+< <image:title>IMG_0016
+---
+> <image:title>2022f-orientation
+39,48d38
+< <lastmod>2024-09-09T11:27:49+00:00
+< </lastmod>
+< <changefreq>weekly
+< </changefreq>
+< <priority>0.6
+< </priority>
+< </url>
+< <url>
+< <loc>https://utmccf.wordpress.com/2024/05/16/%e6%9a%91%e5%81%87%e5%9b%a2%e5%a5%91/
+< </loc>
+50c40
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/05/2-1.png
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/08/untitled-design.png
+52c42
+< <image:title>2-1
+---
+> <image:title>untitled-design
+56c46
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/05/2.png
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/06/nl-615.png
+58c48
+< <image:title>2
+---
+> <image:title>nl-615
+61,78d50
+< <lastmod>2024-09-09T11:26:02+00:00
+< </lastmod>
+< <changefreq>monthly
+< </changefreq>
+< </url>
+< <url>
+< <loc>https://utmccf.wordpress.com/free-campus-tour/
+< </loc>
+< <lastmod>2024-07-27T15:59:40+00:00
+< </lastmod>
+< <changefreq>weekly
+< </changefreq>
+< <priority>0.6
+< </priority>
+< </url>
+< <url>
+< <loc>https://utmccf.wordpress.com/fellowship/
+< </loc>
+80c52
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2023/09/3-1.png
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/06/nl-61.png
+82c54
+< <image:title>3-1
+---
+> <image:title>nl-61
+86c58
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2023/05/summer-poster.png
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2020/03/mwn-poster-d2-small.png
+88c60
+< <image:title>summer-poster
+---
+> <image:title>MWN poster D2 small
+92c64
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/09/2022e5bc80e5ada6e6b5b7e68aa5.png
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2020/02/214poster-new-date.png
+94c66
+< <image:title>2022e5bc80e5ada6e6b5b7e68aa5
+---
+> <image:title>214poster new date
+96a69,78
+> <lastmod>2024-09-09T11:32:30+00:00
+> </lastmod>
+> <changefreq>weekly
+> </changefreq>
+> <priority>0.6
+> </priority>
+> </url>
+> <url>
 > <loc>https://utmccf.wordpress.com/info/
 > </loc>
-> <image:image>
+98c80
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/09/2022f-orientation.png
+---
 > <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2019/05/header4-1.png
-> </image:loc>
+100c82
+< <image:title>2022f-orientation
+---
 > <image:title>header4
-> </image:title>
-> </image:image>
-> <image:image>
+104c86
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/08/untitled-design.png
+---
 > <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2019/05/photo-1534151994878-fb5f151a9f12-e1558901697498.jpg
-> </image:loc>
+106c88
+< <image:title>untitled-design
+---
 > <image:title>photo-1534151994878-fb5f151a9f12
-> </image:title>
-> </image:image>
-> <image:image>
+110c92
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/06/nl-615.png
+---
 > <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2019/05/photo-1553085118-5a5c02cbcf2f.jpg
-> </image:loc>
+112c94
+< <image:title>nl-615
+---
 > <image:title>photo-1553085118-5a5c02cbcf2f
-> </image:title>
-> </image:image>
-> <image:image>
+116c98
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/06/nl-61.png
+---
 > <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2019/05/photo-1534151994878-fb5f151a9f12-e1558900531221.png
-> </image:loc>
+118c100
+< <image:title>nl-61
+---
 > <image:title>photo-1534151994878-fb5f151a9f12
-> </image:title>
-> </image:image>
-> <image:image>
+122c104
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2020/03/mwn-poster-d2-small.png
+---
 > <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2018/11/img_0016.jpg
-> </image:loc>
+124c106
+< <image:title>MWN poster D2 small
+---
 > <image:title>IMG_0016
-> </image:title>
-> </image:image>
+126a109,118
 > <lastmod>2024-09-09T11:27:49+00:00
 > </lastmod>
 > <changefreq>weekly
@@ -41,86 +174,35 @@
 > <url>
 > <loc>https://utmccf.wordpress.com/2024/05/16/%e6%9a%91%e5%81%87%e5%9b%a2%e5%a5%91/
 > </loc>
-> <image:image>
+128c120
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2020/02/214poster-new-date.png
+---
 > <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/05/2-1.png
-> </image:loc>
+130c122
+< <image:title>214poster new date
+---
 > <image:title>2-1
-> </image:title>
-> </image:image>
-> <image:image>
+134c126
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2020/01/dumplings-posters-d3.png
+---
 > <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/05/2.png
-> </image:loc>
+136c128
+< <image:title>dumplings posters D3
+---
 > <image:title>2
-> </image:title>
-> </image:image>
+139c131,139
+< <lastmod>2024-05-28T06:38:21+00:00
+---
 > <lastmod>2024-09-09T11:26:02+00:00
 > </lastmod>
 > <changefreq>monthly
 > </changefreq>
 > </url>
 > <url>
-87,146d146
-< <loc>https://utmccf.wordpress.com/info/
-< </loc>
-< <image:image>
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2019/05/header4-1.png
-< </image:loc>
-< <image:title>header4
-< </image:title>
-< </image:image>
-< <image:image>
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2019/05/photo-1534151994878-fb5f151a9f12-e1558901697498.jpg
-< </image:loc>
-< <image:title>photo-1534151994878-fb5f151a9f12
-< </image:title>
-< </image:image>
-< <image:image>
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2019/05/photo-1553085118-5a5c02cbcf2f.jpg
-< </image:loc>
-< <image:title>photo-1553085118-5a5c02cbcf2f
-< </image:title>
-< </image:image>
-< <image:image>
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2019/05/photo-1534151994878-fb5f151a9f12-e1558900531221.png
-< </image:loc>
-< <image:title>photo-1534151994878-fb5f151a9f12
-< </image:title>
-< </image:image>
-< <image:image>
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2018/11/img_0016.jpg
-< </image:loc>
-< <image:title>IMG_0016
-< </image:title>
-< </image:image>
-< <lastmod>2024-05-28T06:37:02+00:00
-< </lastmod>
-< <changefreq>weekly
-< </changefreq>
-< <priority>0.6
-< </priority>
-< </url>
-< <url>
-< <loc>https://utmccf.wordpress.com/2024/05/16/%e6%9a%91%e5%81%87%e5%9b%a2%e5%a5%91/
-< </loc>
-< <image:image>
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/05/2-1.png
-< </image:loc>
-< <image:title>2-1
-< </image:title>
-< </image:image>
-< <image:image>
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/05/2.png
-< </image:loc>
-< <image:title>2
-< </image:title>
-< </image:image>
-< <lastmod>2024-05-17T01:26:26+00:00
-< </lastmod>
-< <changefreq>monthly
-< </changefreq>
-< </url>
-< <url>
+> <loc>https://utmccf.wordpress.com/free-campus-tour/
+> </loc>
+> <lastmod>2024-07-27T15:59:40+00:00
 2471c2471
-< <lastmod>2024-07-27T15:59:40+00:00
+< <lastmod>2024-09-09T11:27:49+00:00
 ---
-> <lastmod>2024-09-09T11:27:49+00:00
+> <lastmod>2024-09-09T11:32:30+00:00

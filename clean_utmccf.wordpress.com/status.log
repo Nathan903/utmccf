@@ -40,6 +40,7 @@ WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2022/06/
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2022/06/wechatimg560.jpeg] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2020/05/wechat-image_20200509155057.jpg] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2024/05/2-1.png] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2024/09/wechatimg391.png] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2012/08/e68385e4babae88a82e8aeb2e5baa7.jpg] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2012/08/e789a7e5b888e8aeb2e5baa7.jpg] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2012/08/utmccf-jan18-newsletter.jpg] is not an HTML. It is not processed for ad/tracker cleaning
@@ -81,7 +82,7 @@ WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2023/02/
 WARNING: This page 『 utmccf.wordpress.com/2012/10/12/布道会-evangelical-conference 』 contains these absolute url links:
 	- 【 http://utmccf.com/conference/ 】	fix it by changing it to:【 /conference/ 】
 
-DONE: website published with 69 warnings and 0 errors. Last updated 2024-09-09 07:32:42 EDT
+DONE: website published with 70 warnings and 0 errors. Last updated 2024-09-09 07:44:19 EDT
 
 
 * Website is published with warnings/errors. Please check all affected pages. If nothing is broken, ignore the warnings/errors
