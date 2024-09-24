@@ -152,6 +152,12 @@ def clean(filepath):
   if original==text:
     print_warning(f"`clean()` - no change in [{filepath}]")
   check_for_broken_absolute_url(filepath,text)
+
+  if text.count("<body") == 1:
+    text = text.replace("<body", r'<body style="margin-top: 0px !important;" ')
+  else:
+    print_error(f"`clean()` - found {text.count('<body')} body tags")
+
   with open(filepath,'w',encoding="utf-8") as f:
     f.write(text)
 
