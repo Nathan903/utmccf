@@ -69,6 +69,7 @@ WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2022/08/
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2022/08/final.png] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2022/08/dsc00295.jpg] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2022/08/dsc00256.jpg] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/365vip/qrcode.png] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: This page 『 utmccf.wordpress.com/2022/08/25/2022-summer-活动总集 』 contains these absolute url links:
 	- 【 https://utmccf.com/?attachment_id=2825 】	fix it by changing it to:【 /?attachment_id=2825 】
 	- 【 https://utmccf.com/?attachment_id=2833 】	fix it by changing it to:【 /?attachment_id=2833 】
@@ -82,7 +83,7 @@ WARNING: This page 『 utmccf.wordpress.com/2022/08/25/2022-summer-活动总集 
 	- 【 https://utmccf.com/conference/16101658206922_-pic/ 】	fix it by changing it to:【 /conference/16101658206922_-pic/ 】
 	- 【 https://utmccf.com/?attachment_id=2827 】	fix it by changing it to:【 /?attachment_id=2827 】
 
-DONE: website published with 70 warnings and 0 errors. Last updated 2024-09-26 20:48:46 EDT
+DONE: website published with 71 warnings and 0 errors. Last updated 2024-09-26 23:02:13 EDT
 
 
 * Website is published with warnings/errors. Please check all affected pages. If nothing is broken, ignore the warnings/errors
