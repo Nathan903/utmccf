@@ -141,6 +141,7 @@ def clean(filepath):
     #https://stackoverflow.com/questions/500864/case-insensitive-regular-expression-without-re-compile
     text = re.sub(tagToRemove,"",text,flags=re.IGNORECASE)
   
+  # remove the whitespace on the top of the website
   try:
     indexInsert=text.index('<html')+ len('<html')
     text=text[:indexInsert]+' style="margin-top: 0px !important; scroll-padding-top: 0px !important;" '+text[indexInsert:]
