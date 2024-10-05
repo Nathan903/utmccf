@@ -1,12 +1,200 @@
 7c7
-< <loc>https://utmccf.wordpress.com/conference/
+< <loc>https://utmccf.wordpress.com/events/
+---
+> <loc>https://utmccf.wordpress.com/fellowship/
+10c10
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/07/16101658206922_.pic_.png
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/09/wechatimg391.png
+12c12
+< <image:title>16101658206922_.pic
+---
+> <image:title>WechatIMG391
+16c16
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/06/wechatimg560.jpeg
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2023/09/3-1.png
+18c18
+< <image:title>WechatIMG560
+---
+> <image:title>3-1
+22c22
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2019/03/music-worship-poster.png
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2023/05/summer-poster.png
+24c24
+< <image:title>music worship poster
+---
+> <image:title>summer-poster
+28c28
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2018/11/2018-christmas-dinner-d3.png
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/09/2022e5bc80e5ada6e6b5b7e68aa5.png
+30c30
+< <image:title>2018 Christmas Dinner D3
+---
+> <image:title>2022e5bc80e5ada6e6b5b7e68aa5
+34c34
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2018/11/img_0315.jpg
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/09/2022f-orientation.png
+36c36
+< <image:title>IMG_0315
+---
+> <image:title>2022f-orientation
+40c40
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2018/10/20181012-d2.png
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/08/untitled-design.png
+42c42
+< <image:title>20181012 D2
+---
+> <image:title>untitled-design
+46c46
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2018/03/music-sharing-night-poster-2018.png
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/06/nl-615.png
+48c48
+< <image:title>Music Sharing Night Poster 2018
+---
+> <image:title>nl-615
+52c52
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2009/10/capture.png
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/06/nl-61.png
+54c54
+< <image:title>Capture
+---
+> <image:title>nl-61
+58c58
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2009/10/0119335b315f90910b391267a83b84bfb6e2fe8b5d-1.jpg
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2020/03/mwn-poster-d2-small.png
+60c60
+< <image:title>0119335b315f90910b391267a83b84bfb6e2fe8b5d (1)
+---
+> <image:title>MWN poster D2 small
+64c64
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2009/10/e8bfb7e5a4b1e4b88ee5bd92e59b9e.png
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2020/02/214poster-new-date.png
+66c66
+< <image:title>%e8%bf%b7%e5%a4%b1%e4%b8%8e%e5%bd%92%e5%9b%9e
+---
+> <image:title>214poster new date
+69,79c69
+< <lastmod>2024-10-05T20:27:18+00:00
+< </lastmod>
+< <changefreq>weekly
+< </changefreq>
+< <priority>0.6
+< </priority>
+< </url>
+< <url>
+< <loc>https://utmccf.wordpress.com/free-campus-tour/
+< </loc>
+< <lastmod>2024-09-17T06:48:52+00:00
+---
+> <lastmod>2024-10-05T20:41:43+00:00
+87c77
+< <loc>https://utmccf.wordpress.com/fellowship/
 ---
 > <loc>https://utmccf.wordpress.com/events/
-69c69
-< <lastmod>2024-10-05T20:12:04+00:00
+90c80
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/09/wechatimg391.png
 ---
-> <lastmod>2024-10-05T20:27:18+00:00
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/07/16101658206922_.pic_.png
+92c82
+< <image:title>WechatIMG391
+---
+> <image:title>16101658206922_.pic
+96c86
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2023/09/3-1.png
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/06/wechatimg560.jpeg
+98c88
+< <image:title>3-1
+---
+> <image:title>WechatIMG560
+102c92
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2023/05/summer-poster.png
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2019/03/music-worship-poster.png
+104c94
+< <image:title>summer-poster
+---
+> <image:title>music worship poster
+108c98
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/09/2022e5bc80e5ada6e6b5b7e68aa5.png
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2018/11/2018-christmas-dinner-d3.png
+110c100
+< <image:title>2022e5bc80e5ada6e6b5b7e68aa5
+---
+> <image:title>2018 Christmas Dinner D3
+114c104
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/09/2022f-orientation.png
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2018/11/img_0315.jpg
+116c106
+< <image:title>2022f-orientation
+---
+> <image:title>IMG_0315
+120c110
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/08/untitled-design.png
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2018/10/20181012-d2.png
+122c112
+< <image:title>untitled-design
+---
+> <image:title>20181012 D2
+126c116
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/06/nl-615.png
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2018/03/music-sharing-night-poster-2018.png
+128c118
+< <image:title>nl-615
+---
+> <image:title>Music Sharing Night Poster 2018
+132c122
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/06/nl-61.png
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2009/10/capture.png
+134c124
+< <image:title>nl-61
+---
+> <image:title>Capture
+138c128
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2020/03/mwn-poster-d2-small.png
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2009/10/0119335b315f90910b391267a83b84bfb6e2fe8b5d-1.jpg
+140c130
+< <image:title>MWN poster D2 small
+---
+> <image:title>0119335b315f90910b391267a83b84bfb6e2fe8b5d (1)
+144c134
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2020/02/214poster-new-date.png
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2009/10/e8bfb7e5a4b1e4b88ee5bd92e59b9e.png
+146c136
+< <image:title>214poster new date
+---
+> <image:title>%e8%bf%b7%e5%a4%b1%e4%b8%8e%e5%bd%92%e5%9b%9e
+149c139,149
+< <lastmod>2024-09-09T13:53:00+00:00
+---
+> <lastmod>2024-10-05T20:39:19+00:00
+> </lastmod>
+> <changefreq>weekly
+> </changefreq>
+> <priority>0.6
+> </priority>
+> </url>
+> <url>
+> <loc>https://utmccf.wordpress.com/free-campus-tour/
+> </loc>
+> <lastmod>2024-09-17T06:48:52+00:00
 2471c2471
-< <lastmod>2024-10-05T20:12:04+00:00
+< <lastmod>2024-10-05T20:27:18+00:00
 ---
-> <lastmod>2024-10-05T20:27:18+00:00
+> <lastmod>2024-10-05T20:41:43+00:00
