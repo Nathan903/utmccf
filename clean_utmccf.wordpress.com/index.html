@@ -236,14 +236,72 @@ mark,
 		.hero.with-featured-image,
 		body[class*="front-page"] .hero,
 		#infinite-handle span,
-		.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li:hover,
-		.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li.current-menu-item > a,
-		.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li.current_page_item > a,
-		.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:hover,
-		.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:focus,
-		.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:active,
-		.large-screen.navigation-classic .primary-navigation ul ul li,
 		.widget_akismet_widget .a-stats a { background-color: #D8111B;}
+
+
+.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a ,
+{
+  background:
+    linear-gradient(
+      to right,
+      #eee,
+      #eee
+    ),
+    linear-gradient(
+      to right,
+      rgba(255, 0, 0, 1),
+      rgba(255, 0, 180, 1),
+      rgba(0, 100, 200, 1)
+  );
+  background-size: 100% 3px, 0 3px;
+  background-position: 100% 85%, 1em 85%;
+  background-repeat: no-repeat;
+  transition: background-size 300ms;
+}
+.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li:hover,
+.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li:focus,
+.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li:active,
+.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:hover,
+.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:focus,
+.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:active
+{
+	background-color: transparent ;
+ 	background-size: 0 3px, 85% 3px;
+ 	color:#333;
+}
+.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li:hover
+{
+background-color: transparent ;
+}
+.large-screen.navigation-classic .primary-navigation ul ul li {
+background-color: #eee;
+}
+.large-screen.navigation-classic .primary-navigation ul ul li a{
+background:
+linear-gradient(
+  to right,
+      #eee,
+      #eee
+),
+linear-gradient(
+  to right,
+  rgba(255, 0, 0, 1),
+  rgba(255, 0, 180, 1),
+  rgba(0, 100, 200, 1)
+);
+background-size: 100% 3px, 0 3px;
+background-position: 100% 100%, 0 100%;
+background-repeat: no-repeat;
+transition: background-size 400ms;
+padding:2px;
+border:none;
+}
+.large-screen.navigation-classic .primary-navigation ul ul li a:hover,
+.large-screen.navigation-classic .primary-navigation ul ul li a:focus,
+.large-screen.navigation-classic .primary-navigation ul ul li a:active{
+ 	background-size: 0 3px, 100% 3px;
+}
+
 a,
 		a.button-minimal,
 		a.button-minimal:visited,
@@ -298,7 +356,10 @@ a,
 		.widget_goodreads div[class^="gr_custom_each_container"] a:active,
 		.testimonial-entry-title a:hover,
 		.testimonial-entry-title a:focus,
-		.testimonial-entry-title a:active { color: #D8111B;}
+		.testimonial-entry-title a:active { color: #D8111B;} /*menu drop down arrows		*/
+		.large-screen.navigation-classic .primary-navigation .menu-item-has-children:hover:before
+		{ color: #D8111B!important;}; /* Rotate on hover */
+}
 button,
 		input[type="button"],
 		input[type="reset"],
@@ -337,7 +398,7 @@ button,
 		.large-screen.navigation-classic .primary-navigation ul ul li:last-of-type,
 		.large-screen.navigation-classic .secondary-navigation a:hover,
 		.large-screen.navigation-classic .secondary-navigation a:focus,
-		.large-screen.navigation-classic .secondary-navigation a:active { border-bottom-color: #D8111B;}
+		.large-screen.navigation-classic .secondary-navigation a:active { border-bottom-color: transparent;} /*submenu  */
 blockquote,
 		body .hentry .wpcom-reblog-snapshot .reblogger-note-content blockquote { border-left-color: #D8111B;}
 </style>
@@ -355,18 +416,15 @@ blockquote,
 	<a class="skip-link screen-reader-text" href="index.html#content">Skip to content</a>
 
 	
-	<header id="masthead" class="site-header" role="banner" style="display: flex;align-items: center;">
+	<header id="masthead" class="site-header" role="banner" style="display: flex;align-items: center;background-color: #D8111B">
 
-	<img src="logo.svg" alt="utmccf_logo" style="width:110px; object-fit: cover;margin: -10px 0px -15px 1em; display:inline; ">
+	<img src="logo.svg" alt="utmccf_logo" style="width:110px; object-fit: cover;margin: -10px 0px -15px 1em; display:inline;">
 
-	<div style="display: flex;align-items: center;background-color: #D8111B; padding: 7px 10px 7px 10px; border-radius: 15px;">
-	  
 	    <span style="letter-spacing: normal; color: white; display: inline; line-height: 1.25;">
 	        <span style="font-size: 1.4em; font-weight: bold; letter-spacing: 0.04em;">多伦多大学国语基督徒团契</span>
 	        <br>
 	        <span style="font-size: 0.9em; line-height: 0em;">University of Toronto Mandarin Chinese Christian Fellowship</span>
 	    </span>
-	</div>
 	  <div class="header-wrapper clear" style="width: 0px;">
 	    <div class="site-branding" >
 	      <p class="site-title">
@@ -374,13 +432,14 @@ blockquote,
 	      </p>
 	      <p class="site-description">$testUniversity of Toronto Mandarin Chinese Christian Fellowship</p>
 	    </div>
+
 	    <!-- .site-branding -->
 	    <div id="site-navigation" class="header-navigation">
 	      <button class="menu-toggle" aria-expanded="false">Menu</button>
 	      <div class="navigation-wrapper clear">
-	        <nav class="primary-navigation" role="navigation">
+	        <nav class="primary-navigation" role="navigation" style="border:none;">
 	          <div class="menu-primary" style="display:inline;">
-	            <ul id="menu-main-menu" class="clear">
+	            <ul id="menu-main-menu" class="clear" style="background-color: #eee; padding: 7px 10px 7px 10px; border-radius:20px; border:none;margin-right:1em;">
 	              <li id="menu-item-1630" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1630">
 	                <a href="events.html">活动 | Events</a>
 	                <ul class="sub-menu">
@@ -418,6 +477,8 @@ blockquote,
 	                  </li>
 	                </ul>
 	              </li>
+
+
 	            </ul>
 	          </div>
 	        </nav>
