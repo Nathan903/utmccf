@@ -1,5 +1,7 @@
+WARNING: downloaded file [clean_utmccf.wordpress.com/logo.svg] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/20240714.png] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/sitemap.xml.diff] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/extra.css] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: This page 『 utmccf.wordpress.com/2012/10/12/布道会-evangelical-conference 』 contains these absolute url links:
 	- 【 http://utmccf.com/conference/ 】	fix it by changing it to:【 /conference/ 】
 
@@ -83,7 +85,7 @@ WARNING: This page 『 utmccf.wordpress.com/2022/08/25/2022-summer-活动总集 
 	- 【 https://utmccf.com/conference/16101658206922_-pic/ 】	fix it by changing it to:【 /conference/16101658206922_-pic/ 】
 	- 【 https://utmccf.com/?attachment_id=2827 】	fix it by changing it to:【 /?attachment_id=2827 】
 
-DONE: website published with 71 warnings and 0 errors. Last updated 2024-10-03 20:48:29 EDT
+DONE: website published with 73 warnings and 0 errors. Last updated 2024-10-06 03:44:44 EDT
 
 
 * Website is published with warnings/errors. Please check all affected pages. If nothing is broken, ignore the warnings/errors
