@@ -66,11 +66,15 @@ tagsToRemove=(
   r""".large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:focus,""",
   r""".large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:active,""",
   r""".large-screen.navigation-classic .primary-navigation ul ul li,""",
+  r'aria-current="page"', #aria-current="page" for navbar
+  r'current-menu-parent',# for navbar
+  r'current-menu-item',# for navbar
+  r'current-menu-ancestor',# for navbar
 )
 tagsToReplace=(
   ( #add <link rel="stylesheet" href="extra.css"> to after head
     r'(<head\b[^>]*>)', #<head>
-    r"""\1<link rel="stylesheet" href="extra.css">"""
+    r"""\1<link rel="stylesheet" href="/extra.css">"""
   ),
   ( # add js to <button class="menu-toggle" aria-expanded="false">Menu</button>
     r'<button[^>]*class="menu-toggle"[^>]*>.*?</button>',
@@ -170,8 +174,9 @@ def clean(filepath):
     text = re.sub(tagToRemove,"",text,flags=re.IGNORECASE)
 
   for tagToReplace,tagToReplaceWith in tagsToReplace:
-    for i in (re.findall(tagToReplace,text)):
-      print(i)
+    if verbose:
+      for i in (re.findall(tagToReplace,text)):
+        print(i)
     text = re.sub(tagToReplace,tagToReplaceWith, text, flags=re.IGNORECASE)
 
 
@@ -206,8 +211,8 @@ if downloadAgain:
 from distutils.dir_util import copy_tree
 if testOnlyOneFile:
   from distutils import file_util
-  source_file = domain+"/fellowship.html"
-  destination_file = resultPath+"/fellowship.html"
+  source_file = domain+"/events.html"
+  destination_file = resultPath+"/events.html"
   file_util.copy_file(source_file, destination_file)
   clean(destination_file)
   exit()
