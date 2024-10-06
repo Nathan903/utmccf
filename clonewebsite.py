@@ -3,7 +3,7 @@ domain = "utmccf.wordpress.com"
 downloadAgain=False
 resultzip=False
 verbose=False
-testOnlyOneFile=False
+testOnlyOneFile=True
 removeExtraFiles=True
 
 import os, re,time, datetime, pytz
@@ -57,8 +57,36 @@ tagsToRemove=(
   ############below are optional optimization####################
   r"""<link.*rel=.pingback..*?>""", #pingbacks like <link rel="pingback" href="https://tendertastytester.wordpress.com/xmlrpc.php">
   r"""<link.*rel='dns-prefetch'.*/>""", #dns prefetches
-)
 
+  ############below are css that conflicts with extra.css#####################
+  r""".large-screen.navigation-classic .primary-navigation .menu-primary > ul > li:hover,""",
+  r""".large-screen.navigation-classic .primary-navigation .menu-primary > ul > li.current-menu-item > a,""",
+  r""".large-screen.navigation-classic .primary-navigation .menu-primary > ul > li.current_page_item > a,""",
+  r""".large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:hover,""",
+  r""".large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:focus,""",
+  r""".large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:active,""",
+  r""".large-screen.navigation-classic .primary-navigation ul ul li,""",
+)
+tagsToReplace=(
+  ( #add <link rel="stylesheet" href="extra.css"> to after head
+    r'(<head\b[^>]*>)', #<head>
+    r"""\1<link rel="stylesheet" href="extra.css">"""
+  ),
+  ( # add js to <button class="menu-toggle" aria-expanded="false">Menu</button>
+    r'<button[^>]*class="menu-toggle"[^>]*>.*?</button>',
+    r"""<button onclick="var l=document.querySelector('#customLogo'),t=document.querySelector('#customTitle');l.style.display=t.style.display=(l.style.display==='none'?'block':'none');" class="menu-toggle" aria-expanded="false"></button>"""
+  ),
+  ( # remove the header image <a href="index.html" class="header-image" rel="home"><img src="wp-content/uploads/2019/05/cropped-header4-1.png" width="1350" height="110" alt=""></a>
+    r'(?s)(<a[^>]*class=["\']header-image["\'][^>]*>)(.*?)(</a>)',
+    r"""   <img id="customLogo" src="logo.svg" alt="utmccf_logo" style="width:10%; max-width:110px; object-fit: cover;margin: -10px 0px -15px 0px; display:inline!important;">
+    <span id="customTitle" style="letter-spacing: normal; color: white; line-height: 1.25;">
+          <span style="font-size: 1.4em; font-weight: bold; letter-spacing: 0.04em;">多伦多大学国语基督徒团契</span>
+          <br>
+          <span style="font-size: 0.9em; line-height: 0em;">University of Toronto Mandarin Chinese Christian Fellowship</span>
+    </span>"""
+  ),
+
+)
 scriptKeywords=(
   "insertInlineAds",
   "google_analytics",
@@ -140,24 +168,28 @@ def clean(filepath):
     #https://stackoverflow.com/questions/16585635/how-to-find-script-tag-from-the-string-with-javascript-regular-expression  
     #https://stackoverflow.com/questions/500864/case-insensitive-regular-expression-without-re-compile
     text = re.sub(tagToRemove,"",text,flags=re.IGNORECASE)
-  
+
+  for tagToReplace,tagToReplaceWith in tagsToReplace:
+    for i in (re.findall(tagToReplace,text)):
+      print(i)
+    text = re.sub(tagToReplace,tagToReplaceWith, text, flags=re.IGNORECASE)
+
+
   # remove the whitespace on the top of the website
   try:
     indexInsert=text.index('<html')+ len('<html')
     text=text[:indexInsert]+' style="margin-top: 0px !important; scroll-padding-top: 0px !important;" '+text[indexInsert:]
   except:
     print_error(f"`clean()` - cannot find <html> tag in file in [{filepath}]")
-
-  text=text.replace("Blog at WordPress.com","Blog not at WordPress.com")
-  
-  if original==text:
-    print_warning(f"`clean()` - no change in [{filepath}]")
-  check_for_broken_absolute_url(filepath,text)
-
   if text.count("<body") == 1:
     text = text.replace("<body", r'<body style="margin-top: 0px !important;" ')
   else:
     print_error(f"`clean()` - found {text.count('<body')} body tags")
+
+  if original==text:
+    print_warning(f"`clean()` - no change in [{filepath}]")
+
+  check_for_broken_absolute_url(filepath,text)
 
   with open(filepath,'w',encoding="utf-8") as f:
     f.write(text)
@@ -174,8 +206,8 @@ if downloadAgain:
 from distutils.dir_util import copy_tree
 if testOnlyOneFile:
   from distutils import file_util
-  source_file = domain+"/index.html"
-  destination_file = resultPath+"/index.html"
+  source_file = domain+"/fellowship.html"
+  destination_file = resultPath+"/fellowship.html"
   file_util.copy_file(source_file, destination_file)
   clean(destination_file)
   exit()
