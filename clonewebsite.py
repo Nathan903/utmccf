@@ -73,6 +73,12 @@ tagsToRemove=(
   r'current-page-parent',# for navbar
   r'current-page-item',# for navbar
   r'current-page-ancestor',# for navbar
+  r'current_menu_parent',# for navbar
+  r'current_menu_item',# for navbar
+  r'current_menu_ancestor',# for navbar
+  r'current_page_parent',# for navbar
+  r'current_page_item',# for navbar
+  r'current_page_ancestor',# for navbar
 
 )
 tagsToReplace=(
