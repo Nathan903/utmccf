@@ -1,5 +1,8 @@
 /*make title fix on phones*/
 @media screen and (min-width:0px){
+	#menu-main-menu {
+		padding: 7px 10px 7px 10px;
+	}
 	#customTitle {font-size: min(3vw,1em);}
 }
 
@@ -11,7 +14,6 @@ body, html {overflow-x: hidden !important;}
 	#customLogo, #customTitle {display:inline!important;}
 	#menu-main-menu {
 		background-color: #fefefe;
-		padding: 7px 10px 7px 10px;
 		border-radius:20px;
 		border:none;
 	}
@@ -30,11 +32,11 @@ body, html {overflow-x: hidden !important;}
       rgba(255, 0, 0, 1),
       rgba(255, 0, 180, 1),
       rgba(0, 100, 200, 1)
-  );
-  background-size: 100% 3px, 0 3px;
-  background-position: 100% 85%, 1em 85%;
-  background-repeat: no-repeat;
-  transition: background-size 300ms;
+  )!important;
+  background-size: 100% 3px, 0 3px!important;
+  background-position: 100% 85%, 1em 85%!important;
+  background-repeat: no-repeat!important;
+  transition: background-size 300ms!important;
 }
 .large-screen.navigation-classic .primary-navigation .menu-primary > ul > li:hover,
 .large-screen.navigation-classic .primary-navigation .menu-primary > ul > li:focus,
@@ -43,13 +45,13 @@ body, html {overflow-x: hidden !important;}
 .large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:focus,
 .large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:active
 {
-	background-color: transparent ;
- 	background-size: 0 3px, 85% 3px;
+	background-color: transparent!important ;
+ 	background-size: 0 3px, 85% 3px!important;
  	color:#333;
 }
 .large-screen.navigation-classic .primary-navigation .menu-primary > ul > li:hover
 {
-background-color: transparent ;
+background-color: transparent!important ;
 }
 .large-screen.navigation-classic .primary-navigation ul ul{
 }
@@ -87,10 +89,13 @@ color:#333;
 }
 .large-screen.navigation-classic .primary-navigation .menu-item-has-children:hover:before
 		{ color: #D8111B!important;} /* Rotate on hover */
-.large-screen.navigation-classic .secondary-navigation a:active { border-bottom-color: transparent!important;} /*submenu  */
+
+
+.large-screen.navigation-classic .primary-navigation ul ul:before,
+.large-screen.navigation-classic .primary-navigation ul ul li:last-of-type { border-bottom-color: transparent!important;} /*submenu  */
 
 #masthead{
-	display:flex;
+	display:flex!important;
 	align-items:center!important;
 	background-color: #D8111B;
 }

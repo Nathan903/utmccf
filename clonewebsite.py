@@ -3,7 +3,7 @@ domain = "utmccf.wordpress.com"
 downloadAgain=False
 resultzip=False
 verbose=False
-testOnlyOneFile=True
+testOnlyOneFile=False
 removeExtraFiles=True
 
 import os, re,time, datetime, pytz
@@ -70,6 +70,10 @@ tagsToRemove=(
   r'current-menu-parent',# for navbar
   r'current-menu-item',# for navbar
   r'current-menu-ancestor',# for navbar
+  r'current-page-parent',# for navbar
+  r'current-page-item',# for navbar
+  r'current-page-ancestor',# for navbar
+
 )
 tagsToReplace=(
   ( #add <link rel="stylesheet" href="extra.css"> to after head
@@ -82,7 +86,7 @@ tagsToReplace=(
   ),
   ( # remove the header image <a href="index.html" class="header-image" rel="home"><img src="wp-content/uploads/2019/05/cropped-header4-1.png" width="1350" height="110" alt=""></a>
     r'(?s)(<a[^>]*class=["\']header-image["\'][^>]*>)(.*?)(</a>)',
-    r"""   <img id="customLogo" src="logo.svg" alt="utmccf_logo" style="width:10%; max-width:110px; object-fit: cover;margin: -10px 0px -15px 0px; display:inline!important;">
+    r"""   <img id="customLogo" src="/logo.svg" alt="utmccf_logo" style="width:10%; max-width:110px; object-fit: cover;margin: -10px 0px -15px 0px; display:inline!important;">
     <span id="customTitle" style="letter-spacing: normal; color: white; line-height: 1.25;">
           <span style="font-size: 1.4em; font-weight: bold; letter-spacing: 0.04em;">多伦多大学国语基督徒团契</span>
           <br>
