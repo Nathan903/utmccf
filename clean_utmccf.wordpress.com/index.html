@@ -83,6 +83,10 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s0.wp.com\/wp-content\/mu-plugin
 	text-align:justify;
 }
 .has-text-align-justify{text-align:justify;}
+* {
+  outline: 1px solid #f00 !important;
+}
+
 </style>
 <link crossorigin='anonymous' rel='stylesheet' id='all-css-4-1' href='https://s2.wp.com/_static/??-eJzTLy/QzcxLzilNSS3WzyrWz01NyUxMzUnNTc0rQeEU5CRWphbp5qSmJyZX6uVm5uklFxfr6OPTDpRD5sM02efaGpoZmFkYGRuZGmQBAHPvL0Y=&cssminify=yes' type='text/css' media='all' />
 <style id='jetpack-sharing-buttons-style-inline-css'>
@@ -180,7 +184,13 @@ var wa_smart = { 'network_id': 3905, 'site_id': 474853, 'page_id': 1572546, 'blo
 		background: #c5c5c5 !important;
 		border-color: #c5c5c5 !important;
 	}
+	@media screen and (max-width:720px){
+		#customTitle {font-size: 0.5em;}
+		
+	}
 	@media screen and (min-width: 1020px) {
+		#menu-main-menu {background-color: #eee}
+
 		body.small-screen.navigation-classic .primary-navigation .menu-primary > ul > li.current-menu-item:before,
 		body.small-screen.navigation-classic .primary-navigation .menu-primary > ul > li.current_page_item:before,
 		body.small-screen.navigation-classic .primary-navigation .menu-item-has-children:hover:before,
@@ -192,6 +202,7 @@ var wa_smart = { 'network_id': 3905, 'site_id': 474853, 'page_id': 1572546, 'blo
 		}
 	}
 	@media screen and (min-width: 1230px) {
+		#menu-main-menu {background-color: #eee}
 		body.small-screen .menu-toggle.open,
 		body.small-screen .menu-toggle.open:before,
 		body.small-screen .menu-toggle.open:focus,
@@ -273,7 +284,7 @@ mark,
 background-color: transparent ;
 }
 .large-screen.navigation-classic .primary-navigation ul ul{
-  transform: translateX(-4em);
+  transform: translateX(0em);
 }
 .large-screen.navigation-classic .primary-navigation ul ul li {
 background-color: #eee;
@@ -297,13 +308,15 @@ background-repeat: no-repeat;
 transition: background-size 300ms;
 padding:2px;
 border:none;
+color:#333;
 }
 .large-screen.navigation-classic .primary-navigation ul ul li a:hover,
 .large-screen.navigation-classic .primary-navigation ul ul li a:focus,
 .large-screen.navigation-classic .primary-navigation ul ul li a:active{
  	background-size: 0 3px, 100% 3px;
-  
-
+}
+.menu-toggle {
+	color:#fff;
 }
 
 a,
@@ -420,16 +433,17 @@ blockquote,
 	<a class="skip-link screen-reader-text" href="index.html#content">Skip to content</a>
 
 	
-	<header id="masthead" class="site-header" role="banner" style="display: flex;align-items: center;background-color: #D8111B">
+	<header id="masthead" class="site-header" role="banner" style="display: flex;align-items: center;background-color: #D8111B;">
 
-	<img src="logo.svg" alt="utmccf_logo" style="width:110px; object-fit: cover;margin: -10px 0px -15px 1em; display:inline;">
+		<img id="customLogo" src="logo.svg" alt="utmccf_logo" style="width:10%; max-width:110px; object-fit: cover;margin: -10px 0px -15px 0px; display:inline;">
 
-	    <span style="letter-spacing: normal; color: white; display: inline; line-height: 1.25;">
+	    <span id="customTitle" style="letter-spacing: normal; color: white; line-height: 1.25;">
 	        <span style="font-size: 1.4em; font-weight: bold; letter-spacing: 0.04em;">多伦多大学国语基督徒团契</span>
 	        <br>
 	        <span style="font-size: 0.9em; line-height: 0em;">University of Toronto Mandarin Chinese Christian Fellowship</span>
 	    </span>
-	  <div class="header-wrapper clear" style="width: 0px;">
+
+	  <div class="header-wrapper clear" style="width: 0px;margin-right:0px;">
 	    <div class="site-branding" >
 	      <p class="site-title">
 	        <a href="index.html" rel="home">$test多伦多大学国语基督徒团契</a>
@@ -439,11 +453,11 @@ blockquote,
 
 	    <!-- .site-branding -->
 	    <div id="site-navigation" class="header-navigation">
-	      <button class="menu-toggle" aria-expanded="false">Menu</button>
+		<button onclick="var l=document.querySelector('#customLogo'),t=document.querySelector('#customTitle');l.style.display=t.style.display=(l.style.display==='none'?'block':'none');" class="menu-toggle" aria-expanded="false"></button>
 	      <div class="navigation-wrapper clear">
-	        <nav class="primary-navigation" role="navigation" style="border:none;">
+	        <nav class="primary-navigation" role="navigation" style="border:none;padding-top:0px;z-index: 9999;">
 	          <div class="menu-primary" style="display:inline;">
-	            <ul id="menu-main-menu" class="clear" style="background-color: #eee; padding: 7px 10px 7px 10px; border-radius:20px; border:none;margin-right:1em;">
+	            <ul id="menu-main-menu" class="clear" style="padding: 7px 10px 7px 10px; border-radius:20px; border:none;">
 	              <li id="menu-item-1630" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1630">
 	                <a href="events.html">活动 | Events</a>
 	                <ul class="sub-menu">
