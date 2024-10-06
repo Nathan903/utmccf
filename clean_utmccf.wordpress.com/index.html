@@ -83,10 +83,6 @@ window._wpemojiSettings = {"baseUrl":"https:\/\/s0.wp.com\/wp-content\/mu-plugin
 	text-align:justify;
 }
 .has-text-align-justify{text-align:justify;}
-* {
-  outline: 1px solid #f00 !important;
-}
-
 </style>
 <link crossorigin='anonymous' rel='stylesheet' id='all-css-4-1' href='https://s2.wp.com/_static/??-eJzTLy/QzcxLzilNSS3WzyrWz01NyUxMzUnNTc0rQeEU5CRWphbp5qSmJyZX6uVm5uklFxfr6OPTDpRD5sM02efaGpoZmFkYGRuZGmQBAHPvL0Y=&cssminify=yes' type='text/css' media='all' />
 <style id='jetpack-sharing-buttons-style-inline-css'>
@@ -184,11 +180,16 @@ var wa_smart = { 'network_id': 3905, 'site_id': 474853, 'page_id': 1572546, 'blo
 		background: #c5c5c5 !important;
 		border-color: #c5c5c5 !important;
 	}
-	@media screen and (max-width:720px){
-		#customTitle {font-size: 0.5em;}
-		
+	@media screen and (min-width:0px){
+		#customTitle {font-size: min(3vw,1em);}
 	}
+
+	body, html {overflow-x: hidden !important;}
+
+
 	@media screen and (min-width: 1020px) {
+		#masthead {padding: 0 4% 0 4%;}
+		#customLogo, #customTitle {display:inline!important;}
 		#menu-main-menu {background-color: #eee}
 
 		body.small-screen.navigation-classic .primary-navigation .menu-primary > ul > li.current-menu-item:before,
@@ -284,7 +285,6 @@ mark,
 background-color: transparent ;
 }
 .large-screen.navigation-classic .primary-navigation ul ul{
-  transform: translateX(0em);
 }
 .large-screen.navigation-classic .primary-navigation ul ul li {
 background-color: #eee;
@@ -433,9 +433,9 @@ blockquote,
 	<a class="skip-link screen-reader-text" href="index.html#content">Skip to content</a>
 
 	
-	<header id="masthead" class="site-header" role="banner" style="display: flex;align-items: center;background-color: #D8111B;">
+	<header id="masthead" class="site-header" role="banner" style="display:flex;align-items:center;background-color: #D8111B;">
 
-		<img id="customLogo" src="logo.svg" alt="utmccf_logo" style="width:10%; max-width:110px; object-fit: cover;margin: -10px 0px -15px 0px; display:inline;">
+		<img id="customLogo" src="logo.svg" alt="utmccf_logo" style="width:10%; max-width:110px; object-fit: cover;margin: -10px 0px -15px 0px; display:inline!important;">
 
 	    <span id="customTitle" style="letter-spacing: normal; color: white; line-height: 1.25;">
 	        <span style="font-size: 1.4em; font-weight: bold; letter-spacing: 0.04em;">多伦多大学国语基督徒团契</span>
