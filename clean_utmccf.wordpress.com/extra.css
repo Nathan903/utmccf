@@ -1,0 +1,110 @@
+/*make title fix on phones*/
+@media screen and (min-width:0px){
+	#customTitle {font-size: min(3vw,1em);}
+}
+
+/*avoid horizontal scrolling*/
+body, html {overflow-x: hidden !important;}
+
+@media screen and (min-width: 1020px) {
+	#masthead {padding: 0 4% 0 4%;}
+	#customLogo, #customTitle {display:inline!important;}
+	#menu-main-menu {
+		background-color: #eee;
+		padding: 7px 10px 7px 10px;
+		border-radius:20px;
+		border:none;
+	}
+
+}
+
+.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a {
+  background:
+    linear-gradient(
+      to right,
+      #eee,
+      #eee
+    ),
+    linear-gradient(
+      to right,
+      rgba(255, 0, 0, 1),
+      rgba(255, 0, 180, 1),
+      rgba(0, 100, 200, 1)
+  );
+  background-size: 100% 3px, 0 3px;
+  background-position: 100% 85%, 1em 85%;
+  background-repeat: no-repeat;
+  transition: background-size 300ms;
+}
+.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li:hover,
+.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li:focus,
+.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li:active,
+.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:hover,
+.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:focus,
+.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:active
+{
+	background-color: transparent ;
+ 	background-size: 0 3px, 85% 3px;
+ 	color:#333;
+}
+.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li:hover
+{
+background-color: transparent ;
+}
+.large-screen.navigation-classic .primary-navigation ul ul{
+}
+.large-screen.navigation-classic .primary-navigation ul ul li {
+background-color: #eee;
+}
+.large-screen.navigation-classic .primary-navigation ul ul li a{
+background:
+linear-gradient(
+  to right,
+      #eee,
+      #eee
+),
+linear-gradient(
+  to right,
+  rgba(255, 0, 0, 1),
+  rgba(255, 0, 180, 1),
+  rgba(0, 100, 200, 1)
+);
+background-size: 100% 3px, 0 3px;
+background-position: 100% 100%, 0 100%;
+background-repeat: no-repeat;
+transition: background-size 300ms;
+padding:2px;
+border:none;
+color:#333;
+}
+.large-screen.navigation-classic .primary-navigation ul ul li a:hover,
+.large-screen.navigation-classic .primary-navigation ul ul li a:focus,
+.large-screen.navigation-classic .primary-navigation ul ul li a:active{
+ 	background-size: 0 3px, 100% 3px;
+}
+.menu-toggle {
+	color:#fff;
+}
+.large-screen.navigation-classic .primary-navigation .menu-item-has-children:hover:before
+		{ color: #D8111B!important;} /* Rotate on hover */
+.large-screen.navigation-classic .secondary-navigation a:active { border-bottom-color: transparent!important;} /*submenu  */
+
+#masthead{
+	display:flex!;
+	align-items:center;
+	background-color: #D8111B;
+}
+
+.header-wrapper {
+	width: 0px!important;
+	margin-right:0px!important;
+}
+
+.menu-primary {
+	display:inline!important;
+}
+.primary-navigation{
+	border:none!important;
+	padding-top:0px!important;
+	z-index: 9999;
+}
