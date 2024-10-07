@@ -4,6 +4,22 @@
 
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <url>
+<loc>https://utmccf.wordpress.com/%e5%9b%a2%e5%a5%91%e5%8e%86%e5%8f%b2-mccf-history/
+</loc>
+<image:image>
+<image:loc>https://utmccf.wordpress.com/wp-content/uploads/2009/12/love.jpg
+</image:loc>
+<image:title>Love
+</image:title>
+</image:image>
+<lastmod>2024-10-07T06:14:46+00:00
+</lastmod>
+<changefreq>weekly
+</changefreq>
+<priority>0.6
+</priority>
+</url>
+<url>
 <loc>https://utmccf.wordpress.com/past-events/
 </loc>
 <image:image>
@@ -745,22 +761,6 @@
 </image:title>
 </image:image>
 <lastmod>2022-06-02T01:58:52+00:00
-</lastmod>
-<changefreq>weekly
-</changefreq>
-<priority>0.6
-</priority>
-</url>
-<url>
-<loc>https://utmccf.wordpress.com/%e5%9b%a2%e5%a5%91%e5%8e%86%e5%8f%b2-mccf-history/
-</loc>
-<image:image>
-<image:loc>https://utmccf.wordpress.com/wp-content/uploads/2009/12/love.jpg
-</image:loc>
-<image:title>Love
-</image:title>
-</image:image>
-<lastmod>2019-05-28T05:33:38+00:00
 </lastmod>
 <changefreq>weekly
 </changefreq>
@@ -2468,7 +2468,7 @@
 </changefreq>
 <priority>1.0
 </priority>
-<lastmod>2024-10-06T07:03:17+00:00
+<lastmod>2024-10-07T06:14:46+00:00
 </lastmod>
 </url>
 </urlset>
