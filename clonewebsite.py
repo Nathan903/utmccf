@@ -5,13 +5,16 @@ resultzip=False
 verbose=False
 testOnlyOneFile=False
 removeExtraFiles=True
+testWebsite=False
 
-import os, re,time, datetime, pytz
+import os, re, time, datetime, pytz, sys, subprocess
+import create_newsletters
 startTime=time.time()
 resultPath=f'clean_{domain}'
 doNotShowShellResult=">run.log 2>&1"#">/dev/null 2>&1 "
 
 # functions for debugging and logging purposes. Not crucial
+os.makedirs(resultPath, exist_ok=True)
 def print_to_log_file(prefix, message=""):
   with open(resultPath+"/debug.log", "a") as f:
     f.write(prefix+" "+message+"\n")
@@ -35,7 +38,6 @@ def print_error(message_str):
   print_to_log_file("ERROR:",message_str)
   print("ERROR:",message_str)
 
-import sys
 if len(sys.argv) > 1:
   print_debug_info(f"ARG={sys.argv[1]}")
   if sys.argv[1]=="--downloadAgain":
@@ -158,6 +160,10 @@ def clean(filepath):
   with open(filepath, encoding="utf-8") as f:
     original=text=f.read()
 
+  newsletterimg, this_weeks_event_summary = create_newsletters.get_latest_newsletter()
+  text = text.replace(r"<!--$this_weeks_event$-->", fr"""<img src="/newsletters/{newsletterimg}" alt="Newsletter" style="box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.4);"/>""")
+  text = text.replace(r"$this_weeks_event_summary$", this_weeks_event_summary)
+
   for literalsToRemove in findUnwantedScripts(text):
     text = text.replace(literalsToRemove,"")     
 
@@ -234,7 +240,7 @@ else:
 
 extensionToExcludeFromProduction = ('.py','.')
 keywordsToExcludeFromProduction = ('/?', '/feed/')
-extensionToNotClean = ('.txt','.xml', ".log")
+extensionToNotClean = ('.txt','.xml', ".log",".jpg",".png",".webp", ".svg",".css",".pdf")
 
 #main loop to clean all files in /clean_utmccf.wordpress.com
 for subdir, dirs, files in os.walk(resultPath):
@@ -249,10 +255,12 @@ for subdir, dirs, files in os.walk(resultPath):
       clean(path)
     elif path.endswith(extensionToNotClean):
       #files to NOT clean
-      print_debug_info(f"downloaded file [{path}] is not an HTML. It is not processed for ad/tracker cleaning")
+      pass
+      #print_debug_info(f"downloaded file [{path}] is not an HTML. It is not processed for ad/tracker cleaning")
     else:
       print_warning(f"downloaded file [{path}] is not an HTML. It is not processed for ad/tracker cleaning")
 
+print_warning(subprocess.run(['wget', '--version'], capture_output=True, text=True, check=True).stdout)
 print_success(f"Finished processing (at: {int(time.time()-startTime)} seconds)")
 if resultzip:
   os.system(f"zip -r result_{domain}.zip {resultPath}"+doNotShowShellResult)
@@ -263,3 +271,7 @@ if warning_counter!=0 or error_counter!=0:
   print("* Website is published with warnings/errors. Please check all affected pages. If nothing is broken, ignore the warnings/errors")
 if warning_found_broken_absolute_url:
   print("** Absolute url may or may not cause broken links on the website. Click on all links & buttons on the listed pages to see if they are broken")
+
+if testWebsite:
+  from test_website import test_website
+  test_website(resultPath)

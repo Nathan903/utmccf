@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newsletter</title>
+</head>
+
+<body>
+    <img id="newsletter" width="100%" alt="Newsletter Image" />
+    <script>
+        function getFridayDate(offsetWeeks = 0) {
+            const today = new Date();
+            const dayOfWeek = today.getDay();
+            const daysUntilFriday = (5 - dayOfWeek + 7) % 7;
+            const friday = new Date(today);
+            friday.setDate(today.getDate() + daysUntilFriday + (offsetWeeks * 7));
+            return friday;
+        }
+
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}${month}${day}`;
+        }
+
+        function loadNewsletterImage(offsetWeeks = 0, formatIndex = 0) {
+            const formats = ['jpg', 'png', 'webp'];
+            const fridayDate = getFridayDate(offsetWeeks);
+            const formattedDate = formatDate(fridayDate);
+            const imageUrl = `${formattedDate}.${formats[formatIndex]}`;
+
+            const img = document.getElementById('newsletter');
+            img.src = imageUrl;
+
+            img.onerror = function() {
+                if (formatIndex < formats.length - 1) {
+                    loadNewsletterImage(offsetWeeks, formatIndex + 1);
+                } else if (offsetWeeks > -4) { // Try up to 4 weeks back
+                    loadNewsletterImage(offsetWeeks - 1, 0);
+                } else {
+                    img.alt = "No newsletter available.";
+                }
+            };
+        }
+
+        loadNewsletterImage();
+    </script>
+</body>
+</html>
