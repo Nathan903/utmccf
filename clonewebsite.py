@@ -111,6 +111,7 @@ scriptKeywords=(
   "sascdn.com",
   "smartadserver",
   "outbrain",
+  "atatags-",
   # "gdpr"
 )
 socialMediaIconSvg = {

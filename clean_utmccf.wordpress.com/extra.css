@@ -1,7 +1,7 @@
 /*make title fix on phones*/
 @media screen and (min-width:0px){
 	#menu-main-menu {
-		padding: 7px 10px 7px 10px;
+		padding: 4px;
 	}
 	#customTitle {font-size: min(3vw,1em);}
 }
@@ -9,7 +9,14 @@
 /*avoid horizontal scrolling*/
 body, html {overflow-x: hidden !important;}
 
+
+.navigation-wrapper{
+	padding: 0 3vw 0 3vw;
+}
 @media screen and (min-width: 1020px) {
+	.sub-menu{
+	 	filter: drop-shadow(0px 5px 15px rgba(0, 0, 0, .45));
+	}
 	#masthead {padding: 0 4% 0 4%;}
 	#customLogo, #customTitle {display:inline!important;}
 	#menu-main-menu {
@@ -18,81 +25,113 @@ body, html {overflow-x: hidden !important;}
 		border:none;
 	}
 
+	.navigation-classic .primary-navigation .menu-primary > ul > li > a,
+	.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a {
+	  background:
+	    linear-gradient(
+	      to right,
+	      #fefefe,
+	      #fefefe
+	    ),
+	    linear-gradient(
+	      to right,
+	      rgba(255, 0, 0, 1),
+	      rgba(255, 0, 180, 1),
+	      rgba(0, 100, 200, 1)
+	  )!important;
+	  background-size: 100% 3px, 0 3px!important;
+	  background-position: 100% 85%, 1em 85%!important;
+	  background-repeat: no-repeat!important;
+	  transition: background-size 300ms!important;
+
+	}
+
+	.navigation-classic .primary-navigation .menu-primary > ul > li:hover,
+	.navigation-classic .primary-navigation .menu-primary > ul > li:focus,
+	.navigation-classic .primary-navigation .menu-primary > ul > li:active,
+	.navigation-classic .primary-navigation .menu-primary > ul > li > a:hover,
+	.navigation-classic .primary-navigation .menu-primary > ul > li > a:focus,
+	.navigation-classic .primary-navigation .menu-primary > ul > li > a:active,
+	.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li:hover,
+	.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li:focus,
+	.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li:active,
+	.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:hover,
+	.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:focus,
+	.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:active
+	{
+		background-color: transparent!important ;
+	 	background-size: 0 3px, 85% 3px!important;
+	 	color:#333!important;
+	 	border-bottom-color: transparent!important;
+	 	box-shadow: 0px 0px 0 0 !important;
+	}
+	.navigation-classic .primary-navigation .menu-primary > ul > li:hover,
+	.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li:hover
+	{
+		background-color: transparent!important ;
+	}
+	.navigation-classic .primary-navigation ul ul,
+	.large-screen.navigation-classic .primary-navigation ul ul{
+	}
+	.navigation-classic .primary-navigation ul ul li,
+	.large-screen.navigation-classic .primary-navigation ul ul li {
+		background-color: #fefefe!important;
+	}
+	.navigation-classic .primary-navigation ul ul li a,
+	.large-screen.navigation-classic .primary-navigation ul ul li a{
+		background:
+		linear-gradient(
+		  to right,
+		      #fefefe,
+		      #fefefe
+		),
+		linear-gradient(
+		  to right,
+		  rgba(255, 0, 0, 1),
+		  rgba(255, 0, 180, 1),
+		  rgba(0, 100, 200, 1)
+		);
+		background-size: 100% 3px, 0 3px;
+		background-position: 100% 100%, 0 100%;
+		background-repeat: no-repeat;
+		transition: background-size 300ms;
+		padding:2px;
+		border:none;
+		color:#333;
+	}
+	.navigation-classic .primary-navigation ul ul li a:hover,
+	.navigation-classic .primary-navigation ul ul li a:focus,
+	.navigation-classic .primary-navigation ul ul li a:active,
+	.large-screen.navigation-classic .primary-navigation ul ul li a:hover,
+	.large-screen.navigation-classic .primary-navigation ul ul li a:focus,
+	.large-screen.navigation-classic .primary-navigation ul ul li a:active{
+	 	background-size: 0 3px, 100% 3px;
+	}
+	.menu-toggle {
+		color:#fff;
+	}
+	.navigation-classic .primary-navigation .menu-item-has-children:before,
+	.large-screen.navigation-classic .primary-navigation .menu-item-has-children:before,
+	.navigation-classic .primary-navigation .menu-item-has-children:hover:before,
+	.large-screen.navigation-classic .primary-navigation .menu-item-has-children:hover:before{
+		color: #D8111B!important;
+	} /* Rotate on hover */
+
+	.navigation-classic .primary-navigation ul ul:before,
+	.navigation-classic .primary-navigation ul ul li:last-of-type,
+	.large-screen.navigation-classic .primary-navigation ul ul:before,
+	.large-screen.navigation-classic .primary-navigation ul ul li:last-of-type { 
+		border-bottom-color: transparent!important;
+	} /*submenu  */
+
 }
 
-.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a {
-  background:
-    linear-gradient(
-      to right,
-      #fefefe,
-      #fefefe
-    ),
-    linear-gradient(
-      to right,
-      rgba(255, 0, 0, 1),
-      rgba(255, 0, 180, 1),
-      rgba(0, 100, 200, 1)
-  )!important;
-  background-size: 100% 3px, 0 3px!important;
-  background-position: 100% 85%, 1em 85%!important;
-  background-repeat: no-repeat!important;
-  transition: background-size 300ms!important;
+/* this fixes the menu closing button disappearing at width of about 600-800px */
+@media screen and (min-width: 600px) {
+	.menu-toggle:hover:before, .menu-toggle:active:before, .menu-toggle.open:before {
+    background: #fff!important;
+  }
 }
-.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li:hover,
-.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li:focus,
-.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li:active,
-.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:hover,
-.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:focus,
-.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li > a:active
-{
-	background-color: transparent!important ;
- 	background-size: 0 3px, 85% 3px!important;
- 	color:#333;
-}
-.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li:hover
-{
-background-color: transparent!important ;
-}
-.large-screen.navigation-classic .primary-navigation ul ul{
-}
-.large-screen.navigation-classic .primary-navigation ul ul li {
-background-color: #fefefe;
-}
-.large-screen.navigation-classic .primary-navigation ul ul li a{
-background:
-linear-gradient(
-  to right,
-      #fefefe,
-      #fefefe
-),
-linear-gradient(
-  to right,
-  rgba(255, 0, 0, 1),
-  rgba(255, 0, 180, 1),
-  rgba(0, 100, 200, 1)
-);
-background-size: 100% 3px, 0 3px;
-background-position: 100% 100%, 0 100%;
-background-repeat: no-repeat;
-transition: background-size 300ms;
-padding:2px;
-border:none;
-color:#333;
-}
-.large-screen.navigation-classic .primary-navigation ul ul li a:hover,
-.large-screen.navigation-classic .primary-navigation ul ul li a:focus,
-.large-screen.navigation-classic .primary-navigation ul ul li a:active{
- 	background-size: 0 3px, 100% 3px;
-}
-.menu-toggle {
-	color:#fff;
-}
-.large-screen.navigation-classic .primary-navigation .menu-item-has-children:hover:before
-		{ color: #D8111B!important;} /* Rotate on hover */
-
-
-.large-screen.navigation-classic .primary-navigation ul ul:before,
-.large-screen.navigation-classic .primary-navigation ul ul li:last-of-type { border-bottom-color: transparent!important;} /*submenu  */
 
 #masthead{
 	display:flex!important;
