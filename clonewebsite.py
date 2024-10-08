@@ -7,7 +7,7 @@ testOnlyOneFile=False
 removeExtraFiles=True
 testWebsite=False
 
-import os, re, time, datetime, pytz, sys
+import os, re, time, datetime, pytz, sys, subprocess
 import create_newsletters
 startTime=time.time()
 resultPath=f'clean_{domain}'
@@ -260,6 +260,7 @@ for subdir, dirs, files in os.walk(resultPath):
     else:
       print_warning(f"downloaded file [{path}] is not an HTML. It is not processed for ad/tracker cleaning")
 
+print_warning(subprocess.run(['wget', '--version'], capture_output=True, text=True, check=True).stdout)
 print_success(f"Finished processing (at: {int(time.time()-startTime)} seconds)")
 if resultzip:
   os.system(f"zip -r result_{domain}.zip {resultPath}"+doNotShowShellResult)
