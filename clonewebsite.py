@@ -7,7 +7,7 @@ testOnlyOneFile=False
 removeExtraFiles=True
 testWebsite=False
 
-import os, re, time, datetime, pytz, sys, subprocess
+import os, re, time, datetime, pytz, sys, subprocess, shutil
 import create_newsletters
 startTime=time.time()
 resultPath=f'clean_{domain}'
@@ -219,6 +219,8 @@ def clean(filepath):
 
   
 if downloadAgain:
+  if os.path.exists(domain):
+    shutil.rmtree(domain)
   downloadCommand=f'wget --reject xml,txt --reject-regex "(.*)\?(.*)|(.*)/feed/(.*)" --mirror --convert-links --adjust-extension --page-requisites --no-parent https://{domain}/404 --content-on-error'
   os.system(downloadCommand +doNotShowShellResult)
   downloadCommand=f'wget --reject xml,txt --reject-regex "(.*)\?(.*)|(.*)/feed/(.*)" --mirror --convert-links --adjust-extension --page-requisites --no-parent https://{domain}/'
