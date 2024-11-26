@@ -1,91 +1,26 @@
-10c10
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/karen-commitee-photo.jpg
+6a7,16
+> <loc>https://utmccf.wordpress.com/committee-%e5%a7%94%e5%91%98%e4%bc%9a-0809/
+> </loc>
+> <lastmod>2024-11-26T17:26:46+00:00
+> </lastmod>
+> <changefreq>weekly
+> </changefreq>
+> <priority>0.6
+> </priority>
+> </url>
+> <url>
+415,424d424
+< <loc>https://utmccf.wordpress.com/committee-%e5%a7%94%e5%91%98%e4%bc%9a-0809/
+< </loc>
+< <lastmod>2023-10-03T03:09:58+00:00
+< </lastmod>
+< <changefreq>weekly
+< </changefreq>
+< <priority>0.6
+< </priority>
+< </url>
+< <url>
+2469c2469
+< <lastmod>2024-11-25T22:53:18+00:00
 ---
-> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/bill-commitee-photo-1.jpg
-12c12
-< <image:title>Karen Commitee photo
----
-> <image:title>Bill commitee photo
-16c16
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2023/10/img_4882.jpg
----
-> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/karen-commitee-photo-2.jpg
-18c18
-< <image:title>img_4882
----
-> <image:title>Karen Commitee photo
-22c22
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2023/10/wechatimg2844-1.jpeg
----
-> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/karen-commitee-photo-1.jpg
-24c24
-< <image:title>wechatimg2844-1
----
-> <image:title>Karen Commitee photo
-28c28
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2023/10/wechatimg2844.jpeg
----
-> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/bill-commitee-photo.jpg
-30c30
-< <image:title>wechatimg2844
----
-> <image:title>Bill commitee photo
-34c34
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/05/dsc00272.jpg
----
-> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/karen-commitee-photo.jpg
-36c36
-< <image:title>dsc00272
----
-> <image:title>Karen Commitee photo
-40c40
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2020/05/image0.jpg
----
-> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2023/10/img_4882.jpg
-42c42
-< <image:title>image0
----
-> <image:title>img_4882
-46c46
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2020/05/wechat-image_20200509235833.jpg
----
-> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2023/10/wechatimg2844-1.jpeg
-48c48
-< <image:title>WeChat Image_20200509235833
----
-> <image:title>wechatimg2844-1
-52c52
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2020/05/wechat-image_20200509155057.jpg
----
-> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2023/10/wechatimg2844.jpeg
-54c54
-< <image:title>fbt
----
-> <image:title>wechatimg2844
-56,57d55
-< <image:caption>fbt
-< </image:caption>
-60c58
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2019/09/img_4377.jpg
----
-> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/05/dsc00272.jpg
-62c60
-< <image:title>IMG_4377
----
-> <image:title>dsc00272
-66c64
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2019/09/img_4376.jpg
----
-> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2020/05/image0.jpg
-68c66
-< <image:title>IMG_4376
----
-> <image:title>image0
-71c69
-< <lastmod>2024-11-25T17:18:12+00:00
----
-> <lastmod>2024-11-25T22:53:18+00:00
-2471c2469
-< <lastmod>2024-11-25T17:18:12+00:00
----
-> <lastmod>2024-11-25T22:53:18+00:00
+> <lastmod>2024-11-26T17:26:46+00:00
