@@ -1,43 +1,7 @@
-7,16d6
-< <loc>https://utmccf.wordpress.com/committee-%e5%a7%94%e5%91%98%e4%bc%9a-0809/
-< </loc>
-< <lastmod>2024-11-26T17:26:46+00:00
-< </lastmod>
-< <changefreq>weekly
-< </changefreq>
-< <priority>0.6
-< </priority>
-< </url>
-< <url>
-19a10,21
-> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/doreen-commitee-photo-1.jpg
-> </image:loc>
-> <image:title>Doreen Commitee Photo
-> </image:title>
-> </image:image>
-> <image:image>
-> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/doreen-commitee-photo.jpg
-> </image:loc>
-> <image:title>Doreen Commitee Photo
-> </image:title>
-> </image:image>
-> <image:image>
-67,79c69,79
-< <image:image>
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/05/dsc00272.jpg
-< </image:loc>
-< <image:title>dsc00272
-< </image:title>
-< </image:image>
-< <image:image>
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2020/05/image0.jpg
-< </image:loc>
-< <image:title>image0
-< </image:title>
-< </image:image>
-< <lastmod>2024-11-25T22:53:18+00:00
----
-> <lastmod>2024-11-26T17:40:04+00:00
+6a7,16
+> <loc>https://utmccf.wordpress.com/committee-%e5%a7%94%e5%91%98%e4%bc%9a-0809/
+> </loc>
+> <lastmod>2024-11-26T17:26:46+00:00
 > </lastmod>
 > <changefreq>weekly
 > </changefreq>
@@ -45,10 +9,46 @@
 > </priority>
 > </url>
 > <url>
-> <loc>https://utmccf.wordpress.com/committee-%e5%a7%94%e5%91%98%e4%bc%9a-0809/
-> </loc>
-> <lastmod>2024-11-26T17:26:46+00:00
-2469c2469
+10,21d19
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/doreen-commitee-photo-1.jpg
+< </image:loc>
+< <image:title>Doreen Commitee Photo
+< </image:title>
+< </image:image>
+< <image:image>
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/doreen-commitee-photo.jpg
+< </image:loc>
+< <image:title>Doreen Commitee Photo
+< </image:title>
+< </image:image>
+< <image:image>
+69,79c67,79
+< <lastmod>2024-11-26T17:40:04+00:00
+< </lastmod>
+< <changefreq>weekly
+< </changefreq>
+< <priority>0.6
+< </priority>
+< </url>
+< <url>
+< <loc>https://utmccf.wordpress.com/committee-%e5%a7%94%e5%91%98%e4%bc%9a-0809/
+< </loc>
 < <lastmod>2024-11-26T17:26:46+00:00
 ---
-> <lastmod>2024-11-26T17:40:04+00:00
+> <image:image>
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/05/dsc00272.jpg
+> </image:loc>
+> <image:title>dsc00272
+> </image:title>
+> </image:image>
+> <image:image>
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2020/05/image0.jpg
+> </image:loc>
+> <image:title>image0
+> </image:title>
+> </image:image>
+> <lastmod>2024-11-25T22:53:18+00:00
+2469c2469
+< <lastmod>2024-11-26T17:40:04+00:00
+---
+> <lastmod>2024-11-26T17:26:46+00:00
