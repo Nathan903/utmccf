@@ -4,20 +4,18 @@
 
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <url>
+<loc>https://utmccf.wordpress.com/committee-%e5%a7%94%e5%91%98%e4%bc%9a-0809/
+</loc>
+<lastmod>2024-11-26T17:26:46+00:00
+</lastmod>
+<changefreq>weekly
+</changefreq>
+<priority>0.6
+</priority>
+</url>
+<url>
 <loc>https://utmccf.wordpress.com/committee-16-17/
 </loc>
-<image:image>
-<image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/doreen-commitee-photo-1.jpg
-</image:loc>
-<image:title>Doreen Commitee Photo
-</image:title>
-</image:image>
-<image:image>
-<image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/doreen-commitee-photo.jpg
-</image:loc>
-<image:title>Doreen Commitee Photo
-</image:title>
-</image:image>
 <image:image>
 <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/bill-commitee-photo-1.jpg
 </image:loc>
@@ -66,17 +64,19 @@
 <image:title>wechatimg2844
 </image:title>
 </image:image>
-<lastmod>2024-11-26T17:40:04+00:00
-</lastmod>
-<changefreq>weekly
-</changefreq>
-<priority>0.6
-</priority>
-</url>
-<url>
-<loc>https://utmccf.wordpress.com/committee-%e5%a7%94%e5%91%98%e4%bc%9a-0809/
-</loc>
-<lastmod>2024-11-26T17:26:46+00:00
+<image:image>
+<image:loc>https://utmccf.wordpress.com/wp-content/uploads/2022/05/dsc00272.jpg
+</image:loc>
+<image:title>dsc00272
+</image:title>
+</image:image>
+<image:image>
+<image:loc>https://utmccf.wordpress.com/wp-content/uploads/2020/05/image0.jpg
+</image:loc>
+<image:title>image0
+</image:title>
+</image:image>
+<lastmod>2024-11-25T22:53:18+00:00
 </lastmod>
 <changefreq>weekly
 </changefreq>
@@ -2466,7 +2466,7 @@
 </changefreq>
 <priority>1.0
 </priority>
-<lastmod>2024-11-26T17:40:04+00:00
+<lastmod>2024-11-26T17:26:46+00:00
 </lastmod>
 </url>
 </urlset>
