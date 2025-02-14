@@ -1,7 +1,10 @@
 WARNING: downloaded file [clean_utmccf.wordpress.com/sitemap.xml.diff] is not an HTML. It is not processed for ad/tracker cleaning
-WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2022/11/wechatimg1987.jpeg] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2022/06/wechatimg560.jpeg] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2022/11/wechatimg1987.jpeg] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2023/10/wechatimg2844-1.jpeg] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: This page 『 utmccf.wordpress.com/2012/10/12/布道会-evangelical-conference 』 contains these absolute url links:
+	- 【 http://utmccf.com/conference/ 】	fix it by changing it to:【 /conference/ 】
+
 WARNING: This page 『 utmccf.wordpress.com/2022/08/25/2022-summer-活动总集 』 contains these absolute url links:
 	- 【 https://utmccf.com/?attachment_id=2825 】	fix it by changing it to:【 /?attachment_id=2825 】
 	- 【 https://utmccf.com/?attachment_id=2833 】	fix it by changing it to:【 /?attachment_id=2833 】
@@ -14,9 +17,6 @@ WARNING: This page 『 utmccf.wordpress.com/2022/08/25/2022-summer-活动总集 
 	- 【 https://utmccf.com/conference/wechatimg560/ 】	fix it by changing it to:【 /conference/wechatimg560/ 】
 	- 【 https://utmccf.com/conference/16101658206922_-pic/ 】	fix it by changing it to:【 /conference/16101658206922_-pic/ 】
 	- 【 https://utmccf.com/?attachment_id=2827 】	fix it by changing it to:【 /?attachment_id=2827 】
-
-WARNING: This page 『 utmccf.wordpress.com/2012/10/12/布道会-evangelical-conference 』 contains these absolute url links:
-	- 【 http://utmccf.com/conference/ 】	fix it by changing it to:【 /conference/ 】
 
 WARNING: GNU Wget 1.21.4 built on linux-gnu.
 
@@ -57,7 +57,7 @@ There is NO WARRANTY, to the extent permitted by law.
 Originally written by Hrvoje Niksic <hniksic@xemacs.org>.
 Please send bug reports and questions to <bug-wget@gnu.org>.
 
-DONE: website published with 7 warnings and 0 errors. Last updated 2025-02-06 19:49:32 EST
+DONE: website published with 7 warnings and 0 errors. Last updated 2025-02-13 19:49:26 EST
 
 
 * Website is published with warnings/errors. Please check all affected pages. If nothing is broken, ignore the warnings/errors
