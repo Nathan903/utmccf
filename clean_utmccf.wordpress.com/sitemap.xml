@@ -4,6 +4,16 @@
 
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <url>
+<loc>https://utmccf.wordpress.com/free-campus-tour/
+</loc>
+<lastmod>2025-03-21T18:12:59+00:00
+</lastmod>
+<changefreq>weekly
+</changefreq>
+<priority>0.6
+</priority>
+</url>
+<url>
 <loc>https://utmccf.wordpress.com/committee-%e5%a7%94%e5%91%98%e4%bc%9a-0809/
 </loc>
 <lastmod>2025-03-17T17:42:11+00:00
@@ -99,16 +109,6 @@
 </image:title>
 </image:image>
 <lastmod>2025-03-11T02:59:46+00:00
-</lastmod>
-<changefreq>weekly
-</changefreq>
-<priority>0.6
-</priority>
-</url>
-<url>
-<loc>https://utmccf.wordpress.com/free-campus-tour/
-</loc>
-<lastmod>2025-03-07T03:08:49+00:00
 </lastmod>
 <changefreq>weekly
 </changefreq>
@@ -2466,7 +2466,7 @@
 </changefreq>
 <priority>1.0
 </priority>
-<lastmod>2025-03-17T17:42:11+00:00
+<lastmod>2025-03-21T18:12:59+00:00
 </lastmod>
 </url>
 </urlset>
