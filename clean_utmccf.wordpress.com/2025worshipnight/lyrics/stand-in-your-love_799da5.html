@@ -1,0 +1,100 @@
+
+    <!DOCTYPE html>
+    <html style="margin-top: 0px !important; scroll-padding-top: 0px !important;"  lang="en">
+    <head><link rel="stylesheet" href="/extra.css">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>站立在你爱中 Stand In Your Love</title>
+        <link rel="stylesheet" href="code/styles.css">
+    </head>
+    <body style="margin-top: 0px !important;" >
+        <!-- Menu Button for mobile -->
+        <button class="menu-btn" id="menuBtn" onclick="toggleMenu()">☰</button>
+
+        <!-- Navigation Bar -->
+        <nav id="navbar">
+            <ul> <li><a href="open-heaven_d739b9.html" class="">将天敞开 Open Heaven</a></li><li><a href="one-thing-remains_9a9e5c.html" class="">你爱不变 One Thing Remains</a></li><li><a href="stand-in-your-love_799da5.html" class="current">站立在你爱中 Stand In Your Love</a></li><li><a href="6a29a0.html" class="">圣洁的爱</a></li><li><a href="the-blessing_d36ba2.html" class="">祝福 The Blessing</a></li><li><a href="07b2bc.html" class="">爱的真谛</a></li><li><a href="love-make-us-brave_e532ba.html" class="">爱使我们勇敢 Love Make Us Brave</a></li><li><a href="precious-cross_a7edd1.html" class="">宝贵十架 Precious Cross</a></li><li><a href="strong-love_e4b21e.html" class="">坚强的爱 Strong Love</a></li><li><a href="a4c9d8.html" class="">祢永远如此深爱着我</a></li><li><a href="a3e8f2.html" class="">相信有爱就有奇迹</a></li> </ul>
+        </nav>
+
+        <!-- Content Section -->
+        <div class="content">
+            <button class="toggle-btn" id="themeToggleBtn" onclick="toggleTheme()">🌙</button>
+            
+        <h1>站立在你爱中 Stand In Your Love</h1>
+        <div class="content-container" style="display: flex;">    
+            <div style="flex: 1;">
+                <p>当黑暗试图要将我攻克<br />
+当伤痛来要偷窃我喜乐<br />
+在最破碎和痛苦的时刻<br />
+Oh我不致动摇 我不致动摇</p>
+<p>恐惧 不能抵挡我<br />
+站立 在祢爱中</p>
+<p>羞愧在我里面无权无分<br />
+谎言不能再囚禁我全人<br />
+不再让过去定义我身分<br />
+Oh 我不致动摇 我不致动摇</p>
+<p>祢大能断开所有的捆绑<br />
+祢能力胜过阴间和死亡<br />
+祢复活带下拯救的盼望<br />
+祢名何等刚强<br />
+祢何等刚强</p>
+<p>恐惧 不能抵挡我<br />
+站立 在祢爱中</p>
+<p>我站立在祢磐石上<br />
+祢的爱是如此坚强<br />
+有祢我就不致摇晃<br />
+我站在磐石上<br />
+我站在磐石上</p>
+            </div>
+            <div style="flex: 1;">
+                <p>When darkness tries to roll over my bones<br />
+When sorrow comes to steal the joy I own<br />
+When brokenness and pain is all I know<br />
+I won’t be shaken, I won’t be shaken</p>
+<p>My fear doesn’t stand a chance <br />
+When I stand in Your love</p>
+<p>Shame no longer has a place to hide<br />
+I am not a captive to the lies<br />
+I’m not afraid to leave my past behind <br />
+I won’t be shaken, I won’t be shaken</p>
+<p>My fear doesn’t stand a chance <br />
+When I stand in Your love</p>
+<p>There’s power that can break off every chain<br />
+There’s power that can empty out a grave<br />
+There’s resurrection power that can save<br />
+There’s power in Your name<br />
+Power in Your name </p>
+<p>I am standing on the rock<br />
+I am standing in Your love<br />
+I am standing on the rock<br />
+My firm foundation, my firm foundation</p>
+            </div>
+        </div>
+        <div class="footer deemphasized">
+            
+        </div>
+        
+        </div>
+
+        <script>
+            let darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.setAttribute('data-theme', 'dark');
+                document.getElementById('themeToggleBtn').textContent = '☀️';
+            }
+            function toggleTheme() {
+                darkMode = !darkMode;
+                document.body.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+                localStorage.setItem('darkMode', darkMode);
+                document.getElementById('themeToggleBtn').textContent = darkMode ? '☀️' : '🌙';
+            }
+            
+            // Mobile menu toggle
+            function toggleMenu() {
+                const nav = document.getElementById('navbar');
+                nav.classList.toggle('open-nav');
+            }
+        </script>
+    </body>
+    </html>
+    

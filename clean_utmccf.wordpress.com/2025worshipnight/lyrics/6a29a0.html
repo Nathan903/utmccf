@@ -1,0 +1,101 @@
+
+    <!DOCTYPE html>
+    <html style="margin-top: 0px !important; scroll-padding-top: 0px !important;"  lang="en">
+    <head><link rel="stylesheet" href="/extra.css">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>圣洁的爱</title>
+        <link rel="stylesheet" href="code/styles.css">
+    </head>
+    <body style="margin-top: 0px !important;" >
+        <!-- Menu Button for mobile -->
+        <button class="menu-btn" id="menuBtn" onclick="toggleMenu()">☰</button>
+
+        <!-- Navigation Bar -->
+        <nav id="navbar">
+            <ul> <li><a href="open-heaven_d739b9.html" class="">将天敞开 Open Heaven</a></li><li><a href="one-thing-remains_9a9e5c.html" class="">你爱不变 One Thing Remains</a></li><li><a href="stand-in-your-love_799da5.html" class="">站立在你爱中 Stand In Your Love</a></li><li><a href="6a29a0.html" class="current">圣洁的爱</a></li><li><a href="the-blessing_d36ba2.html" class="">祝福 The Blessing</a></li><li><a href="07b2bc.html" class="">爱的真谛</a></li><li><a href="love-make-us-brave_e532ba.html" class="">爱使我们勇敢 Love Make Us Brave</a></li><li><a href="precious-cross_a7edd1.html" class="">宝贵十架 Precious Cross</a></li><li><a href="strong-love_e4b21e.html" class="">坚强的爱 Strong Love</a></li><li><a href="a4c9d8.html" class="">祢永远如此深爱着我</a></li><li><a href="a3e8f2.html" class="">相信有爱就有奇迹</a></li> </ul>
+        </nav>
+
+        <!-- Content Section -->
+        <div class="content">
+            <button class="toggle-btn" id="themeToggleBtn" onclick="toggleTheme()">🌙</button>
+            
+        <h1>圣洁的爱</h1>
+        <div class="content-container" style="display: flex;">    
+            <div style="flex: 1;">
+                <p>在那内心深处的 破碎里<br />
+你圣灵 在运行<br />
+在那痛苦争战的 黑暗里<br />
+你同在 不离不弃</p>
+<p>渴望再次经历你<br />
+用这无力的双手<br />
+触摸你衣襟 求赐下信心</p>
+<p>圣洁的爱 再次临到我<br />
+温柔的爱 再一次安慰我<br />
+释放我 恢复我 神宝血成为遮盖<br />
+圣殿幔子已裂开</p>
+<p>圣洁的爱 再次医治我<br />
+(耶稣的爱 再次医治我)<br />
+完全的爱 再一次充满我<br />
+洁净我 坚固我 恩雨从天降下来<br />
+你的爱永不失败</p>
+<p>我灵歌唱 我主奇妙大爱<br />
+虽行过死荫幽谷<br />
+我也不害怕遭害<br />
+因为你与我同在</p>
+            </div>
+            <div style="flex: 1;">
+                <p><strong><em>No English lyrics available.</em></strong> <br />
+<strong><em>Loose translation of the song’s meaning:</em></strong></p>
+<p><em>In my heart, in my brokenness,</em><br />
+<em>Your Spirit is moving.</em><br />
+<em>In the darkness of pain and struggle,</em><br />
+<em>Your presence never leaves, never forsakes.</em></p>
+<p><em>I long to encounter You again,</em><br />
+<em>With these weary hands,</em><br />
+<em>To reach for Your—oh, grant me faith.</em></p>
+<p><em>Your holy love, come upon me.</em><br />
+<em>Gentle love, bring comfort again.</em><br />
+<em>Set me free, restore my soul—</em><br />
+<em>Your precious blood is my covering,</em><br />
+<em>The temple veil has been torn.</em></p>
+<p><em>Your holy love, bring healing.</em><br />
+<em>(Jesus’ love, bring healing once more.)</em><br />
+<em>Perfect love, fill me again.</em><br />
+<em>Purify me, strengthen me—</em><br />
+<em>Let grace rain down from heaven,</em><br />
+<em>For Your love never fails.</em></p>
+<p><em>My soul sings of my Savior’s wondrous love.</em><br />
+<em>Even through the deepest valley,</em><br />
+<em>I will fear no evil,</em><br />
+<em>For You are with me.</em></p>
+            </div>
+        </div>
+        <div class="footer deemphasized">
+            
+        </div>
+        
+        </div>
+
+        <script>
+            let darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.setAttribute('data-theme', 'dark');
+                document.getElementById('themeToggleBtn').textContent = '☀️';
+            }
+            function toggleTheme() {
+                darkMode = !darkMode;
+                document.body.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+                localStorage.setItem('darkMode', darkMode);
+                document.getElementById('themeToggleBtn').textContent = darkMode ? '☀️' : '🌙';
+            }
+            
+            // Mobile menu toggle
+            function toggleMenu() {
+                const nav = document.getElementById('navbar');
+                nav.classList.toggle('open-nav');
+            }
+        </script>
+    </body>
+    </html>
+    
