@@ -1,0 +1,87 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>坚强的爱 Strong Love</title>
+        <link rel="stylesheet" href="code/styles.css">
+    </head>
+    <body>
+        <!-- Menu Button for mobile -->
+        <button class="menu-btn" id="menuBtn" onclick="toggleMenu()">☰</button>
+
+        <!-- Navigation Bar -->
+        <nav id="navbar">
+            <ul> <li><a href="open-heaven_d739b9.html" class="">将天敞开 Open Heaven</a></li><li><a href="one-thing-remains_9a9e5c.html" class="">你爱不变 One Thing Remains</a></li><li><a href="stand-in-your-love_799da5.html" class="">站立在你爱中 Stand In Your Love</a></li><li><a href="6a29a0.html" class="">圣洁的爱</a></li><li><a href="the-blessing_d36ba2.html" class="">祝福 The Blessing</a></li><li><a href="07b2bc.html" class="">爱的真谛</a></li><li><a href="love-make-us-brave_e532ba.html" class="">爱使我们勇敢 Love Make Us Brave</a></li><li><a href="precious-cross_a7edd1.html" class="">宝贵十架 Precious Cross</a></li><li><a href="strong-love_e4b21e.html" class="current">坚强的爱 Strong Love</a></li><li><a href="a4c9d8.html" class="">祢永远如此深爱着我</a></li><li><a href="a3e8f2.html" class="">相信有爱就有奇迹</a></li> </ul>
+        </nav>
+
+        <!-- Content Section -->
+        <div class="content">
+            <button class="toggle-btn" id="themeToggleBtn" onclick="toggleTheme()">🌙</button>
+            
+        <h1>坚强的爱 Strong Love</h1>
+        <div class="content-container" style="display: flex;">    
+            <div style="flex: 1;">
+                <p>无论或死 或生或天使<br />
+执政掌权 现在或将来<br />
+或高处低处 任何受造物<br />
+都不能将我与祢爱隔绝 </p>
+<p>主祢的爱情 刻在我心版上<br />
+众水不能熄灭 海不能淹没<br />
+主祢的爱情 坚强胜过死亡<br />
+都不能将我与祢爱隔绝</p>
+<p>我知道故事结局<br />
+我终将从旷野出来<br />
+是靠着我心所爱 </p>
+<p>祢爱最高 祢爱最宽广<br />
+祢爱最深 祢爱无止境 </p>
+            </div>
+            <div style="flex: 1;">
+                <p>Death nor life nor angels nor powers<br />
+Present things or things in the future<br />
+Height nor depth nor any created thing<br />
+Could separate me from Your love</p>
+<p>Your love is written on my heart<br />
+And there is not a flood,<br />
+that could quench this love<br />
+Your love is stronger than the grave<br />
+And death could never take me <br />
+from this love</p>
+<p>I know the end of the story<br />
+I'll come up from the wilderness<br />
+Leaning on my beloved</p>
+<p>Cause Your love is high<br />
+Your love is so wide<br />
+Your love is so deep<br />
+Your love is so long</p>
+            </div>
+        </div>
+        <div class="footer deemphasized">
+            
+        </div>
+        
+        </div>
+
+        <script>
+            let darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.setAttribute('data-theme', 'dark');
+                document.getElementById('themeToggleBtn').textContent = '☀️';
+            }
+            function toggleTheme() {
+                darkMode = !darkMode;
+                document.body.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+                localStorage.setItem('darkMode', darkMode);
+                document.getElementById('themeToggleBtn').textContent = darkMode ? '☀️' : '🌙';
+            }
+            
+            // Mobile menu toggle
+            function toggleMenu() {
+                const nav = document.getElementById('navbar');
+                nav.classList.toggle('open-nav');
+            }
+        </script>
+    </body>
+    </html>
+    

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slideshow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: black;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .slideshow {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: transform 1s cubic-bezier(0.7, 0, 0.2, 1);
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="slideshow">
+        <div class="slide" style="background-image: url('1.jpg');"></div>
+        <div class="slide" style="background-image: url('2.jpg');"></div>
+        <div class="slide" style="background-image: url('3.jpg');"></div>
+        <div class="slide" style="background-image: url('4.jpg');"></div>
+        <div class="slide" style="background-image: url('5.jpg');"></div>
+        <div class="slide" style="background-image: url('6.jpg');"></div>
+    </div>
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        let currentIndex = 0;
+        let currentZIndex = 0;
+
+        function showNextSlide() {
+            if(currentIndex==0){
+
+            }
+            let nextIndex = (currentIndex + 1) % slides.length;
+            let nextNextIndex = (currentIndex + 2) % slides.length
+            console.log(currentIndex);
+            slides[nextIndex].style.transform = 'translateX(100%)';
+            slides[nextIndex].style.transition = 'none';
+            currentZIndex+=1;
+            slides[nextNextIndex].style.transform = 'translateX(100%)';
+            slides[nextNextIndex].style.transition = 'none';
+
+            slides[nextIndex].style.zIndex = currentZIndex;
+            slides[nextNextIndex].style.zIndex = currentZIndex+1;
+            
+            requestAnimationFrame(() => {
+                slides[nextIndex].style.transition = 'transform 1s cubic-bezier(0.7, 0, 0.2, 1)';
+                slides[nextIndex].style.transform = 'translateX(0)';
+            });
+            currentIndex = nextIndex;
+        }
+
+        slides.forEach((slide, index) => {
+            if (index !== 0) {
+                slide.style.transform = 'translateX(100%)';
+            }
+        });
+
+        setInterval(showNextSlide, 12000);
+    </script>
+</body>
+</html>

@@ -8,6 +8,7 @@ on:
   push:
     paths:
       - '**.py'
+      - 'manually_made_extra_files/**' # Trigger on changes in this folder
     #branches:
     #  - main
   schedule:

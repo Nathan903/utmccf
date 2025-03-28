@@ -1,0 +1,92 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>你爱不变 One Thing Remains</title>
+        <link rel="stylesheet" href="code/styles.css">
+    </head>
+    <body>
+        <!-- Menu Button for mobile -->
+        <button class="menu-btn" id="menuBtn" onclick="toggleMenu()">☰</button>
+
+        <!-- Navigation Bar -->
+        <nav id="navbar">
+            <ul> <li><a href="open-heaven_d739b9.html" class="">将天敞开 Open Heaven</a></li><li><a href="one-thing-remains_9a9e5c.html" class="current">你爱不变 One Thing Remains</a></li><li><a href="stand-in-your-love_799da5.html" class="">站立在你爱中 Stand In Your Love</a></li><li><a href="6a29a0.html" class="">圣洁的爱</a></li><li><a href="the-blessing_d36ba2.html" class="">祝福 The Blessing</a></li><li><a href="07b2bc.html" class="">爱的真谛</a></li><li><a href="love-make-us-brave_e532ba.html" class="">爱使我们勇敢 Love Make Us Brave</a></li><li><a href="precious-cross_a7edd1.html" class="">宝贵十架 Precious Cross</a></li><li><a href="strong-love_e4b21e.html" class="">坚强的爱 Strong Love</a></li><li><a href="a4c9d8.html" class="">祢永远如此深爱着我</a></li><li><a href="a3e8f2.html" class="">相信有爱就有奇迹</a></li> </ul>
+        </nav>
+
+        <!-- Content Section -->
+        <div class="content">
+            <button class="toggle-btn" id="themeToggleBtn" onclick="toggleTheme()">🌙</button>
+            
+        <h1>你爱不变 One Thing Remains</h1>
+        <div class="content-container" style="display: flex;">    
+            <div style="flex: 1;">
+                <p>超过我所面对的高山，<br />
+胜过死亡阴间的挑战，<br />
+跨过所有变动和艰难，<br />
+你爱不变，存到永远。</p>
+<p>你爱不失败，永不放弃，<br />
+永远不会离开。</p>
+<p>你的爱一直都在追赶着我，<br />
+渗透我灵魂超过所想所求，<br />
+我永远不再害怕孤单承受，<br />
+你爱不变，存到永远。</p>
+<p>或生或死，<br />
+我深知我都隐藏<br />
+在你爱的大能中，<br />
+我得赦免，<br />
+在没有任何事<br />
+能让我与你爱隔绝。</p>
+            </div>
+            <div style="flex: 1;">
+                <p>Higher than the mountains that I face<br />
+Stronger than the power of the grave<br />
+Constant through the trial and the change<br />
+One thing remains, yes, one thing remains</p>
+<p>Your love never fails<br />
+It never gives up<br />
+It never runs out on me</p>
+<p>Because on and on, and on, and on it goes<br />
+Before it overwhelms and satisfies my soul<br />
+And I never, ever, have to be afraid<br />
+One thing remains, yes, one thing remains<br />
+Sing it, your love</p>
+<p>In death, in life<br />
+I'm confident and covered by<br />
+The power of your great love<br />
+My debt is paid<br />
+There's nothing that can separate<br />
+My heart from your great love<br />
+Sing it, your love</p>
+            </div>
+        </div>
+        <div class="footer deemphasized">
+            
+        </div>
+        
+        </div>
+
+        <script>
+            let darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.setAttribute('data-theme', 'dark');
+                document.getElementById('themeToggleBtn').textContent = '☀️';
+            }
+            function toggleTheme() {
+                darkMode = !darkMode;
+                document.body.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+                localStorage.setItem('darkMode', darkMode);
+                document.getElementById('themeToggleBtn').textContent = darkMode ? '☀️' : '🌙';
+            }
+            
+            // Mobile menu toggle
+            function toggleMenu() {
+                const nav = document.getElementById('navbar');
+                nav.classList.toggle('open-nav');
+            }
+        </script>
+    </body>
+    </html>
+    

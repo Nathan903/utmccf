@@ -1,0 +1,95 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>祝福 The Blessing</title>
+        <link rel="stylesheet" href="code/styles.css">
+    </head>
+    <body>
+        <!-- Menu Button for mobile -->
+        <button class="menu-btn" id="menuBtn" onclick="toggleMenu()">☰</button>
+
+        <!-- Navigation Bar -->
+        <nav id="navbar">
+            <ul> <li><a href="open-heaven_d739b9.html" class="">将天敞开 Open Heaven</a></li><li><a href="one-thing-remains_9a9e5c.html" class="">你爱不变 One Thing Remains</a></li><li><a href="stand-in-your-love_799da5.html" class="">站立在你爱中 Stand In Your Love</a></li><li><a href="6a29a0.html" class="">圣洁的爱</a></li><li><a href="the-blessing_d36ba2.html" class="current">祝福 The Blessing</a></li><li><a href="07b2bc.html" class="">爱的真谛</a></li><li><a href="love-make-us-brave_e532ba.html" class="">爱使我们勇敢 Love Make Us Brave</a></li><li><a href="precious-cross_a7edd1.html" class="">宝贵十架 Precious Cross</a></li><li><a href="strong-love_e4b21e.html" class="">坚强的爱 Strong Love</a></li><li><a href="a4c9d8.html" class="">祢永远如此深爱着我</a></li><li><a href="a3e8f2.html" class="">相信有爱就有奇迹</a></li> </ul>
+        </nav>
+
+        <!-- Content Section -->
+        <div class="content">
+            <button class="toggle-btn" id="themeToggleBtn" onclick="toggleTheme()">🌙</button>
+            
+        <h1>祝福 The Blessing</h1>
+        <div class="content-container" style="display: flex;">    
+            <div style="flex: 1;">
+                <p>主赐福 保护你<br />
+使祂的脸 光照你<br />
+赐恩典给你<br />
+愿主向 你仰脸<br />
+赐你平安</p>
+<p>阿门，阿门，阿门<br />
+阿门，阿门，阿门</p>
+<p>愿祂恩宠 在你身上<br />
+祂的慈爱 直到千代<br />
+在你家庭 和你儿女<br />
+和他后代 直到万代</p>
+<p>愿祂同在 在你前头<br />
+在你身后 在你左右<br />
+在你周围 在你里面<br />
+与你同在 与你同在</p>
+<p>或是清晨 或是夜里<br />
+或是你出 或是你入<br />
+或是流泪 或是欢欣<br />
+祂帮助你 祂帮助你</p>
+            </div>
+            <div style="flex: 1;">
+                <p>The Lord bless you and keep you<br />
+Make His face shine upon you and be gracious to you<br />
+The Lord turn His face toward you<br />
+And give you peace</p>
+<p>Amen, amen, amen, <br />
+Amen, amen, amen</p>
+<p>May His favor be upon you<br />
+And a thousand generations<br />
+And your family and your children<br />
+And their children, and their children</p>
+<p>May His presence go before you<br />
+And behind you, and beside you<br />
+All around you, and within you<br />
+He is with you, he is with you</p>
+<p>In the morning, in the evening<br />
+In your coming, and your going<br />
+In your weeping, and rejoicing<br />
+He is for you, he is for you<br />
+He is, He is</p>
+            </div>
+        </div>
+        <div class="footer deemphasized">
+            
+        </div>
+        
+        </div>
+
+        <script>
+            let darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.setAttribute('data-theme', 'dark');
+                document.getElementById('themeToggleBtn').textContent = '☀️';
+            }
+            function toggleTheme() {
+                darkMode = !darkMode;
+                document.body.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+                localStorage.setItem('darkMode', darkMode);
+                document.getElementById('themeToggleBtn').textContent = darkMode ? '☀️' : '🌙';
+            }
+            
+            // Mobile menu toggle
+            function toggleMenu() {
+                const nav = document.getElementById('navbar');
+                nav.classList.toggle('open-nav');
+            }
+        </script>
+    </body>
+    </html>
+    

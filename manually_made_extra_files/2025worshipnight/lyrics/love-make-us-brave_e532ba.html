@@ -1,0 +1,83 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>爱使我们勇敢 Love Make Us Brave</title>
+        <link rel="stylesheet" href="code/styles.css">
+    </head>
+    <body>
+        <!-- Menu Button for mobile -->
+        <button class="menu-btn" id="menuBtn" onclick="toggleMenu()">☰</button>
+
+        <!-- Navigation Bar -->
+        <nav id="navbar">
+            <ul> <li><a href="open-heaven_d739b9.html" class="">将天敞开 Open Heaven</a></li><li><a href="one-thing-remains_9a9e5c.html" class="">你爱不变 One Thing Remains</a></li><li><a href="stand-in-your-love_799da5.html" class="">站立在你爱中 Stand In Your Love</a></li><li><a href="6a29a0.html" class="">圣洁的爱</a></li><li><a href="the-blessing_d36ba2.html" class="">祝福 The Blessing</a></li><li><a href="07b2bc.html" class="">爱的真谛</a></li><li><a href="love-make-us-brave_e532ba.html" class="current">爱使我们勇敢 Love Make Us Brave</a></li><li><a href="precious-cross_a7edd1.html" class="">宝贵十架 Precious Cross</a></li><li><a href="strong-love_e4b21e.html" class="">坚强的爱 Strong Love</a></li><li><a href="a4c9d8.html" class="">祢永远如此深爱着我</a></li><li><a href="a3e8f2.html" class="">相信有爱就有奇迹</a></li> </ul>
+        </nav>
+
+        <!-- Content Section -->
+        <div class="content">
+            <button class="toggle-btn" id="themeToggleBtn" onclick="toggleTheme()">🌙</button>
+            
+        <h1>爱使我们勇敢 Love Make Us Brave</h1>
+        <div class="content-container" style="display: flex;">    
+            <div style="flex: 1;">
+                <p>勇敢去爱　不计较代价<br />
+温暖冰冷心　像耀眼的阳光<br />
+爱使我们得痊愈　放下固执的模样<br />
+向前踏一步　更多靠近　更多接纳</p>
+<p>爱让我们原谅，我们和好，<br />
+爱让生命成长<br />
+爱让我们靠近，<br />
+学习勇敢被爱感动</p>
+<p>爱让我们拥抱，我们微笑<br />
+爱让生命绽放<br />
+爱让我们勇敢<br />
+爱让我们牵起手来</p>
+            </div>
+            <div style="flex: 1;">
+                <p>Love each other, no matter what it takes,<br />
+Let the warmth of love melth every frozen heart,<br />
+Though we have our differences,<br />
+only love can make us whole<br />
+Take a step of faith,<br />
+all together, walking as one</p>
+<p>We can love each other, forgive each other,<br />
+Love can make us all grow,<br />
+Love can bring us closer,<br />
+Learn to be bold, let love take hold.</p>
+<p>We can hug each other, smile together,<br />
+Love blooms like a flower,<br />
+Love can make us braver<br />
+Let us join hands and learn to love.</p>
+            </div>
+        </div>
+        <div class="footer deemphasized">
+            
+        </div>
+        
+        </div>
+
+        <script>
+            let darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.setAttribute('data-theme', 'dark');
+                document.getElementById('themeToggleBtn').textContent = '☀️';
+            }
+            function toggleTheme() {
+                darkMode = !darkMode;
+                document.body.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+                localStorage.setItem('darkMode', darkMode);
+                document.getElementById('themeToggleBtn').textContent = darkMode ? '☀️' : '🌙';
+            }
+            
+            // Mobile menu toggle
+            function toggleMenu() {
+                const nav = document.getElementById('navbar');
+                nav.classList.toggle('open-nav');
+            }
+        </script>
+    </body>
+    </html>
+    

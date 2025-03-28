@@ -1,0 +1,81 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>宝贵十架 Precious Cross</title>
+        <link rel="stylesheet" href="code/styles.css">
+    </head>
+    <body>
+        <!-- Menu Button for mobile -->
+        <button class="menu-btn" id="menuBtn" onclick="toggleMenu()">☰</button>
+
+        <!-- Navigation Bar -->
+        <nav id="navbar">
+            <ul> <li><a href="open-heaven_d739b9.html" class="">将天敞开 Open Heaven</a></li><li><a href="one-thing-remains_9a9e5c.html" class="">你爱不变 One Thing Remains</a></li><li><a href="stand-in-your-love_799da5.html" class="">站立在你爱中 Stand In Your Love</a></li><li><a href="6a29a0.html" class="">圣洁的爱</a></li><li><a href="the-blessing_d36ba2.html" class="">祝福 The Blessing</a></li><li><a href="07b2bc.html" class="">爱的真谛</a></li><li><a href="love-make-us-brave_e532ba.html" class="">爱使我们勇敢 Love Make Us Brave</a></li><li><a href="precious-cross_a7edd1.html" class="current">宝贵十架 Precious Cross</a></li><li><a href="strong-love_e4b21e.html" class="">坚强的爱 Strong Love</a></li><li><a href="a4c9d8.html" class="">祢永远如此深爱着我</a></li><li><a href="a3e8f2.html" class="">相信有爱就有奇迹</a></li> </ul>
+        </nav>
+
+        <!-- Content Section -->
+        <div class="content">
+            <button class="toggle-btn" id="themeToggleBtn" onclick="toggleTheme()">🌙</button>
+            
+        <h1>宝贵十架 Precious Cross</h1>
+        <div class="content-container" style="display: flex;">    
+            <div style="flex: 1;">
+                <p>主耶稣，我感谢你，<br />
+你的身体，为我而舍。<br />
+带我出黑暗，进入光明国度，<br />
+使我再次能看见。</p>
+<p>主耶稣，我感谢你，<br />
+你的宝血，为我而流。<br />
+宝贵十架上，医治恩典涌流，<br />
+使我完全得自由。</p>
+<p>宝贵十架的大能赐我生命，<br />
+主耶稣我俯伏敬拜你。<br />
+宝贵十架的救恩，是你所立的约，<br />
+你的爱永远不会改变。</p>
+            </div>
+            <div style="flex: 1;">
+                <p>Thank You, Lord, You died for me.<br />
+With love, You gave Your life for me.<br />
+Brought me from darkness into the world of light,<br />
+opened my eyes to see.</p>
+<p>Praise You Lord, Your love for me.<br />
+Your blood of grace flows over me.<br />
+Your tender mercy pours down from Calvary,<br />
+Your love has set me so free.</p>
+<p>The precious Cross, by its pow'r I am set free.<br />
+With my all, I worship at Your feet.<br />
+Your saving grace, so secure in this promise of old.<br />
+It's Your love unchanging for me.</p>
+            </div>
+        </div>
+        <div class="footer deemphasized">
+            
+        </div>
+        
+        </div>
+
+        <script>
+            let darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.setAttribute('data-theme', 'dark');
+                document.getElementById('themeToggleBtn').textContent = '☀️';
+            }
+            function toggleTheme() {
+                darkMode = !darkMode;
+                document.body.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+                localStorage.setItem('darkMode', darkMode);
+                document.getElementById('themeToggleBtn').textContent = darkMode ? '☀️' : '🌙';
+            }
+            
+            // Mobile menu toggle
+            function toggleMenu() {
+                const nav = document.getElementById('navbar');
+                nav.classList.toggle('open-nav');
+            }
+        </script>
+    </body>
+    </html>
+    
