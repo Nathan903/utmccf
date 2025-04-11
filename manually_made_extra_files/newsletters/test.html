@@ -1,0 +1,54 @@
+@ -0,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Newsletter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <header class="bg-blue-600 text-white text-center py-6 shadow-lg">
+        <h1 class="text-3xl font-bold">University Club Newsletter</h1>
+        <p class="text-lg">Weekly Updates & Announcements</p>
+    </header>
+
+    <main class="max-w-6xl mx-auto p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Newsletter Cards -->
+        <script>
+            const newsletters = [
+                { date: "March 15, 2025", image: "20241018.png" },
+                { date: "March 8, 2025", image: "https://upload.wikimedia.org/wikipedia/commons/9/91/Alexanderwerk_kitchen_scale_1910-1920_sm2.jpg" },
+                { date: "March 1, 2025", image: "https://upload.wikimedia.org/wikipedia/commons/9/91/Alexanderwerk_kitchen_scale_1910-1920_sm3.jpg" }
+            ];
+            document.write(newsletters.map(n => `
+                <div class="newsletter-card bg-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition cursor-pointer" onclick="openModal('${n.date}', '${n.image}')">
+                    <img src="${n.image}" class="w-full h-48 object-cover">
+                    <div class="p-4 text-center">
+                        <p class="text-gray-600 text-sm">${n.date}</p>
+                    </div>
+                </div>
+            `).join(''));
+        </script>
+    </main>
+
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full relative">
+            <button onclick="closeModal()" class="absolute top-2 right-2 bg-red-500 text-white px-3 py-1 rounded-full">✕</button>
+            <img id="modal-image" src="" class="w-full rounded-lg">
+            <p id="modal-date" class="text-gray-600 text-sm text-center mt-4"></p>
+        </div>
+    </div>
+
+    <script>
+        function openModal(date, image) {
+            document.getElementById("modal-date").textContent = date;
+            document.getElementById("modal-image").src = image;
+            document.getElementById("modal").classList.remove("hidden");
+        }
+        function closeModal() {
+            document.getElementById("modal").classList.add("hidden");
+        }
+    </script>
+</body>
+</html>
