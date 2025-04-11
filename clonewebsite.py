@@ -277,3 +277,5 @@ if warning_found_broken_absolute_url:
 if testWebsite:
   from test_website import test_website
   test_website(resultPath)
+
+import convert_site_to_traditional_characters

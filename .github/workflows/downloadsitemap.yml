@@ -20,7 +20,7 @@ jobs:
         with:
           python-version: '3.10' # install the python version needed
       - name: Install dependencies
-        run: pip install pytz
+        run: pip install pytz OpenCC beautifulsoup4
       
       - name: Create directory if it does not exist
         run: mkdir -p clean_utmccf.wordpress.com
