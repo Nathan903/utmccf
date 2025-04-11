@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+
+<html lang="en" style="margin-top: 0px !important; scroll-padding-top: 0px !important;">
+<head><link href="/extra.css" rel="stylesheet"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>圣洁的爱</title>
+<link href="code/styles.css" rel="stylesheet"/>
+</head>
+<body style="margin-top: 0px !important;">
+<!-- Menu Button for mobile -->
+<button class="menu-btn" id="menuBtn" onclick="toggleMenu()">☰</button>
+<!-- Navigation Bar -->
+<nav id="navbar">
+<ul> <li><a class="" href="open-heaven_d739b9.html">將天敞開 Open Heaven</a></li><li><a class="" href="one-thing-remains_9a9e5c.html">你愛不變 One Thing Remains</a></li><li><a class="" href="stand-in-your-love_799da5.html">站立在你愛中 Stand In Your Love</a></li><li><a class="current" href="6a29a0.html">聖潔的愛</a></li><li><a class="" href="the-blessing_d36ba2.html">祝福 The Blessing</a></li><li><a class="" href="07b2bc.html">愛的真諦</a></li><li><a class="" href="love-make-us-brave_e532ba.html">愛使我們勇敢 Love Make Us Brave</a></li><li><a class="" href="precious-cross_a7edd1.html">寶貴十架 Precious Cross</a></li><li><a class="" href="strong-love_e4b21e.html">堅強的愛 Strong Love</a></li><li><a class="" href="a4c9d8.html">禰永遠如此深愛着我</a></li><li><a class="" href="a3e8f2.html">相信有愛就有奇蹟</a></li> </ul>
+</nav>
+<!-- Content Section -->
+<div class="content">
+<button class="toggle-btn" id="themeToggleBtn" onclick="toggleTheme()">🌙</button>
+<h1>聖潔的愛</h1>
+<div class="content-container" style="display: flex;">
+<div style="flex: 1;">
+<p>在那內心深處的 破碎裏<br/>
+你聖靈 在運行<br/>
+在那痛苦爭戰的 黑暗裏<br/>
+你同在 不離不棄</p>
+<p>渴望再次經歷你<br/>
+用這無力的雙手<br/>
+觸摸你衣襟 求賜下信心</p>
+<p>聖潔的愛 再次臨到我<br/>
+溫柔的愛 再一次安慰我<br/>
+釋放我 恢復我 神寶血成爲遮蓋<br/>
+聖殿幔子已裂開</p>
+<p>聖潔的愛 再次醫治我<br/>
+(耶穌的愛 再次醫治我)<br/>
+完全的愛 再一次充滿我<br/>
+潔淨我 堅固我 恩雨從天降下來<br/>
+你的愛永不失敗</p>
+<p>我靈歌唱 我主奇妙大愛<br/>
+雖行過死蔭幽谷<br/>
+我也不害怕遭害<br/>
+因爲你與我同在</p>
+</div>
+<div style="flex: 1;">
+<p><strong><em>No English lyrics available.</em></strong> <br/>
+<strong><em>Loose translation of the song’s meaning:</em></strong></p>
+<p><em>In my heart, in my brokenness,</em><br/>
+<em>Your Spirit is moving.</em><br/>
+<em>In the darkness of pain and struggle,</em><br/>
+<em>Your presence never leaves, never forsakes.</em></p>
+<p><em>I long to encounter You again,</em><br/>
+<em>With these weary hands,</em><br/>
+<em>To reach for Your—oh, grant me faith.</em></p>
+<p><em>Your holy love, come upon me.</em><br/>
+<em>Gentle love, bring comfort again.</em><br/>
+<em>Set me free, restore my soul—</em><br/>
+<em>Your precious blood is my covering,</em><br/>
+<em>The temple veil has been torn.</em></p>
+<p><em>Your holy love, bring healing.</em><br/>
+<em>(Jesus’ love, bring healing once more.)</em><br/>
+<em>Perfect love, fill me again.</em><br/>
+<em>Purify me, strengthen me—</em><br/>
+<em>Let grace rain down from heaven,</em><br/>
+<em>For Your love never fails.</em></p>
+<p><em>My soul sings of my Savior’s wondrous love.</em><br/>
+<em>Even through the deepest valley,</em><br/>
+<em>I will fear no evil,</em><br/>
+<em>For You are with me.</em></p>
+</div>
+</div>
+<div class="footer deemphasized">
+</div>
+</div>
+<script>
+            let darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.setAttribute('data-theme', 'dark');
+                document.getElementById('themeToggleBtn').textContent = '☀️';
+            }
+            function toggleTheme() {
+                darkMode = !darkMode;
+                document.body.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+                localStorage.setItem('darkMode', darkMode);
+                document.getElementById('themeToggleBtn').textContent = darkMode ? '☀️' : '🌙';
+            }
+            
+            // Mobile menu toggle
+            function toggleMenu() {
+                const nav = document.getElementById('navbar');
+                nav.classList.toggle('open-nav');
+            }
+        </script>
+</body>
+</html>

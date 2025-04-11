@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+
+<html lang="en" style="margin-top: 0px !important; scroll-padding-top: 0px !important;">
+<head><link href="/extra.css" rel="stylesheet"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>将天敞开 Open Heaven</title>
+<link href="code/styles.css" rel="stylesheet"/>
+</head>
+<body style="margin-top: 0px !important;">
+<!-- Menu Button for mobile -->
+<button class="menu-btn" id="menuBtn" onclick="toggleMenu()">☰</button>
+<!-- Navigation Bar -->
+<nav id="navbar">
+<ul> <li><a class="current" href="open-heaven_d739b9.html">將天敞開 Open Heaven</a></li><li><a class="" href="one-thing-remains_9a9e5c.html">你愛不變 One Thing Remains</a></li><li><a class="" href="stand-in-your-love_799da5.html">站立在你愛中 Stand In Your Love</a></li><li><a class="" href="6a29a0.html">聖潔的愛</a></li><li><a class="" href="the-blessing_d36ba2.html">祝福 The Blessing</a></li><li><a class="" href="07b2bc.html">愛的真諦</a></li><li><a class="" href="love-make-us-brave_e532ba.html">愛使我們勇敢 Love Make Us Brave</a></li><li><a class="" href="precious-cross_a7edd1.html">寶貴十架 Precious Cross</a></li><li><a class="" href="strong-love_e4b21e.html">堅強的愛 Strong Love</a></li><li><a class="" href="a4c9d8.html">禰永遠如此深愛着我</a></li><li><a class="" href="a3e8f2.html">相信有愛就有奇蹟</a></li> </ul>
+</nav>
+<!-- Content Section -->
+<div class="content">
+<button class="toggle-btn" id="themeToggleBtn" onclick="toggleTheme()">🌙</button>
+<h1>將天敞開 Open Heaven</h1>
+<div class="content-container" style="display: flex;">
+<div style="flex: 1;">
+<p>將天敞開，你的榮耀降下來。<br/>
+將天敞開，你的同在降下來。<br/>
+將天敞開，你的榮耀降下來。<br/>
+萬國讚歎你，你是榮耀君王。</p>
+<p>天上地下，合一敬拜。<br/>
+歡呼耶穌基督，聖潔羔羊，榮耀歸於你。<br/>
+天上地下，在永恆裏敬拜。<br/>
+哈利路亞，哈利路亞。</p>
+<p>神就在這裏，我們歡迎你，<br/>
+讓一切焦點轉向你；<br/>
+神就在這裏，我們歡迎你，<br/>
+寶座前敬拜不停息。</p>
+</div>
+<div style="flex: 1;">
+<p>Lord, release an open heaven and come down<br/>
+Lord, release an open heaven and come down<br/>
+Lord, release an open heaven and come down<br/>
+May the nations sing, You're the glorious King</p>
+<p>Heaven and earth will join as one<br/>
+Singing Jesus Christ the Lamb of God<br/>
+Is worthy of our praise!<br/>
+Heaven and earth singing everlasting praise<br/>
+Hallelujah, Hallelujah</p>
+<p>God is here with us, dwelling in this place<br/>
+Let our eyes be fixed on You<br/>
+God is here with us, dwelling in this place<br/>
+We will give You the highest praise</p>
+</div>
+</div>
+<div class="footer deemphasized">
+</div>
+</div>
+<script>
+            let darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.setAttribute('data-theme', 'dark');
+                document.getElementById('themeToggleBtn').textContent = '☀️';
+            }
+            function toggleTheme() {
+                darkMode = !darkMode;
+                document.body.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+                localStorage.setItem('darkMode', darkMode);
+                document.getElementById('themeToggleBtn').textContent = darkMode ? '☀️' : '🌙';
+            }
+            
+            // Mobile menu toggle
+            function toggleMenu() {
+                const nav = document.getElementById('navbar');
+                nav.classList.toggle('open-nav');
+            }
+        </script>
+</body>
+</html>

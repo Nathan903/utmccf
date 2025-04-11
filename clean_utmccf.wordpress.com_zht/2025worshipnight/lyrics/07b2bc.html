@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+
+<html lang="en" style="margin-top: 0px !important; scroll-padding-top: 0px !important;">
+<head><link href="/extra.css" rel="stylesheet"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>爱的真谛</title>
+<link href="code/styles.css" rel="stylesheet"/>
+</head>
+<body style="margin-top: 0px !important;">
+<!-- Menu Button for mobile -->
+<button class="menu-btn" id="menuBtn" onclick="toggleMenu()">☰</button>
+<!-- Navigation Bar -->
+<nav id="navbar">
+<ul> <li><a class="" href="open-heaven_d739b9.html">將天敞開 Open Heaven</a></li><li><a class="" href="one-thing-remains_9a9e5c.html">你愛不變 One Thing Remains</a></li><li><a class="" href="stand-in-your-love_799da5.html">站立在你愛中 Stand In Your Love</a></li><li><a class="" href="6a29a0.html">聖潔的愛</a></li><li><a class="" href="the-blessing_d36ba2.html">祝福 The Blessing</a></li><li><a class="current" href="07b2bc.html">愛的真諦</a></li><li><a class="" href="love-make-us-brave_e532ba.html">愛使我們勇敢 Love Make Us Brave</a></li><li><a class="" href="precious-cross_a7edd1.html">寶貴十架 Precious Cross</a></li><li><a class="" href="strong-love_e4b21e.html">堅強的愛 Strong Love</a></li><li><a class="" href="a4c9d8.html">禰永遠如此深愛着我</a></li><li><a class="" href="a3e8f2.html">相信有愛就有奇蹟</a></li> </ul>
+</nav>
+<!-- Content Section -->
+<div class="content">
+<button class="toggle-btn" id="themeToggleBtn" onclick="toggleTheme()">🌙</button>
+<h1>愛的真諦</h1>
+<div class="content-container" style="display: flex;">
+<div style="flex: 1;">
+<p>愛是恆久忍耐，又有恩慈；<br/>
+愛是不嫉妒；愛是不自誇，<br/>
+不張狂，不做害羞的事，<br/>
+不求自己的益處，不輕易發怒，<br/>
+不計算人家的惡，不喜歡不義，<br/>
+只喜歡真理；凡事包容，<br/>
+凡事相信，凡事盼望，<br/>
+凡事忍耐凡事要忍耐。<br/>
+愛是永不止息。</p>
+</div>
+<div style="flex: 1;">
+<p><strong><em>No English lyrics available.</em></strong> <br/>
+<strong><em>Loose translation of the song’s meaning:</em></strong></p>
+<p><em>Love is patient and kind. Love is not jealous</em> <br/>
+<em>or boastful or proud or rude.</em> <br/>
+<em>It does not demand its own way.</em> <br/>
+<em>It is not irritable, and it keeps no record of being wronged.</em> <br/>
+<em>It does not rejoice about injustice</em> <br/>
+<em>but rejoices whenever the truth wins out.</em> <br/>
+<em>Love never gives up, never loses faith,</em> <br/>
+<em>is always hopeful,</em> <br/>
+<em>and endures through every circumstance.</em></p>
+</div>
+</div>
+<div class="footer deemphasized">
+</div>
+</div>
+<script>
+            let darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.setAttribute('data-theme', 'dark');
+                document.getElementById('themeToggleBtn').textContent = '☀️';
+            }
+            function toggleTheme() {
+                darkMode = !darkMode;
+                document.body.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+                localStorage.setItem('darkMode', darkMode);
+                document.getElementById('themeToggleBtn').textContent = darkMode ? '☀️' : '🌙';
+            }
+            
+            // Mobile menu toggle
+            function toggleMenu() {
+                const nav = document.getElementById('navbar');
+                nav.classList.toggle('open-nav');
+            }
+        </script>
+</body>
+</html>

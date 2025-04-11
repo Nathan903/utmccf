@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+
+<html lang="en" style="margin-top: 0px !important; scroll-padding-top: 0px !important;">
+<head><link href="/extra.css" rel="stylesheet"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>祢永远如此深爱着我</title>
+<link href="code/styles.css" rel="stylesheet"/>
+</head>
+<body style="margin-top: 0px !important;">
+<!-- Menu Button for mobile -->
+<button class="menu-btn" id="menuBtn" onclick="toggleMenu()">☰</button>
+<!-- Navigation Bar -->
+<nav id="navbar">
+<ul> <li><a class="" href="open-heaven_d739b9.html">將天敞開 Open Heaven</a></li><li><a class="" href="one-thing-remains_9a9e5c.html">你愛不變 One Thing Remains</a></li><li><a class="" href="stand-in-your-love_799da5.html">站立在你愛中 Stand In Your Love</a></li><li><a class="" href="6a29a0.html">聖潔的愛</a></li><li><a class="" href="the-blessing_d36ba2.html">祝福 The Blessing</a></li><li><a class="" href="07b2bc.html">愛的真諦</a></li><li><a class="" href="love-make-us-brave_e532ba.html">愛使我們勇敢 Love Make Us Brave</a></li><li><a class="" href="precious-cross_a7edd1.html">寶貴十架 Precious Cross</a></li><li><a class="" href="strong-love_e4b21e.html">堅強的愛 Strong Love</a></li><li><a class="current" href="a4c9d8.html">禰永遠如此深愛着我</a></li><li><a class="" href="a3e8f2.html">相信有愛就有奇蹟</a></li> </ul>
+</nav>
+<!-- Content Section -->
+<div class="content">
+<button class="toggle-btn" id="themeToggleBtn" onclick="toggleTheme()">🌙</button>
+<h1>禰永遠如此深愛着我</h1>
+<div class="content-container" style="display: flex;">
+<div style="flex: 1;">
+<p>每滴寶血爲我而流<br/>
+每個刑罰爲我承受<br/>
+恩典如海 四面環繞<br/>
+失望羞愧時 禰仍擁抱着我</p>
+<p>主耶穌 禰永遠如此深愛着我<br/>
+十架上釘痕的手告訴我 禰永不放棄我<br/>
+主耶穌 禰永遠如此深愛着我<br/>
+不論是生命或死亡 困苦患難逼迫<br/>
+都不能叫我與禰愛隔絕</p>
+<p>何等長闊 何等高深<br/>
+天離地多高 禰愛多浩大<br/>
+無法測透 永遠無盡頭<br/>
+我要張開雙手來領受                </p>
+</div>
+<div style="flex: 1;">
+<p><strong><em>No English lyrics available.</em></strong> <br/>
+<strong><em>Loose translation of the song’s meaning:</em></strong></p>
+<p>Every drop of blood was shed for me,<br/>
+Every punishment You bore in my place.<br/>
+Grace surrounds me like an endless ocean,<br/>
+Even in shame and despair, You embrace me still.</p>
+<p>Jesus, You have always loved me this much.<br/>
+Your nail-pierced hands remind me—You will never let me go.<br/>
+Jesus, You have always loved me this much.<br/>
+Neither life nor death, nor trials or pain,<br/>
+Can ever separate me from Your love.</p>
+<p>How wide, how deep, how vast is Your love!<br/>
+As high as the heavens above the earth, so great is Your grace.<br/>
+Beyond all measure, without end—<br/>
+I open my hands to receive it all.</p>
+</div>
+</div>
+<div class="footer deemphasized">
+</div>
+</div>
+<script>
+            let darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.setAttribute('data-theme', 'dark');
+                document.getElementById('themeToggleBtn').textContent = '☀️';
+            }
+            function toggleTheme() {
+                darkMode = !darkMode;
+                document.body.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+                localStorage.setItem('darkMode', darkMode);
+                document.getElementById('themeToggleBtn').textContent = darkMode ? '☀️' : '🌙';
+            }
+            
+            // Mobile menu toggle
+            function toggleMenu() {
+                const nav = document.getElementById('navbar');
+                nav.classList.toggle('open-nav');
+            }
+        </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+
+<html lang="en" style="margin-top: 0px !important; scroll-padding-top: 0px !important;">
+<head><link href="/extra.css" rel="stylesheet"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>敬拜夜歌词 Worship Night Lyrics</title>
+<link href="code/styles.css" rel="stylesheet"/>
+</head>
+<body style="margin-top: 0px !important;">
+<!-- Menu Button for mobile -->
+<button class="menu-btn" id="menuBtn" onclick="toggleMenu()">☰</button>
+<!-- Navigation Bar -->
+<nav id="navbar">
+<ul> <li><a class="" href="open-heaven_d739b9.html">將天敞開 Open Heaven</a></li><li><a class="" href="one-thing-remains_9a9e5c.html">你愛不變 One Thing Remains</a></li><li><a class="" href="stand-in-your-love_799da5.html">站立在你愛中 Stand In Your Love</a></li><li><a class="" href="6a29a0.html">聖潔的愛</a></li><li><a class="" href="the-blessing_d36ba2.html">祝福 The Blessing</a></li><li><a class="" href="07b2bc.html">愛的真諦</a></li><li><a class="" href="love-make-us-brave_e532ba.html">愛使我們勇敢 Love Make Us Brave</a></li><li><a class="" href="precious-cross_a7edd1.html">寶貴十架 Precious Cross</a></li><li><a class="" href="strong-love_e4b21e.html">堅強的愛 Strong Love</a></li><li><a class="" href="a4c9d8.html">禰永遠如此深愛着我</a></li><li><a class="" href="a3e8f2.html">相信有愛就有奇蹟</a></li> </ul>
+</nav>
+<!-- Content Section -->
+<div class="content">
+<button class="toggle-btn" id="themeToggleBtn" onclick="toggleTheme()">🌙</button>
+<h1>敬拜夜歌詞 Worship Night Lyrics</h1><div class="index-button"><a href="open-heaven_d739b9.html" style="text-decoration: none;"><div class="index-heading">將天敞開 Open Heaven</div><span class="deemphasize"></span></a></div><div class="index-button"><a href="one-thing-remains_9a9e5c.html" style="text-decoration: none;"><div class="index-heading">你愛不變 One Thing Remains</div><span class="deemphasize"></span></a></div><div class="index-button"><a href="stand-in-your-love_799da5.html" style="text-decoration: none;"><div class="index-heading">站立在你愛中 Stand In Your Love</div><span class="deemphasize"></span></a></div><div class="index-button"><a href="6a29a0.html" style="text-decoration: none;"><div class="index-heading">聖潔的愛</div><span class="deemphasize"></span></a></div><div class="index-button"><a href="the-blessing_d36ba2.html" style="text-decoration: none;"><div class="index-heading">祝福 The Blessing</div><span class="deemphasize"></span></a></div><div class="index-button"><a href="07b2bc.html" style="text-decoration: none;"><div class="index-heading">愛的真諦</div><span class="deemphasize"></span></a></div><div class="index-button"><a href="love-make-us-brave_e532ba.html" style="text-decoration: none;"><div class="index-heading">愛使我們勇敢 Love Make Us Brave</div><span class="deemphasize"></span></a></div><div class="index-button"><a href="precious-cross_a7edd1.html" style="text-decoration: none;"><div class="index-heading">寶貴十架 Precious Cross</div><span class="deemphasize"></span></a></div><div class="index-button"><a href="strong-love_e4b21e.html" style="text-decoration: none;"><div class="index-heading">堅強的愛 Strong Love</div><span class="deemphasize"></span></a></div><div class="index-button"><a href="a4c9d8.html" style="text-decoration: none;"><div class="index-heading">禰永遠如此深愛着我</div><span class="deemphasize"></span></a></div><div class="index-button"><a href="a3e8f2.html" style="text-decoration: none;"><div class="index-heading">相信有愛就有奇蹟</div><span class="deemphasize"></span></a></div>
+</div>
+<script>
+            let darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.setAttribute('data-theme', 'dark');
+                document.getElementById('themeToggleBtn').textContent = '☀️';
+            }
+            function toggleTheme() {
+                darkMode = !darkMode;
+                document.body.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+                localStorage.setItem('darkMode', darkMode);
+                document.getElementById('themeToggleBtn').textContent = darkMode ? '☀️' : '🌙';
+            }
+            
+            // Mobile menu toggle
+            function toggleMenu() {
+                const nav = document.getElementById('navbar');
+                nav.classList.toggle('open-nav');
+            }
+        </script>
+</body>
+</html>
