@@ -18,6 +18,8 @@ WARNING: This page 『 utmccf.wordpress.com/2022/08/25/2022-summer-活动总集 
 WARNING: This page 『 utmccf.wordpress.com/2012/10/12/布道会-evangelical-conference 』 contains these absolute url links:
 	- 【 http://utmccf.com/conference/ 】	fix it by changing it to:【 /conference/ 】
 
+WARNING: downloaded file [clean_utmccf.wordpress.com/20250426/ans.webm] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/20250426/croped.JPG] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: GNU Wget 1.21.4 built on linux-gnu.
 
 -cares +digest -gpgme +https +ipv6 +iri +large-file -metalink +nls 
@@ -57,7 +59,7 @@ There is NO WARRANTY, to the extent permitted by law.
 Originally written by Hrvoje Niksic <hniksic@xemacs.org>.
 Please send bug reports and questions to <bug-wget@gnu.org>.
 
-DONE: website published with 7 warnings and 0 errors. Last updated 2025-04-25 04:31:09 EDT
+DONE: website published with 9 warnings and 0 errors. Last updated 2025-04-26 17:20:17 EDT
 
 
 * Website is published with warnings/errors. Please check all affected pages. If nothing is broken, ignore the warnings/errors
