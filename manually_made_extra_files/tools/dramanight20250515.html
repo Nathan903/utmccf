@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Item Picker</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #6857ff, #ff579d);
+            color: white;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            padding: 40px 20px;
+            width: 80%;
+            max-width: 1500px;
+            text-align: center;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .section {
+            width: 45%;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .bag {
+            position: relative;
+            width: 90%;
+            height: 100px;
+            margin: 20px auto;
+            background: #000;
+            border: 5px solid white;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slot {
+            font-size: 2em;
+            font-weight: bold;
+            color: white;
+            position: relative;
+            text-align: center;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            animation: none;
+        }
+
+        .button {
+            background-color: #f953c6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1em;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            margin: 10px;
+            transition: background-color 0.4s ease-in-out, transform 0.2s ease-in-out;
+        }
+
+        .button:hover {
+            background-color: #3f5efb;
+            transform: scale(1.05);
+            transition: background-color 0.4s ease-in-out, transform 0.2s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="section">
+            <h1>故事</h1>
+            <div class="bag" id="color-bag">
+                <div class="slot" id="color-slot"></div>
+            </div>
+            <button class="button" onclick="pickTheme()">开始</button>
+        </div>
+        <div class="section">
+            <h1>题材风格</h1>
+            <div class="bag" id="name-bag">
+                <div class="slot" id="name-slot"></div>
+            </div>
+            <button class="button" onclick="pickStory()">开始</button>
+        </div>
+    </div>
+
+    <script>
+        theme_story = [
+            ["诺亚方舟（创世纪6:9-7:19）", "短视频/直播"],
+            ["所多玛被毁（创世纪18:22-19:29）", "恐怖悬疑"],
+            ["浪子回头（路加福音15:11-32）", "青春校园偶像剧"],
+            ["医治瘫子（路加福音5:17-26）", "喜剧"],
+        ];
+        theme = theme_story.map(x => x[0]);
+        stories = theme_story.map(x => x[1]);
+        let number_of_themes_picked = 0;
+        let number_of_stories_picked = 0;
+        function GenerateRandomIndex(N, generateRandomPairsOfIndex=false) { // in pairs of round robin manner
+            let numbers = Array.from({ length: N }, (_, i) => i); // Initial array [0, 1, ..., N-1]
+            let currentIndex = 0; // Tracks the current position in the shuffled array
+            let shuffledNumbers = shuffleArray(numbers); // Shuffled copy of the numbers
+
+            function shuffleArray(array) {
+                // Fisher-Yates Shuffle
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                if (generateRandomPairsOfIndex){
+                    // duplicate every item in array so 1,2,3 becomes 1,1,2,2,3,3
+                    array = array.flatMap(x => [x, x]);
+                }
+                return array;
+            }
+
+            return function next() {
+                const result = shuffledNumbers[currentIndex]; // Pick the current number
+                currentIndex++; // Move to the next index
+                if (currentIndex >= shuffledNumbers.length) { 
+                    // If all numbers are used, reshuffle and reset
+                    currentIndex = 0;
+                    let previousLast = shuffledNumbers[N - 1]; // To prevent consecutive repeats
+                    do {
+                        shuffledNumbers = shuffleArray(numbers);
+                    } while (shuffledNumbers[0] === previousLast);
+                }
+                return result;
+            };
+        }
+        const randomItemGenerator = GenerateRandomIndex(theme.length,generateRandomPairsOfIndex=true);
+        const randomGenerator = GenerateRandomIndex(theme.length);        
+
+        let isAnimatingTheme = false;
+        let isAnimatingStory = false;
+
+        function pickTheme() {
+            if (!isAnimatingTheme && number_of_themes_picked <= number_of_stories_picked) {
+            number_of_themes_picked += 1;
+            pickRandomItem(theme, 'color-slot', () => isAnimatingTheme = false);
+            }
+        }
+
+        function pickStory() {
+            if (!isAnimatingStory && number_of_themes_picked >= number_of_stories_picked) {
+            number_of_stories_picked += 1;
+            pickRandomItem(stories, 'name-slot', () => isAnimatingStory = false);
+            }
+        }
+
+        function pickRandomItem(items, slotId, callback) {
+            const slot = document.getElementById(slotId);
+
+            // Clear previous animation
+            slot.innerHTML = '';
+            slot.style.animation = 'none';
+
+            const finalItem = items[randomItemGenerator()];
+
+            // Generate a sequence of random items for slot effect
+            let spinItems = [];
+            let number_of_items = 20;
+            for (let i = 0; i < number_of_items; i++) {
+            let randomItem;
+            do {
+                randomItem = items[randomGenerator()];
+            } while (i === number_of_items-1 && randomItem === finalItem);
+            spinItems.push(randomItem);
+            }
+            spinItems.push(finalItem);
+
+            // Animate slot
+            let currentIndex = 0;
+            if (slotId === 'color-slot') {
+            isAnimatingTheme = true;
+            } else {
+            isAnimatingStory = true;
+            }
+            const interval = setInterval(() => {
+            slot.textContent = spinItems[currentIndex];
+            currentIndex++;
+            if (currentIndex >= spinItems.length) {
+                clearInterval(interval);
+                // Final item is the result
+                slot.textContent = finalItem;
+                callback();
+            }
+            }, 77); // Speed of slot effect
+        }
+    </script>
+</body>
+</html>
