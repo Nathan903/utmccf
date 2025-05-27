@@ -81,6 +81,8 @@ tagsToRemove=(
   r'current_page_parent',# for navbar
   r'current_page_item',# for navbar
   r'current_page_ancestor',# for navbar
+  # <div class="wordads-tag" data-slot-type="sidebar" style="display: none;"></div> 
+  r'<div[^>]*class=["\'][^"\']*\bwordads-tag\b[^"\']*["\'][^>]*>.*?</div>',
 
 )
 tagsToReplace=(
