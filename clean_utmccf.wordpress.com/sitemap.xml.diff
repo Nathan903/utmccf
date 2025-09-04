@@ -1,88 +1,88 @@
 10c10
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2025/09/137dd25d-a475-49a9-8158-e4adf927db0c_1_105_c-2.jpeg
----
-> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2025/09/image.png
-12c12
-< <image:title>137DD25D-A475-49A9-8158-E4ADF927DB0C_1_105_c
----
-> <image:title>image
-16c16
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2025/09/whatsapp-image-2025-08-31-at-20.53.39-1.jpeg
----
-> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/doreen-commitee-photo-1.jpg
-18c18
-< <image:title>WhatsApp Image 2025-08-31 at 20.53.39
----
-> <image:title>Doreen Commitee Photo
-22c22
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2025/09/137dd25d-a475-49a9-8158-e4adf927db0c_1_105_c-1.jpeg
----
-> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/doreen-commitee-photo.jpg
-24c24
-< <image:title>137DD25D-A475-49A9-8158-E4ADF927DB0C_1_105_c
----
-> <image:title>Doreen Commitee Photo
-28c28
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2025/09/137dd25d-a475-49a9-8158-e4adf927db0c_1_105_c.jpeg
----
-> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/bill-commitee-photo-1.jpg
-30c30
-< <image:title>137DD25D-A475-49A9-8158-E4ADF927DB0C_1_105_c
----
-> <image:title>Bill commitee photo
-34c34
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2025/09/bb9ee646-1320-494f-bad3-10bdb92402e0_1_105_c.jpeg
----
-> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/karen-commitee-photo-2.jpg
-36c36
-< <image:title>BB9EE646-1320-494F-BAD3-10BDB92402E0_1_105_c
----
-> <image:title>Karen Commitee photo
-40c40
-< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2025/09/whatsapp-image-2025-08-31-at-20.53.39.jpeg
----
-> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/karen-commitee-photo-1.jpg
-42c42
-< <image:title>WhatsApp Image 2025-08-31 at 20.53.39
----
-> <image:title>Karen Commitee photo
-46c46
 < <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2025/09/image.png
 ---
-> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/bill-commitee-photo.jpg
-48c48
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2025/09/137dd25d-a475-49a9-8158-e4adf927db0c_1_105_c-2.jpeg
+12c12
 < <image:title>image
 ---
-> <image:title>Bill commitee photo
-52c52
+> <image:title>137DD25D-A475-49A9-8158-E4ADF927DB0C_1_105_c
+16c16
 < <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/doreen-commitee-photo-1.jpg
 ---
-> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/karen-commitee-photo.jpg
-54c54
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2025/09/whatsapp-image-2025-08-31-at-20.53.39-1.jpeg
+18c18
 < <image:title>Doreen Commitee Photo
 ---
-> <image:title>Karen Commitee photo
-58c58
+> <image:title>WhatsApp Image 2025-08-31 at 20.53.39
+22c22
 < <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/doreen-commitee-photo.jpg
 ---
-> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2023/10/img_4882.jpg
-60c60
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2025/09/137dd25d-a475-49a9-8158-e4adf927db0c_1_105_c-1.jpeg
+24c24
 < <image:title>Doreen Commitee Photo
 ---
-> <image:title>img_4882
-64c64
+> <image:title>137DD25D-A475-49A9-8158-E4ADF927DB0C_1_105_c
+28c28
 < <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/bill-commitee-photo-1.jpg
 ---
-> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2023/10/wechatimg2844-1.jpeg
-66c66
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2025/09/137dd25d-a475-49a9-8158-e4adf927db0c_1_105_c.jpeg
+30c30
 < <image:title>Bill commitee photo
 ---
-> <image:title>wechatimg2844-1
+> <image:title>137DD25D-A475-49A9-8158-E4ADF927DB0C_1_105_c
+34c34
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/karen-commitee-photo-2.jpg
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2025/09/bb9ee646-1320-494f-bad3-10bdb92402e0_1_105_c.jpeg
+36c36
+< <image:title>Karen Commitee photo
+---
+> <image:title>BB9EE646-1320-494F-BAD3-10BDB92402E0_1_105_c
+40c40
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/karen-commitee-photo-1.jpg
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2025/09/whatsapp-image-2025-08-31-at-20.53.39.jpeg
+42c42
+< <image:title>Karen Commitee photo
+---
+> <image:title>WhatsApp Image 2025-08-31 at 20.53.39
+46c46
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/bill-commitee-photo.jpg
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2025/09/image.png
+48c48
+< <image:title>Bill commitee photo
+---
+> <image:title>image
+52c52
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/karen-commitee-photo.jpg
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/doreen-commitee-photo-1.jpg
+54c54
+< <image:title>Karen Commitee photo
+---
+> <image:title>Doreen Commitee Photo
+58c58
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2023/10/img_4882.jpg
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/doreen-commitee-photo.jpg
+60c60
+< <image:title>img_4882
+---
+> <image:title>Doreen Commitee Photo
+64c64
+< <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2023/10/wechatimg2844-1.jpeg
+---
+> <image:loc>https://utmccf.wordpress.com/wp-content/uploads/2024/11/bill-commitee-photo-1.jpg
+66c66
+< <image:title>wechatimg2844-1
+---
+> <image:title>Bill commitee photo
 69c69
-< <lastmod>2025-09-04T02:24:07+00:00
+< <lastmod>2025-09-03T22:50:10+00:00
 ---
-> <lastmod>2025-09-03T22:50:10+00:00
+> <lastmod>2025-09-04T02:24:07+00:00
 2515c2515
-< <lastmod>2025-09-04T02:24:07+00:00
+< <lastmod>2025-09-03T22:50:10+00:00
 ---
-> <lastmod>2025-09-03T22:50:10+00:00
+> <lastmod>2025-09-04T02:24:07+00:00
