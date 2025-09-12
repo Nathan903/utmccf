@@ -1,4 +1,4 @@
-WARNING: downloaded file [clean_utmccf.wordpress.com/sitemap.xml.diff] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/line_by_line_sitemap.xml.diff] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/20250426/croped.JPG] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/20250426/ans.webm] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: This page 『 utmccf.wordpress.com/2012/10/12/布道会-evangelical-conference 』 contains these absolute url links:
@@ -62,7 +62,7 @@ There is NO WARRANTY, to the extent permitted by law.
 Originally written by Hrvoje Niksic <hniksic@xemacs.org>.
 Please send bug reports and questions to <bug-wget@gnu.org>.
 
-DONE: website published with 12 warnings and 0 errors. Last updated 2025-09-10 19:34:42 EDT
+DONE: website published with 12 warnings and 0 errors. Last updated 2025-09-11 20:51:52 EDT
 
 
 * Website is published with warnings/errors. Please check all affected pages. If nothing is broken, ignore the warnings/errors
