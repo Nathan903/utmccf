@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html style="margin-top: 0px !important; scroll-padding-top: 0px !important;"  lang="zh-CN">
+<head><link rel="stylesheet" href="/extra.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTMCCF真心话大抽卡</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji');
+
+        :root {
+            --primary-color: #ff4757;
+            --secondary-color: #ff6b81;
+            --background-color: #1e1e1e;
+            --card-background: #2d2d2d;
+            --text-color: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+            --glow-color: rgba(255, 71, 87, 0.8);
+            --colorful-glitch-gradient: conic-gradient(
+                from 0deg,
+                #ff0000 0%, #00ffff 14%, #ff0000 28%, #ff0000 42%, 
+                #ff0000 56%, #00ffff 70%, #00ffff 84%, #00ffff 100%
+            );
+            /* New variable for a distinct glitch color */
+            --glitch-accent-color: cyan; /* A common digital artifact color */
+        }
+
+
+        body {
+            font-family: 'Noto Color Emoji', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            /* Add a subtle animation to the body for an overall "digital disturbance" */
+            animation: background-flicker 10s infinite alternate;
+        }
+
+        @keyframes background-flicker {
+            0% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(2deg); }
+            100% { filter: hue-rotate(-2deg); }
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color);
+            margin-bottom: 2rem;
+        }
+
+        .card-container {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            margin: 2rem auto;
+        }
+
+        .card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            font-size: 1.5rem;
+            text-align: center;
+            transition: opacity 0.5s ease-out; /* Make opacity change snappier */
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            opacity: 0; /* Hide front card initially */
+            z-index: 10;
+            overflow: hidden; /* Crucial for clip-path to work well without showing overflow */
+        }
+
+        .card-back {
+            background: var(--card-background);
+            border: 2px solid var(--primary-color);
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px var(--glow-color);
+            z-index: 5;
+        }
+        
+        /* --- START: Glitch Animation Integration (Video Game Style) --- */
+
+        .card-container.glitching .card-front {
+            animation: video-game-glitch-main 0.5s forwards; /* Faster main glitch */
+            position: relative; 
+            opacity: 1; /* Ensure it's visible during glitch */
+        }
+
+        .card-container.glitching .card-front::before,
+        .card-container.glitching .card-front::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--colorful-glitch-gradient); 
+            border-radius: 20px;
+            opacity: 0.8; /* Slightly more opaque */
+            mix-blend-mode: hard-light; /* A more aggressive blend mode */
+            pointer-events: none; 
+            z-index: 100; /* Ensure glitch layers are on top */
+        }
+
+        .card-container.glitching .card-front::before {
+            background: var(--glitch-accent-color); /* Use accent color for one layer */
+            mix-blend-mode: screen; /* Different blend mode for more variation */
+            animation: video-game-glitch-layer-1 0.8s forwards; /* Faster */
+        }
+
+        .card-container.glitching .card-front::after {
+            background: var(--colorful-glitch-gradient); /* Keep gradient for the other */
+            animation: video-game-glitch-layer-2 0.8s forwards; /* Faster */
+        }
+
+        @keyframes video-game-glitch-main {
+            0% { transform: translate(0px, 0px) scale(1.0); opacity: 0; }
+            5% { transform: translate(-3px, 3px) scale(1.02); opacity: 1; }
+            10% { transform: translate(5px, -5px) scale(0.98); filter: hue-rotate(20deg); }
+            15% { transform: translate(-7px, 7px) scale(1.03); opacity: 0.9; }
+            20% { transform: translate(0px, 0px) scale(1.0); filter: hue-rotate(0deg); }
+            25% { transform: translate(-10px, -2px) skewX(10deg); opacity: 0.8; }
+            30% { transform: translate(12px, 5px) skewX(-10deg); filter: contrast(1.5); }
+            35% { transform: translate(-8px, -8px) skewY(5deg); }
+            40% { transform: translate(0px, 0px) skew(0deg) scale(1.0); filter: contrast(1); }
+            42% { clip-path: polygon(0 20%, 100% 20%, 100% 80%, 0 80%); transform: scaleY(1.1); }
+            44% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); transform: scaleY(1); }
+            50% { transform: translate(-15px, 0px) scaleX(0.9); opacity: 0.7; }
+            55% { transform: translate(15px, 0px) scaleX(1.1); filter: saturate(2); }
+            60% { transform: translate(-5px, 5px); }
+            65% { transform: translate(5px, -5px); }
+            70% { transform: translate(-2px, -2px); }
+            75% { transform: translate(2px, 2px); }
+            80% { transform: translate(0); scale(1); filter: saturate(1); }
+            100% { transform: translate(0); opacity: 1; }
+        }
+        
+        @keyframes video-game-glitch-layer-1 {
+            0% { 
+                clip-path: polygon(0 2%, 100% 2%, 100% 4%, 0 4%); /* Less tall rectangle start */
+                opacity: 1; transform: translateX(0px); 
+            }
+            15% { transform: translateX(-15px); }
+            30% { 
+                clip-path: polygon(0 30%, 100% 30%, 100% 35%, 0 35%); 
+                transform: translateX(10px);
+            }
+            45% { transform: translateX(-5px); }
+            60% { 
+                clip-path: polygon(0 60%, 100% 60%, 100% 63%, 0 63%); /* Less tall rectangle mid */
+                transform: translateX(0px);
+            }
+            75% { transform: translateX(5px); }
+            100% { clip-path: polygon(0 70%, 100% 70%, 100% 75%, 0 75%); opacity: 0; }
+        }
+        
+        @keyframes video-game-glitch-layer-2 {
+            0% { 
+                clip-path: polygon(0 80%, 100% 80%, 100% 82%, 0 82%); /* Less tall rectangle start */
+                opacity: 1; transform: translateX(0px);
+            }
+            20% { transform: translateX(10px); }
+            40% { 
+                clip-path: polygon(0 15%, 100% 15%, 100% 18%, 0 18%); 
+                transform: translateX(-10px);
+            }
+            60% { transform: translateX(5px); }
+            80% { 
+                clip-path: polygon(0 40%, 100% 40%, 100% 43%, 0 43%); /* Less tall rectangle mid */
+                transform: translateX(0px);
+            }
+            100% { clip-path: polygon(0 30%, 100% 30%, 100% 35%, 0 35%); opacity: 0; }
+        }
+
+        /* --- END: Glitch Animation Integration (Video Game Style) --- */
+
+        #next-card-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-color);
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+
+        #next-card-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--glow-color);
+        }
+
+        #next-card-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Toggle button styles */
+        .toggle-label {
+            display: inline-block;
+            position: relative;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-label input {
+            display: none;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--secondary-color);
+            border-radius: 30px;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-slider::before {
+            content: "";
+            position: absolute;
+            height: 24px;
+            width: 24px;
+            left: 3px;
+            bottom: 3px;
+            background-color: #222;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .toggle-slider::before {
+            transform: translateX(30px);
+        }
+
+        .mode-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body style="margin-top: 0px !important;" >
+
+    <div class="container">
+        <h1>真心话<s>大冒险</s></h1>
+        
+        <!-- Add a mode toggle -->
+        <div class="mode-toggle">
+            <label for="mode-toggle" class="toggle-label">
+                <input type="checkbox" id="mode-toggle">
+                <span class="toggle-slider"></span>
+            </label>
+            <span id="mode-label">😁</span>
+        </div>
+
+        <div class="card-container" id="card-container">
+            <div class="card card-back" id="card-back">
+                ?
+            </div>
+            <div class="card card-front" id="card-content">
+                点击“下一张卡”开始游戏
+            </div>
+        </div>
+        <button id="next-card-btn">下一张卡</button>
+    </div>
+
+    <script>
+        let use_utility = (new Date() > new Date("2025-10-24T18:20:00")) ? 1 : 0;
+        let hard_mode_utility_card_probability = 0.3*use_utility; // 30% chance to draw a utility card in hard mode
+        let easy_mode_utility_card_probability = 0.67*use_utility; // 10% chance to draw a utility card in easy mode
+
+        const easy = `
+你最喜欢和讨厌的学科是什么？
+在工作学习之余，你对什么事情充满热情？
+你最喜欢的电影/书是什么？为什么？
+你喜欢小孩吗？希望拥有子女吗？为什么？
+如果退休了，你希望拥有什么爱好？
+小时候你最害怕什么？长大后你最害怕什么？
+小时候的你希望长大后做什么？
+有哪些事情，你一直想做，但是还没有做？为什么？
+你向往的生活是什么样的？
+你认为什么样的人最有影响力？他/她会具备哪些品格？
+你想因什么事出名/被认识？
+你欣赏的人有什么样的特质？
+你觉得融入群体有压力吗？为什么？
+你觉得什么样的人生是活得有价值的？为什么？
+你认为人生中最快乐的事情是什么？
+你觉得真正的自由是什么？你最想在哪方面自由？
+你的性格偏向于保守型/变革型？如果保守，在哪些方面？如果变革，最想改变什么？
+你如何看待周围的罪恶？（世界、国家、城市、公司、学校……）
+你养过宠物吗？如果有，它是什么样的？如果没有，你想养什么宠物？为什么？
+你尝试过祈祷吗？如果有，那是怎样经历？发生了什么？
+如果上帝存在，你觉得他如何看待你现在的经历？
+如果有一位上帝，能回答你的各种问题，你会问他什么？
+如果你穿越到过去，你会给自己什么建议？
+如果过去的你穿越到现在，他/她会怎么看待现在的自己？
+如果你有能力解决一个世界/生活上最大的问题，你会解决什么？
+如果你要为自己写墓志铭/遗嘱，你会写下什么？
+如果可以传送一个讯息给全世界，你会说什么？
+你想要有什么超级能力？为什么？
+如果你能和任何人交换一天，你会选择谁？为什么？
+如果你能把任何事情作为你的事业，你会做什么？
+如果不考虑经济问题，你想长生不老吗？为什么？
+如果你能见任何明星/历史人物，你想见谁？为什么？
+你必须和一位圣经人物一起被困在电梯里24小时，你最不希望是谁？
+你必须用一种动物的叫声来代替你的笑声，你会选哪种动物？
+你认为哪种食物最能代表你的性格？
+你必须放弃使用一种餐具（筷子、勺子、叉子）一辈子，你放弃哪个？ 
+你觉得外星人看地球人最奇怪的习惯是什么？
+如果你能瞬间变成任何年龄（零到一百岁），你会选几岁？为什么？
+如果你要开一家完全没用的公司，它会卖什么？
+解释你的微信名和头像！
+解释你的微信名和头像！
+你祷告或读圣经的时候，最容易被什么东西分心？
+你在学校里最奇怪的“睡着（或差点睡着）”的地方是哪里？
+你为了拖延一个大作业，做过最荒谬的事或买过最奇怪的东西是什么？
+你在校园里拿过最棒的免费赠品（像T-shirt、水瓶之类）是什么？
+你选课的首要标准是什么？（比如：no 9AM、prof 好、没有final、课程听起来有趣等等）
+你有没有什么奇怪的食物组合你其实很爱吃，但别人会觉得怪？
+如果你每天多一个小时（不能用来睡觉、上课或工作），你会拿来做什么？
+有没有一句所谓的“人生鸡汤”或“励志名言”，你其实觉得很烦或没什么用？
+补一句话：「我觉得在这个房间里，只有我______。」
+别人还没认识你前，最常对你有什么误解？
+如果你可以“静音”掉一个来自世界、家人、或自己给的期望，会是哪一个？
+哪一个虚构反派角色你觉得其实蛮有道理的？
+找到一个辅导，计时30秒，连续夸ta不得间断
+计时30秒，连续夸你的组长，不得间断
+计时30秒，连续夸上一个玩家，不得间断
+        `;
+        const hard = `
+✝最近你的祷告生活如何？你在为哪些事项祷告？
+✝最近的主日讲道或小组学习中，神的话对你有什么新的提醒、责备或鼓励？
+✝最近你有操练在教会或小组中学到的东西吗？如果有，可以分享一个例子吗？如果没有，可以分享你的挑战吗？
+✝你是如何成为一个基督徒的？
+✝你信主以后最大的改变是什么？
+✝分享一个你经历到神祝福的事情。
+✝在学习中，你有什么经历神同在的事？其中有什么感恩或挑战？
+最近你有什么感恩的事？
+你喜欢目前的生活吗？为什么？
+你会为哪些事情忧虑？当你忧虑的时候会怎么办？
+最近你遇到了哪些困境？它如何影响你对神的信心？
+什么类型的人、情况或事情最容易刺激或激怒你？你通常如何处理这些情绪？
+在工作或学习中，你最喜欢和最不喜欢的事情是什么？
+在工作或学习中，你最大的挑战或挣扎是什么？我们可以如何为你祷告？
+和家人相处中，你最大的挑战或挣扎是什么？我们可以如何为你祷告？
+你在未来一年内对自己有什么期待或计划？
+你在管理金钱时会面临什么样的挑战或诱惑？
+你一般如何面对冲突？
+你期待在哪个品格上有更多的成长？（仁爱、喜乐、和平、忍耐、恩慈、良善、信实、温柔、节制…）为什么？
+你最近一次感到孤独是什么时候？原因是什么？
+✝你最近一次认识到自己的罪是什么时候？
+✝最近你在尝试用什么方式服侍教会/他人？
+✝你是如何认识到自己是一个罪人的？
+✝你心中的偶像是什么？（什么在与你争夺神在你生命中的主权？）
+✝你如何看待传福音？在传福音方面你的挑战是什么？
+✝过一个“舍己”的生活对你来说意味着什么？这会如何影响你的生活、工作、人际关系、时间管理和金钱？
+有什么经历改变了你看待世界的方式？
+谁是对你一生影响最大的人？
+你最欣赏他人身上的哪种价值？
+有什么是你希望别人能理解你的地方？
+什么事情总能让你感到敬畏或平静？
+你在什么时候感到最有生命力？
+当事情无法理解时，你如何找到内心的平静？
+当生活失去掌控时，你会怎么做？
+是什么让你的生命有意义或目标？
+当生活变得艰难时，你从哪里找到希望？
+什么让一个社群让你感到安全？
+你曾在哪个地方感到被真正认识和接纳？是什么让那成为可能的？
+是什么最影响了你的信仰（或怀疑）？
+你是否曾在某件重要的事上改变过想法？是什么促成的？
+如果上帝存在，你认为祂会是什么样的？
+什么样的证据或经历会让你相信（或质疑）上帝的存在？
+当你做决定时，如何在感觉与理智之间取得平衡？
+信仰与科学能共存吗？为什么或为什么不能？
+对你来说，过一个好生活意味着什么？
+你如何判断什么是对或错？
+宽恕总是可能的吗？为什么或为什么不？
+在你看来，爱（超越浪漫）是什么样子的？
+哪个故事（来自你的生活、书籍、电影或经文）最激励你？
+你的个人故事如何影响你看待世界的方式？
+你有完全搞不懂的圣经人物（或者历史人物）吗？
+What is a non-Christian song you listen to that has surprisingly good spiritual themes?
+小时候你百分百相信的事，现在才发现完全错了的是什么？
+一个对UTMCCF团契活动/文化的吐槽！
+解释你的微信名和头像！
+        `;
+        const easy_questions = easy.trim().split('\n');
+;
+        const hard_questions = hard.trim().split('\n');
+        console.log(easy_questions);
+        const easy_utility_cards = [
+"😜加倍卡：哈哈哈哈~ 请再抽两张卡牌，并回答。",
+"🔀反问卡：本轮可以任选一位玩家代替你作答。",
+"👯陪伴卡：本轮可以任选一位玩家与你一起回答。",
+"📢 群攻卡：本轮所有人都要作答",
+"🐸 呱噪卡：本轮须模仿一个动物叫声作答，作答时每句话后叫一声。",
+"🤖 变声卡：本轮须用一种奇怪的声音作答。",
+"🗣️第三人称卡：本轮作答时不能使用“我”，必须用自己的名字代替！",
+"🐍 谎言卡：本轮回答时，必须混入一句谎话，让大家猜哪句是假的。猜错的人下一轮须用小猫的语气作答",
+"🎤 RAP卡：本轮作答须用freestyle rap形式。",
+"🎵唱歌卡：用歌唱的形式回答本轮问题",
+"☝️手势卡：本轮作答问题时，必须全程用夸张手势配合。",
+"👋手语卡：本轮由你左边的玩家用手语（或夸张比划）翻译你的回答",
+        ];
+        const hard_utility_cards = [
+"😜加倍卡：哈哈哈哈~ 请再抽两张卡牌，并回答。",
+"🔀反问卡：本轮可以任选一位玩家代替你作答。",
+"👯陪伴卡：本轮可以任选一位玩家与你一起回答。",
+"😈指定卡：你可以指定一位玩家回答之前出现的任何问题",
+"📢 群攻卡：本轮所有人都要作答",
+        ];
+
+        const cardContainer = document.getElementById('card-container');
+        const cardContent = document.getElementById('card-content');
+        const cardBack = document.getElementById('card-back');
+        const nextCardBtn = document.getElementById('next-card-btn');
+        const modeSlider = document.getElementById('mode-slider');
+        const modeLabel = document.getElementById('mode-label');
+        const modeToggle = document.getElementById('mode-toggle');
+
+        let currentQuestions = [...easy_questions]; // Default to easy questions
+        let isFirstClick = true;
+        let lastCardType = "utility"; // Track the last card type ("question" or "utility")
+        let utilityCardIndex = 0; // Track the current utility card index for round-robin
+        let drawCount = 0; // count total draws; first 5 draws must be questions
+
+        modeToggle.addEventListener('change', () => {
+            if (modeToggle.checked) {
+                currentQuestions = [...hard_questions]; // Switch to hard questions
+                modeLabel.textContent = "🤔";
+            } else {
+                currentQuestions = [...easy_questions]; // Switch to easy questions
+                modeLabel.textContent = "😁";
+            }
+        });
+
+        function getRandomQuestion() {
+            if (currentQuestions.length === 0) {
+                // Reset the questions based on the current mode
+                currentQuestions = modeToggle.checked ? [...hard_questions] : [...easy_questions];
+            }
+
+            const randomIndex = Math.floor(Math.random() * currentQuestions.length);
+            const question = currentQuestions.splice(randomIndex, 1)[0]; // Remove and return the question
+            return question;
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        let easyUtilityCardIndex = 0; // Track the current utility card index for easy mode
+        let hardUtilityCardIndex = 0; // Track the current utility card index for hard mode
+
+        function getUtilityCard() {
+            const utilityCards = modeToggle.checked ? hard_utility_cards : easy_utility_cards; // Select the appropriate list
+            let utilityCardIndex = modeToggle.checked ? hardUtilityCardIndex : easyUtilityCardIndex;
+
+            if (utilityCardIndex === 0) {
+                shuffleArray(utilityCards); // Shuffle the utility cards when starting a new round
+            }
+
+            const card = utilityCards[utilityCardIndex];
+            utilityCardIndex = (utilityCardIndex + 1) % utilityCards.length; // Move to the next utility card
+
+            // Update the correct index based on the mode
+            if (modeToggle.checked) {
+                hardUtilityCardIndex = utilityCardIndex;
+            } else {
+                easyUtilityCardIndex = utilityCardIndex;
+            }
+
+            return card;
+        }
+
+        function shouldDrawUtilityCard() {
+            const probability = modeToggle.checked
+                ? hard_mode_utility_card_probability
+                : easy_mode_utility_card_probability;
+            return Math.random() < probability;
+        }
+
+        nextCardBtn.addEventListener('click', () => {
+            nextCardBtn.disabled = true;
+
+            if (isFirstClick) {
+                cardBack.style.opacity = '0';
+                cardContent.style.opacity = '1';
+                isFirstClick = false;
+            }
+
+            cardContainer.classList.remove('glitching');
+            void cardContainer.offsetWidth; // Trigger reflow to restart animation
+
+            setTimeout(() => {
+                let newCard;
+                // Prevent utility cards for the first 5 draws
+                const withinFirstFive = drawCount < 5;
+
+                if (withinFirstFive || lastCardType === "utility" || !shouldDrawUtilityCard()) {
+                    // Draw a question if within first 5 draws, the last was a utility, or probability check fails
+                    newCard = getRandomQuestion();
+                    lastCardType = "question";
+                } else {
+                    // Draw a utility card
+                    newCard = getUtilityCard();
+                    lastCardType = "utility";
+                }
+
+                drawCount++; // increment after deciding the card type
+
+                cardContent.textContent = newCard;
+                cardContainer.classList.add('glitching');
+
+                setTimeout(() => {
+                    nextCardBtn.disabled = false;
+                }, 800); // Match this to the main animation duration
+            }, 50); // Small delay to ensure content updates before glitch starts
+        });
+    </script>
+
+</body>
+</html>
