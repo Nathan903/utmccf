@@ -83,7 +83,7 @@ tagsToRemove=(
   r'current_page_ancestor',# for navbar
   # <div class="wordads-tag" data-slot-type="sidebar" style="display: none;"></div> 
   r'<div[^>]*class=["\'][^"\']*\bwordads-tag\b[^"\']*["\'][^>]*>.*?</div>',
-
+  r"crossorigin='anonymous'", # fix CORS css load failures
 )
 tagsToReplace=(
   ( #add <link rel="stylesheet" href="extra.css"> to after head
