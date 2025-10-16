@@ -4,6 +4,16 @@
 
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <url>
+<loc>https://utmccf.wordpress.com/zht-utmccf-com/
+</loc>
+<lastmod>2025-10-16T08:03:08+00:00
+</lastmod>
+<changefreq>weekly
+</changefreq>
+<priority>0.6
+</priority>
+</url>
+<url>
 <loc>https://utmccf.wordpress.com/
 </loc>
 <image:image>
@@ -2512,7 +2522,7 @@
 </changefreq>
 <priority>1.0
 </priority>
-<lastmod>2025-10-16T06:41:46+00:00
+<lastmod>2025-10-16T08:03:08+00:00
 </lastmod>
 </url>
 </urlset>
