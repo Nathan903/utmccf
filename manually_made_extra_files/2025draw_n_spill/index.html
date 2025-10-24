@@ -21,7 +21,7 @@
             --colorful-glitch-gradient: conic-gradient(
                 from 0deg,
                 #ff0000 0%, #00ffff 14%, #ff0000 28%, #ff0000 42%, 
-                #ff0000 56%, #00ffff 70%, #00ffff 84%, #00ffff 100%
+                #ff0000 56%, #4f7c7c 70%, #00ffff 84%, #33b7b7 100%
             );
             /* New variable for a distinct glitch color */
             --glitch-accent-color: cyan; /* A common digital artifact color */
@@ -297,11 +297,16 @@
     </div>
 
     <script>
-        let use_utility = (new Date() > new Date("2025-10-24T18:25:00-04:00")) ? 1 : 0;
+        let use_utility = (new Date() > new Date("2025-10-24T18:15:00-04:00")) ? 1 : 0;
         let hard_mode_utility_card_probability = 0.3*use_utility; // 30% chance to draw a utility card in hard mode
         let easy_mode_utility_card_probability = 0.67*use_utility; // 10% chance to draw a utility card in easy mode
 
         const easy = `
+你买过的东西里，最后悔、最“智商税”的一件是什么？
+解释你的微信名，头像，和签名！
+你被教授气到或感动到的瞬间？
+你最想问神一句大胆的问题是什么？
+你做过的最让你的室友（或家人）无语或抓狂的一件事是什么？
 你最喜欢和讨厌的学科是什么？
 在工作学习之余，你对什么事情充满热情？
 你最喜欢的电影/书是什么？
@@ -348,7 +353,6 @@
 有没有一句所谓的“人生鸡汤”或“励志名言”，你其实觉得很烦或没什么用？
 「我觉得在这个房间里，只有我______。」
 别人还没认识你前，最常对你有什么误解？
-解释你的微信名和头像！
 如果你可以“静音”掉一个来自世界、家人、或自己给的期望，会是哪一个？
 哪一个虚构反派角色你觉得其实蛮有道理的？
 你觉得祷告改变世界还是改变人？
@@ -358,17 +362,14 @@
 如果你必须选一个团契成员一起被困在荒岛，你会选谁？为什么？
 你最怕哪一种“属灵人设”？
 你在教会或团契里遇过最尴尬的瞬间？
-你最想问神一句大胆的问题是什么？
 你听过团契最奇怪的祷告内容是什么？
 如果撒旦今天给你一个诱惑，你觉得最可能让你“上钩”的是什么？（比如：完美的GPA、巨额财富、爱情...）
 你手机的搜索历史记录里，最近一个让你觉得“被别人看到会很奇怪”的搜索是什么？
-你做过的最让你的室友（或家人）无语或抓狂的一件事是什么？
 你发过最想删除的社交媒体贴文是哪一条？
 你最离谱的一次网购冲动是什么？
 你人生中最勇敢的一个决定是什么？
 你觉得幸福的反义词是什么？
 你有没有在课堂或会议上睡着过？被发现了吗？
-你买过的东西里，最后悔、最“智商税”的一件是什么？
 你上次对父母（或家人）撒谎是什么时候？撒了什么谎？
 你拖延作业最“创意”的方式是什么？
 你上课最严重的分心行为是什么？
@@ -380,7 +381,6 @@
 你曾经最荒唐的一次消费是什么？
 你讲过最失败的笑话？
 你最常做但从没成功的“健康计划”？
-你被教授气到的瞬间？
 你最无意义的通宵？
 你最喜欢的一句与最反感的一句“励志名言”？
 你印象中最奇怪的中国/外国文化差异是什么？
@@ -437,7 +437,6 @@ What is a non-Christian song you listen to that has surprisingly good spiritual 
 小时候你百分百相信的事，现在才发现完全错了的是什么？
 一个对UTMCCF团契的吐槽！
 一个对UTMCCF团契的意见/建议！
-解释你的微信名和头像！
 你有没有一个“想原谅但还做不到”的人或事？
 你怎么看“原谅”和“忘记”的差别？
 你觉得“成长”最痛的部分？
@@ -634,9 +633,13 @@ ____曾让我感觉就像与基督的爱隔离了。
 
             setTimeout(() => {
                 let newCard;
-                const withinFirstFive = drawCount < 3;
+                const withinFirstThree = drawCount < 3;
 
-                if (withinFirstFive || lastCardType === "utility" || !shouldDrawUtilityCard()) {
+                if (withinFirstThree) {
+                    // Always use the first 3 easy questions for the first 3 draws
+                    newCard = easy_questions[drawCount];
+                    lastCardType = "question";
+                } else if (lastCardType === "utility" || !shouldDrawUtilityCard()) {
                     newCard = getRandomQuestion();
                     lastCardType = "question";
                 } else {
