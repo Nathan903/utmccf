@@ -297,9 +297,9 @@
     </div>
 
     <script>
-        let use_utility = (new Date() > new Date("2025-10-24T18:15:00-04:00")) ? 1 : 0;
+        let use_utility = (new Date() > new Date("2025-10-24T18:15:00-04:00")) ? 1 : 1  ;
         let hard_mode_utility_card_probability = 0.3*use_utility; // 30% chance to draw a utility card in hard mode
-        let easy_mode_utility_card_probability = 0.67*use_utility; // 10% chance to draw a utility card in easy mode
+        let easy_mode_utility_card_probability = 0.5*use_utility; // 10% chance to draw a utility card in easy mode
 
         const easy = `
 你买过的东西里，最后悔、最“智商税”的一件是什么？
