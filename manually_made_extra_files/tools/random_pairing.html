@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>秘密小天使</title>
+<style>
+ body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: #f7f7f7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+ }
+ h1 {
+  color: #d32f2f;
+  margin-bottom: 1rem;
+ }
+ textarea {
+  font-family: 'Noto Sans SC', sans-serif;
+  width: 90%;
+  max-width: 400px;
+  height: 100px;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  resize: none;
+ }
+ button {
+  margin-top: 1rem;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #d32f2f;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.2s; 
+ }
+ button:disabled {
+  cursor: not-allowed;
+  background: #757575;
+ }
+ button:hover:not(:disabled) {
+  background: #b71c1c;
+ }
+
+/* Base button can stay as-is. Just ensure it's relative & overflow hidden (you already have). */
+
+button.cooling-down {
+  /* Two backgrounds:
+     1) A red layer that we'll grow vertically from the bottom.
+     2) A gray base layer. */
+  background:
+    linear-gradient(#d32f2f, #d32f2f) bottom / 100% 0% no-repeat,
+    #757575;
+
+  /* Keep your existing transitions/other styles */
+  animation: cooldown-fill var(--cooldown-duration, 2s) linear forwards;
+}
+
+@keyframes cooldown-fill {
+  /* Grow the first background's height from 0% to 100% */
+  to {
+    background-size: 100% 100%, auto;
+  }
+}
+
+ .card {
+  display: none;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 2rem;
+  text-align: center;
+  width: 80%;
+  max-width: 350px;
+ }
+ .name {
+  font-size: 1.3rem;
+  color: #333;
+ }
+ .pair {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #d32f2f;
+  margin-top: 1rem;
+ }
+</style>
+</head>
+<body>
+
+<h1>秘密小天使</h1>
+<textarea id="names" placeholder="请输入所有名字，用空格或逗号分隔..."></textarea>
+<button id="start">开始游戏</button>
+
+<div class="card" id="card">
+ <div class="name" id="currentName"></div>
+ <div class="pair" id="pairedWith"></div>
+ <button id="nextBtn">看好了</button>
+</div>
+
+<script>
+ const startBtn = document.getElementById('start');
+ const card = document.getElementById('card');
+ const nextBtn = document.getElementById('nextBtn');
+ const nameBox = document.getElementById('names');
+ const currentName = document.getElementById('currentName');
+ const pairedWith = document.getElementById('pairedWith');
+
+ let names = [];
+ let pairs = [];
+ let index = 0;
+ let showingPair = false;
+ let confirmedOnce = false;
+
+ // --- Helper to handle cooldown with different durations ---
+ function buttonCooldown(seconds) {
+   nextBtn.disabled = true;
+   nextBtn.style.setProperty('--cooldown-duration', `${seconds}s`);
+   nextBtn.classList.add('cooling-down');
+   setTimeout(() => {
+     nextBtn.disabled = false;
+     nextBtn.classList.remove('cooling-down');
+   }, seconds * 1000);
+ }
+
+ // --- Shuffle helper ---
+ function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+   const j = Math.floor(Math.random() * (i + 1));
+   [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+ }
+
+ // --- Generate valid pairs ---
+ function generatePairs(arr) {
+  let receivers = shuffle([...arr]);
+  for (let i = 0; i < arr.length; i++) {
+   if (arr[i] === receivers[i]) {
+    return generatePairs(arr);
+   }
+  }
+  return receivers;
+ }
+
+ // --- Start game ---
+ startBtn.onclick = () => {
+  const input = nameBox.value.trim();
+  if (!input) return alert("请输入至少两个名字！");
+  names = input.split(/[\s,，]+/).filter(Boolean);
+  if (names.length < 2) return alert("至少需要两个人！");
+  pairs = generatePairs(names);
+  index = 0;
+  showingPair = false;
+  startBtn.style.display = "none";
+  nameBox.style.display = "none";
+  card.style.display = "block";
+  showPassScreen(true);
+ };
+
+ // --- Show name + target ---
+ function showPair() {
+  if (index >= names.length) {
+   card.innerHTML = "<h2>全部完成啦！</h2>";
+   return;
+  }
+  const giver = names[index];
+  const receiver = pairs[index];
+  currentName.textContent = `${giver}，你是这个人的小天使：`;
+  pairedWith.textContent = receiver;
+  nextBtn.textContent = "看好了";
+  showingPair = true;
+  buttonCooldown(4); // name display wait time
+ }
+
+ // --- Show hand-over screen ---
+ function showPassScreen(firstTime = false) {
+  const currentPerson = names[index];
+  currentName.textContent = `请把手机交给 ${currentPerson}`;
+  pairedWith.textContent = "";
+  nextBtn.textContent = `我是 ${currentPerson}`;
+  showingPair = false;
+  confirmedOnce = false;
+
+  // 4-second cooldown for name display step
+  buttonCooldown(4);
+ }
+
+ // --- Button logic ---
+ nextBtn.onclick = () => {
+  const currentPerson = names[index];
+
+  if (showingPair) {
+   index++;
+   if (index < names.length) showPassScreen();
+   else {
+    currentName.textContent = "全部完成啦！";
+    pairedWith.textContent = "";
+    nextBtn.style.display = "none";
+   }
+  } else {
+   if (!confirmedOnce) {
+     confirmedOnce = true;
+     currentName.textContent = `请再次确认：你真的是 ${currentPerson} 吗？`;
+     pairedWith.textContent = "";
+     nextBtn.textContent = `我真的是 ${currentPerson}`;
+     buttonCooldown(2); 
+   } else {
+     showPair();
+     buttonCooldown(4); 
+   }
+  }
+ };
+
+ // --- URL parsing (on load) ---
+ function parseNamesFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const nameParam = params.get("names");
+  if (nameParam) {
+    const parsed = decodeURIComponent(nameParam).split(/[+,]+/).filter(Boolean);
+    if (parsed.length) {
+      nameBox.value = parsed.join(" ");
+    }
+  }
+ }
+
+ // --- Update URL when names change ---
+ function updateURLFromTextbox() {
+   const val = nameBox.value.trim();
+   if (!val) {
+     history.replaceState(null, "", window.location.pathname);
+     return;
+   }
+   const formatted = val.replace(/[\s,，]+/g, "+");
+   const newURL = `${window.location.pathname}?names=${encodeURIComponent(formatted)}`;
+   history.replaceState(null, "", newURL);
+ }
+
+ nameBox.addEventListener("input", () => {
+   updateURLFromTextbox();
+ });
+
+ parseNamesFromURL();
+ updateURLFromTextbox();
+</script>
+
+</body>
+</html>
