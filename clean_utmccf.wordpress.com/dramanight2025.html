@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html style="margin-top: 0px !important; scroll-padding-top: 0px !important;"  lang="en">
+<head><link rel="stylesheet" href="/extra.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025戏剧之夜</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Mountains+of+Christmas:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS Snow Animation Setup --- */
+        @keyframes snow {
+            0% { background-position: 0px 0px, 0px 0px, 0px 0px; }
+            100% { background-position: 500px 1000px, 400px 400px, 300px 300px; }
+        }
+
+        body {
+            font-family: 'Merriweather', serif;
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(ellipse at bottom, #1b5e20 0%, #0d2e10 100%);
+            background-color: #0d2e10;
+            background-image: 
+                radial-gradient(white 1px, transparent 2px),
+                radial-gradient(white 2px, transparent 3px),
+                radial-gradient(white 1px, transparent 2px);
+            background-size: 500px 500px, 400px 400px, 300px 300px;
+            animation: snow 20s linear infinite;
+            color: #fffaf0;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            background: #5d4037;
+            background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 2px, transparent 2px, transparent 4px);
+            border-radius: 25px;
+            box-shadow: 
+                0 15px 35px rgba(0, 0, 0, 0.6),
+                inset 0 0 60px rgba(139, 69, 19, 0.8);
+            padding: 50px 30px;
+            width: 90%;
+            max-width: 950px;
+            text-align: center;
+            display: flex;
+            justify-content: space-around;
+            border: 8px solid #3e2723;
+            position: relative;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -10px; left: -10px; right: -10px; bottom: -10px;
+            border: 4px dotted #c62828;
+            border-radius: 30px;
+            pointer-events: none;
+            box-shadow: 0 0 15px #2e7d32;
+        }
+
+        .section {
+            width: 45%;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-family: 'Mountains of Christmas', cursive;
+            font-size: 2.8em;
+            margin-bottom: 25px;
+            margin-top: 0;
+            letter-spacing: 1px;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 10px #c62828;
+        }
+
+        /* --- THE BAG (WINDOW) --- */
+        .bag {
+            position: relative;
+            width: 100%;
+            height: 150px; /* Fixed height is crucial for calculations */
+            margin: 20px auto;
+            background: linear-gradient(to bottom, #e0f7fa, #b2ebf2);
+            border: 6px solid #fff;
+            border-radius: 15px;
+            overflow: hidden; /* Hides the rolling strip */
+            box-shadow: 
+                inset 0 0 30px #ffffff,
+                0 5px 15px rgba(255, 255, 255, 0.3);
+        }
+        
+        .bag::after {
+            content: '';
+            position: absolute;
+            top: -8px; left: 0; width: 100%; height: 15px;
+            background: white; border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 5;
+        }
+
+        /* --- THE REEL (MOVING STRIP) --- */
+        .reel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            /* Transformation happens here via JS */
+            will-change: transform; 
+        }
+
+        /* --- THE INDIVIDUAL SLOTS --- */
+        .slot {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #004d40;
+            text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8);
+            position: relative;
+            text-align: center;
+            /* Height MUST match the .bag height exactly */
+            height: 150px; 
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0 15px;
+            box-sizing: border-box;
+            line-height: 1.3;
+        }
+        
+        .slot span {
+            color: #558b2f !important;
+            font-weight: bold !important;
+            text-shadow: none;
+        }
+
+        .button {
+            font-family: 'Mountains of Christmas', cursive;
+            background: linear-gradient(to bottom, #c62828, #8e0000);
+            color: #ffd700;
+            border: 3px solid #ffd700;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.4em;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #4a0000, 0 8px 15px rgba(0,0,0,0.4);
+            margin: 15px;
+            transition: all 0.2s ease-in-out;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+            z-index: 10;
+        }
+        
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -50%;
+            width: 100%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255, 215, 0, 0.4), transparent);
+            transform: skewX(-20deg);
+            transition: 0.5s;
+        }
+
+        .button:hover {
+            background: linear-gradient(to bottom, #d32f2f, #a30000);
+            transform: translateY(2px);
+            box-shadow: 0 4px 0 #4a0000, 0 5px 10px rgba(0,0,0,0.4);
+        }
+        
+        .button:hover::before { left: 150%; }
+        
+        .button:active {
+            transform: translateY(6px);
+            box-shadow: 0 0px 0 #4a0000, 0 2px 5px rgba(0,0,0,0.4);
+        }
+
+        .button:disabled {
+            background: #5d4037;
+            color: #a1887f;
+            border-color: #8d6e63;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .button:disabled::before { display: none; }
+    </style>
+</head>
+<body style="margin-top: 0px !important;" >
+    <div class="container">
+        <div class="section">
+            <h1>故事</h1>
+            <div class="bag" id="bag-script">
+                <div class="reel" id="reel-script">
+                    <div class="slot">?</div>
+                </div>
+            </div>
+            <button class="button" id="btn-script" onclick="pickScript()">抽取</button>
+        </div>
+        <div class="section">
+            <h1>题材风格</h1>
+            <div class="bag" id="bag-theme">
+                <div class="reel" id="reel-theme">
+                    <div class="slot">?</div>
+                </div>
+            </div>
+            <button class="button" id="btn-theme" onclick="pickTheme()">抽取</button>
+        </div>
+    </div>
+
+    <script>
+        // 1. Script List
+        const scriptList = [
+            "使水变酒<br><span style='font-size:0.7em; color:#ccc; font-weight:normal'>(约翰福音 2:1-12)</span>",
+            "五饼二鱼<br><span style='font-size:0.7em; color:#ccc; font-weight:normal'>(约翰福音 6:1-15)</span>",
+            "医治瞎子<br><span style='font-size:0.7em; color:#ccc; font-weight:normal'>(约翰福音 9:1-41)</span>",
+            "拉撒路复活<br><span style='font-size:0.7em; color:#ccc; font-weight:normal'>(约翰福音 11:1-44)</span>",
+            "医治大臣的儿子<br><span style='font-size:0.7em; color:#ccc; font-weight:normal'>(约翰福音 4:43-54)</span>",
+            "呼召门徒<br><span style='font-size:0.7em; color:#ccc; font-weight:normal'>(约翰福音 1:35-51)</span>"
+        ];
+
+        const themeList = [
+            "短视频/直播",
+            "恐怖悬疑",
+            "青春校园偶像剧",
+            "喜剧",
+            "科幻",
+            "无声默剧",
+            "新闻联播",
+            "韩剧",
+            "musical+dance"
+        ];
+
+        // 2. Generator Factory
+        function createRandomGenerator(itemsSource) {
+            let items = [...itemsSource]; 
+            let indices = Array.from({ length: items.length }, (_, i) => i);
+            let currentIndex = indices.length; 
+
+            function shuffle(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+
+            return function next() {
+                if (currentIndex >= indices.length) {
+                    shuffle(indices);
+                    currentIndex = 0;
+                }
+                return items[indices[currentIndex++]];
+            };
+        }
+
+        const generateScript = createRandomGenerator(scriptList);
+        const generateTheme = createRandomGenerator(themeList);
+
+        let isAnimatingScript = false;
+        let isAnimatingTheme = false;
+
+        // 3. Pick Functions
+        function pickScript() {
+            if (isAnimatingScript) return;
+            const btn = document.getElementById('btn-script');
+            btn.disabled = true;
+            isAnimatingScript = true;
+            
+            const finalItem = generateScript();
+            
+            rollReel(scriptList, 'reel-script', finalItem, () => {
+                isAnimatingScript = false;
+                btn.disabled = false;
+            });
+        }
+
+        function pickTheme() {
+            if (isAnimatingTheme) return;
+            const btn = document.getElementById('btn-theme');
+            btn.disabled = true;
+            isAnimatingTheme = true;
+
+            const finalItem = generateTheme();
+            
+            rollReel(themeList, 'reel-theme', finalItem, () => {
+                isAnimatingTheme = false;
+                btn.disabled = false;
+            });
+        }
+
+        // 4. ROLLING Animation Logic
+        function rollReel(itemList, reelId, finalItem, callback) {
+            const reel = document.getElementById(reelId);
+            const slotHeight = 150; // Must match .bag and .slot height in CSS
+            const totalDummyItems = 20; // How many items flash by before stopping
+            
+            // 1. Build the reel HTML
+            let contentHTML = '';
+            
+            // Add a bunch of random items to create the "spinning" strip
+            for (let i = 0; i < totalDummyItems; i++) {
+                const randomItem = itemList[Math.floor(Math.random() * itemList.length)];
+                contentHTML += `<div class="slot">${randomItem}</div>`;
+            }
+            
+            // Add the Winner at the very end
+            contentHTML += `<div class="slot">${finalItem}</div>`;
+            
+            // Inject content
+            reel.innerHTML = contentHTML;
+
+            // 2. Reset Position (Instant jump to top)
+            reel.style.transition = 'none';
+            reel.style.transform = 'translateY(0)';
+            reel.style.filter = 'blur(1px)'; // Add blur for speed effect
+
+            // Force a reflow so the browser accepts the start position
+            reel.offsetHeight; 
+
+            // 3. Animate to the bottom
+            // Calculate distance: (Total Items - 1) * height
+            // We want to stop exactly when the last item is in the window
+            const targetY = -(totalDummyItems * slotHeight);
+
+            // Use a cubic-bezier for a realistic "Slot Machine" brake effect
+            // Starts fast, slows down at the end
+            reel.style.transition = 'transform 2.5s cubic-bezier(0.1, 0.7, 0.1, 1)';
+            reel.style.transform = `translateY(${targetY}px)`;
+
+            // 4. Cleanup after animation ends
+            setTimeout(() => {
+                reel.style.filter = 'none'; // Remove blur
+                
+                // Optional: Clean up DOM to just the winner to save memory, 
+                // but keep it in position
+                // reel.innerHTML = `<div class="slot">${finalItem}</div>`;
+                // reel.style.transition = 'none';
+                // reel.style.transform = 'translateY(0)';
+                
+                callback();
+            }, 2500); // Match transition duration
+        }
+    </script>
+</body>
+</html>
