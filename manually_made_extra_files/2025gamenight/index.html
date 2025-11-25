@@ -1,0 +1,173 @@
+<!-- 
+Gemini 2.5 Pro:
+i have 1.png 2.png to 8.png. these are all cards. make me a fancy looking html page for 抽卡. the theme of the website is 中秋节 and red. make quick but fancy animation for 抽卡. have a button for 抽卡. 50% of the times, they get 1 card. 50% of the times, they get one and a suprise extra card. The two cards maybe the same or any pair.  all cards are equally likely to get chosen, except 1 to 3 is 6 times more likely than the rest. generate me the html 
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTMCCF月圆中秋挑战抽卡</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Serif SC', serif; }
+        .main-bg {
+            background-color: #8c0000;
+            background-image:
+                radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.3) 0%, transparent 30%),
+                radial-gradient(circle at 10% 90%, rgba(255, 215, 0, 0.2) 0%, transparent 40%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill='%239a1111' fill-opacity='0.4'%3E%3Crect x='0' y='0' width='50' height='50'/%3E%3Crect x='50' y='50' width='50' height='50'/%3E%3C/g%3E%3C/svg%3E");
+        }
+        .card-container { perspective: 1000px; }
+        .card-inner {
+            position: relative; width: 100%; height: 100%;
+            transition: transform 0.6s; transform-style: preserve-3d;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 1rem;
+        }
+        .card-container.flipped .card-inner { transform: rotateY(180deg); }
+        .card-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            border-radius: 1rem; overflow: hidden;
+        }
+        .card-back {
+            background: linear-gradient(145deg, #a80000, #7c0000);
+            border: 2px solid #ffd700; display: flex;
+            align-items: center; justify-content: center; flex-direction: column; padding: 1rem;
+        }
+        .card-back-pattern {
+            width: 80%; height: 80%; border: 1px solid rgba(255, 215, 0, 0.5);
+            border-radius: 0.5rem; display: flex; align-items: center; justify-content: center;
+            font-size: 2.5rem; color: #ffd700; text-shadow: 0 0 10px #ff0;
+        }
+        .card-front {
+            background-color: #fefefe; transform: rotateY(180deg);
+            border: 4px solid #ffd700;
+        }
+        .card-front img { width: 100%; height: 100%; object-fit: cover; }
+        .draw-button {
+            background: linear-gradient(145deg, #ffd700, #f0c000); color: #8c0000;
+            font-weight: 700; border-radius: 50px; padding: 1rem 3rem; font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4), inset 0 -4px 10px rgba(0,0,0,0.2);
+            transition: all 0.2s ease-in-out; border: 2px solid #e0b000;
+        }
+        .draw-button:hover:not(:disabled) {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6), inset 0 -4px 10px rgba(0,0,0,0.2);
+        }
+        .draw-button:active:not(:disabled) { transform: translateY(1px) scale(1); }
+        .draw-button:disabled { opacity: 0.6; cursor: not-allowed; }
+        @keyframes draw-in {
+            0% { transform: translateY(-200%) scale(0.5) rotate(15deg); opacity: 0; }
+            100% { transform: translateY(0) scale(1) rotate(0); opacity: 1; }
+        }
+        .card-container { animation: draw-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; opacity: 0; }
+        .card-front::after {
+            content: ''; position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%,rgba(255, 255, 255, 0.5) 50%,rgba(255, 255, 255, 0) 100%);
+            transform: rotate(30deg); opacity: 0; transition: opacity 0.5s;
+        }
+        .card-container.flipped .card-front::after { animation: shimmer 1s forwards; }
+        @keyframes shimmer {
+            0% { transform: translateX(-200%) rotate(30deg); opacity: 1; }
+            100% { transform: translateX(200%) rotate(30deg); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="main-bg min-h-screen flex flex-col items-center justify-center text-white overflow-hidden p-4">
+    <header class="text-center mb-8">
+        <br><h1 class="text-4xl md:text-6xl font-bold text-yellow-300" style="text-shadow: 0 0 15px #ffd700, 0 0 5px #a80000;">
+            月圆中秋 · 挑战抽卡
+        </h1><br>
+        <p class="text-lg md:text-xl text-yellow-100 mt-2 opacity-90">皓月当空，主恩相伴</p>
+    </header>
+
+    <main id="card-display-area" class="w-full max-w-4xl flex-grow flex items-center justify-center gap-4 md:gap-8 flex-wrap p-4">
+        <div class="text-center text-yellow-200 opacity-70">
+            <p class="text-2xl">点击下方按钮开始抽卡</p>
+            <p class="text-lg mt-2">祝您好运！</p>
+        </div>
+    </main>
+
+    <footer class="w-full text-center py-8">
+        <button id="draw-button" class="draw-button">抽卡</button>
+    </footer>
+
+    <script>
+        const drawButton = document.getElementById('draw-button');
+        const cardDisplayArea = document.getElementById('card-display-area');
+
+        const rareCards = ['1.png', '2.png', '3.png'];
+        const commonCards = ['4.png', '5.png', '6.png', '7.png', '8.png'];
+        const weightedCardPool = [];
+        const weight = 6;
+
+        rareCards.forEach(card => { for (let i = 0; i < weight; i++) weightedCardPool.push(card); });
+        commonCards.forEach(card => { weightedCardPool.push(card); });
+
+        drawButton.addEventListener('click', handleDraw);
+
+        function handleDraw() {
+            drawButton.disabled = true;
+            cardDisplayArea.innerHTML = '';
+
+            const rand = Math.random();
+            let cardsToDraw = 1;
+            if (rand < 0.50) {
+                cardsToDraw = 1; // 50%
+            } else if (rand < 0.95) {
+                cardsToDraw = 2; // 45%
+            } else {
+                cardsToDraw = 3; // 5%
+            }
+
+            for (let i = 0; i < cardsToDraw; i++) {
+                const cardImage = getRandomCard();
+                createAndAnimateCard(cardImage, i);
+            }
+
+            setTimeout(() => { drawButton.disabled = false; }, cardsToDraw * 600 + 1000);
+        }
+
+        function getRandomCard() {
+            const randomIndex = Math.floor(Math.random() * weightedCardPool.length);
+            return weightedCardPool[randomIndex];
+        }
+
+        function createAndAnimateCard(imageName, index) {
+            const cardContainer = document.createElement('div');
+            cardContainer.className = 'card-container w-40 h-60 md:w-48 md:h-72';
+            cardContainer.style.animationDelay = `${index * 0.3}s`;
+
+            const cardInner = document.createElement('div');
+            cardInner.className = 'card-inner';
+
+            const cardBack = document.createElement('div');
+            cardBack.className = 'card-face card-back';
+            cardBack.innerHTML = `<div class="card-back-pattern"><span>月</span></div>`;
+
+            const cardFront = document.createElement('div');
+            cardFront.className = 'card-face card-front';
+            const img = document.createElement('img');
+            img.src = imageName;
+            img.alt = '中秋卡片';
+            img.onerror = () => {
+                img.src = `https://placehold.co/300x400/8c0000/ffd700?text=Image+Not+Found`;
+                img.alt = 'Image not found';
+            };
+            cardFront.appendChild(img);
+
+            cardInner.appendChild(cardBack);
+            cardInner.appendChild(cardFront);
+            cardContainer.appendChild(cardInner);
+            cardDisplayArea.appendChild(cardContainer);
+
+            setTimeout(() => { cardContainer.classList.add('flipped'); }, 500 + index * 300);
+        }
+    </script>
+</body>
+</html>
