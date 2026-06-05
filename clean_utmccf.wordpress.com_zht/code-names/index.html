@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html lang="en" style="margin-top: 0px !important; scroll-padding-top: 0px !important;">
+<head><link href="/extra.css" rel="stylesheet"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>UTMCCF Code Name</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="style.css" rel="stylesheet"/>
+</head>
+<body style="margin-top: 0px !important;">
+<div class="container">
+<div id="config-panel">
+<div class="categories">
+<h3>選擇詞庫</h3>
+<div class="checkbox-grid" id="category-checkboxes">
+<label><input type="checkbox" value="MCCF"/> MCCF</label>
+<label><input type="checkbox" value="圣经"/> 聖經</label>
+<label><input type="checkbox" value="学生"/> 學生</label>
+<label><input type="checkbox" value="蔬菜水果"/> 蔬菜水果</label>
+<label><input type="checkbox" value="约翰福音"/> 約翰福音</label>
+<label><input type="checkbox" value="数学"/> 數學</label>
+<label><input type="checkbox" value="现代用语"/> 現代用語</label>
+<label><input type="checkbox" value="属灵黑话"/> 屬靈黑話</label>
+<label><input type="checkbox" value="哲学"/> 哲學</label>
+<label><input type="checkbox" value="诗歌歌单"/> 詩歌歌單</label>
+</div>
+</div>
+<p>自定義詞語（每行一個）：</p>
+<textarea id="word-list" placeholder="在这里输入自定义的词语..."></textarea>
+<div class="controls">
+<div class="size-selector">
+<label for="board-rows">行數:</label>
+<input id="board-rows" max="8" min="3" type="number" value="5"/>
+<label for="board-cols">列數:</label>
+<input id="board-cols" max="8" min="3" type="number" value="5"/>
+</div>
+<button id="generate-btn">生成遊戲棋盤</button>
+</div>
+</div>
+<!-- Spymaster QR Code Link -->
+<div class="collapsible-card" id="spymaster-link" style="display: none;">
+<div class="collapsible-header">
+<h2>請雙方選出SpyMaster，由SpyMaster掃描二維碼</h2>
+<button id="toggle-spymaster-btn">顯示 ▼</button>
+</div>
+<div class="collapsible-content" id="spymaster-content">
+<p>使用手機掃描下方二維碼查看SpyMaster密鑰。</p>
+<canvas id="qr-code"></canvas>
+<br/>
+<a href="#" id="spymaster-url" target="_blank">或點擊此處打開SpyMaster視圖</a>
+</div>
+</div>
+<div class="status-bar" id="game-status-bar" style="display: none;">
+<div class="score-display red-text" id="red-score">紅隊剩餘: <span>0</span></div>
+<div class="turn-controls">
+<div id="turn-active-area" style="display: none;">
+<h2 id="turn-indicator">等待開始...</h2>
+<button id="end-turn-btn">結束回合 (End Turn)</button>
+</div>
+<button class="primary-btn" id="start-game-btn">開始遊戲</button>
+</div>
+<div class="score-display blue-text" id="blue-score">藍隊剩餘: <span>0</span></div>
+</div>
+<!-- The 5x5 Grid Board -->
+<div class="board" id="game-board"></div>
+</div>
+<!-- QR Code Generator Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+<script src="app.js"></script>
+<!-- Custom Game Over Modal -->
+<div class="modal-overlay" id="game-over-modal" style="display: none;">
+<div class="modal-content">
+<h2 id="modal-message">遊戲結束</h2>
+<button id="modal-close-btn">關閉</button>
+<button id="modal-restart-btn">重新開始</button>
+</div>
+</div>
+</body>
+</html>

@@ -613,6 +613,8 @@ WARNING: This page 『 utmccf.wordpress.com/2012/05/25/查经bible-study-太matt
 WARNING: This page 『 utmccf.wordpress.com/fellowship 』 contains these absolute url links:
 	- 【 https://zht.utmccf.com 】	fix it by changing it to:【  】
 
+WARNING: downloaded file [clean_utmccf.wordpress.com/code-names/spymaster.js] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/code-names/app.js] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: This page 『 utmccf.wordpress.com/free-campus-tour 』 contains these absolute url links:
 	- 【 https://zht.utmccf.com 】	fix it by changing it to:【  】
 
@@ -879,7 +881,7 @@ There is NO WARRANTY, to the extent permitted by law.
 Originally written by Hrvoje Niksic <hniksic@xemacs.org>.
 Please send bug reports and questions to <bug-wget@gnu.org>.
 
-DONE: website published with 285 warnings and 0 errors. Last updated 2026-06-04 22:32:34 EDT
+DONE: website published with 287 warnings and 0 errors. Last updated 2026-06-05 19:19:07 EDT
 
 
 * Website is published with warnings/errors. Please check all affected pages. If nothing is broken, ignore the warnings/errors
