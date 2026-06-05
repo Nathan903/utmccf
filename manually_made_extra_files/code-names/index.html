@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTMCCF Code Name</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        
+        <div id="config-panel">
+            <div class="categories">
+                <h3>选择词库</h3>
+                <div id="category-checkboxes" class="checkbox-grid">
+                    <label><input type="checkbox" value="MCCF"> MCCF</label>
+                    <label><input type="checkbox" value="圣经"> 圣经</label>
+                    <label><input type="checkbox" value="学生"> 学生</label>
+                    <label><input type="checkbox" value="蔬菜水果"> 蔬菜水果</label>
+                    <label><input type="checkbox" value="约翰福音"> 约翰福音</label>
+                    <label><input type="checkbox" value="数学"> 数学</label>
+                    <label><input type="checkbox" value="现代用语"> 现代用语</label>
+                    <label><input type="checkbox" value="属灵黑话"> 属灵黑话</label>
+                    <label><input type="checkbox" value="哲学"> 哲学</label>
+                    <label><input type="checkbox" value="诗歌歌单"> 诗歌歌单</label>
+                </div>
+            </div>
+
+            <p>自定义词语（每行一个）：</p>
+            <textarea id="word-list" placeholder="在这里输入自定义的词语..."></textarea>
+            
+            <div class="controls">
+                <div class="size-selector">
+                    <label for="board-rows">行数:</label>
+                    <input type="number" id="board-rows" value="5" min="3" max="8">
+                    <label for="board-cols">列数:</label>
+                    <input type="number" id="board-cols" value="5" min="3" max="8">
+                </div>
+                <button id="generate-btn">生成游戏棋盘</button>
+            </div>
+        </div>
+
+        <!-- Spymaster QR Code Link -->
+        <div id="spymaster-link" class="collapsible-card" style="display: none;">
+            <div class="collapsible-header">
+                <h2>请双方选出SpyMaster，由SpyMaster扫描二维码</h2>
+                <button id="toggle-spymaster-btn">显示 ▼</button>
+            </div>
+            <div id="spymaster-content" class="collapsible-content">
+                <p>使用手机扫描下方二维码查看SpyMaster密钥。</p>
+                <canvas id="qr-code"></canvas>
+                <br>
+                <a id="spymaster-url" href="#" target="_blank">或点击此处打开SpyMaster视图</a>
+            </div>
+        </div>
+
+        <div id="game-status-bar" class="status-bar" style="display: none;">
+            <div id="red-score" class="score-display red-text">红队剩余: <span>0</span></div>
+            
+            <div class="turn-controls">
+                <div id="turn-active-area" style="display: none;">
+                    <h2 id="turn-indicator">等待开始...</h2>
+                    <button id="end-turn-btn">结束回合 (End Turn)</button>
+                </div>
+                <button id="start-game-btn" class="primary-btn">开始游戏</button>
+            </div>
+
+            <div id="blue-score" class="score-display blue-text">蓝队剩余: <span>0</span></div>
+        </div>
+
+        <!-- The 5x5 Grid Board -->
+        <div id="game-board" class="board"></div>
+    </div>
+
+    <!-- QR Code Generator Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <script src="app.js"></script>
+
+    <!-- Custom Game Over Modal -->
+    <div id="game-over-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2 id="modal-message">游戏结束</h2>
+            <button id="modal-close-btn">关闭</button>
+            <button id="modal-restart-btn">重新开始</button>
+        </div>
+    </div>
+</body>
+</html>
