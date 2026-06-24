@@ -1,0 +1,1913 @@
+<!DOCTYPE html>
+<html style="margin-top: 0px !important; scroll-padding-top: 0px !important;"  lang="en">
+
+<head><link rel="stylesheet" href="/extra.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-en="UTMCCF Walkathon: Toronto → Niagara Falls" data-zh="徒步去瀑布：多大团契130km筹款挑战">UTMCCF Walkathon: Toronto → Niagara Falls</title>
+  <!-- CSS Stylesheets -->
+  <style>
+/* Global Styles and Theme Variables */
+:root {
+  --primary-red: #D8111B;
+  --primary-dark: #a00d14;
+  --accent-dark: #d6f2ff;
+  --accent-darker: #a1dbff;
+  --text-main: #333333;
+  --text-muted: #666666;
+  --bg-light: #f5f7f9;
+  --bg-card: #ffffff;
+  --white: #ffffff;
+  --gray-light: #e0e0e0;
+  --gray-bg: #f9f9f9;
+  --border-radius: 12px;
+  --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --box-shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.15);
+  --transition-speed: 0.3s;
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--text-main);
+  background-color: var(--bg-light);
+  line-height: 1.6;
+  padding-top: 70px;
+  /* Space for sticky header */
+}
+
+/* Bilingual content switching */
+[lang="en"] :lang(zh) {
+  display: none !important;
+}
+
+[lang="zh"] :lang(en) {
+  display: none !important;
+}
+
+/* Header & Sticky Nav */
+header.main-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background-color: var(--primary-red);
+  color: var(--white);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5%;
+  overflow: hidden;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo-logo {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  margin-top: -10px;
+  margin-bottom: -10px;
+  margin-left: 0;
+  display: inline !important;
+  fill: var(--white);
+  flex-shrink: 0;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  letter-spacing: normal;
+  color: var(--white);
+  line-height: 1.25;
+}
+
+.logo-title {
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  line-height: 1.3;
+}
+
+.logo-subtitle {
+  font-size: 14px;
+  line-height: 1;
+  opacity: 1;
+}
+
+.nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+
+.nav-links a {
+  color: var(--white);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  opacity: 0.85;
+  transition: opacity var(--transition-speed);
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  opacity: 1;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+/* Lang Toggle Button */
+.lang-toggle {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--white);
+  color: var(--white);
+  padding: 6px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all var(--transition-speed);
+}
+
+.lang-toggle:hover {
+  background-color: var(--white);
+  color: var(--primary-red);
+}
+
+/* Footer style */
+footer.main-footer {
+  background-color: var(--gray-bg);
+  color: var(--text-muted);
+  text-align: center;
+  padding: 15px 10px;
+  margin-top: 40px;
+  font-size: 0.8rem;
+  border-top: 1px solid var(--gray-light);
+}
+
+footer.main-footer p {
+  margin: 5px 0;
+}
+
+footer.main-footer a {
+  color: var(--white);
+  text-decoration: none;
+}
+
+footer.main-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Common Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity var(--transition-speed) ease;
+}
+
+.modal-overlay.active {
+  display: flex;
+  opacity: 1;
+}
+
+.modal-content {
+  background-color: var(--bg-card);
+  width: 90%;
+  max-width: 600px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow-y: auto;
+  max-height: 90vh;
+  transform: translateY(-50px);
+  transition: transform var(--transition-speed) ease;
+}
+
+.modal-overlay.active .modal-content {
+  transform: translateY(0);
+}
+
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  line-height: 1;
+  transition: color var(--transition-speed);
+}
+
+.modal-close:hover {
+  color: var(--primary-red);
+}
+
+/* Utility buttons */
+.btn {
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-speed);
+  border: none;
+}
+
+.btn-primary {
+  background-color: var(--primary-red);
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(204, 0, 0, 0.3);
+}
+
+.btn-secondary {
+  background-color: var(--white);
+  color: var(--primary-red);
+  border: 2px solid var(--primary-red);
+}
+
+.btn-secondary:hover {
+  background-color: var(--primary-red);
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(204, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  header.main-header {
+    padding: 0 10px;
+    height: 60px;
+  }
+
+  .logo-container {
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .logo-logo {
+    width: 80px;
+    height: 80px;
+    margin-top: -10px;
+    margin-bottom: -10px;
+  }
+
+  .logo-text {
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  .logo-title {
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: normal;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .logo-subtitle {
+    font-size: 9px;
+    line-height: 1.1;
+    opacity: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  body {
+    padding-top: 60px;
+  }
+}
+</style>
+  <style>
+/* index.html Specific Styles (99pledges inspired) */
+
+.hero-banner {
+  background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent-darker) 100%);
+  color: var(--text-main);
+  padding: 60px 5% 100px 5%;
+  position: relative;
+}
+
+.hero-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hero-title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+/* Overlapping container */
+.main-container {
+  max-width: 1200px;
+  margin: -60px auto 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 30px;
+}
+
+/* Card base */
+.content-card {
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 35px;
+  margin-bottom: 30px;
+}
+
+/* Left Column: Event details */
+.poster-container {
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto 30px auto;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+  aspect-ratio: 1;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* SVG or Placeholder Walk for Worship 2025 Orange square as poster */
+.walk-poster-fallback {
+  width: 100%;
+  height: 100%;
+  background-color: #222222;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--white);
+  padding: 40px;
+  text-align: center;
+  font-family: var(--font-sans);
+}
+
+.poster-orange-diamond {
+  background-color: #ff8533;
+  width: 75%;
+  height: 75%;
+  transform: rotate(45deg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+.poster-text-container {
+  transform: rotate(-45deg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.poster-txt-small {
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.poster-txt-large {
+  font-size: 2.2rem;
+  font-weight: 800;
+  font-style: italic;
+  line-height: 1.1;
+  margin: 5px 0;
+}
+
+.poster-txt-year {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.description-text {
+  font-size: 1.05rem;
+  color: var(--text-main);
+  margin-bottom: 25px;
+}
+
+.description-text p {
+  margin-bottom: 15px;
+}
+
+.charity-breakdown {
+  background-color: var(--bg-light);
+  border-left: 4px solid var(--primary-red);
+  padding: 15px 20px;
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  margin-bottom: 30px;
+}
+
+.charity-breakdown h4 {
+  margin-bottom: 10px;
+  color: var(--primary-dark);
+}
+
+.charity-breakdown ul {
+  padding-left: 20px;
+}
+
+.charity-breakdown li {
+  margin-bottom: 5px;
+}
+
+.btn-donate-huge {
+  display: block;
+  width: 100%;
+  padding: 18px;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Right Column: Progress Dashboard Card */
+.progress-card {
+  position: sticky;
+  top: 90px;
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow-hover);
+  border-top: 6px solid var(--accent-dark);
+  padding: 30px;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.progress-header-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.progress-label {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.progress-value {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.progress-value.raised {
+  color: var(--text-main);
+}
+
+/* Custom Progress Bar styles */
+.progress-bar-container {
+  background-color: #eef2f5;
+  border-radius: 20px;
+  height: 20px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 15px;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+}
+
+.progress-bar-fill {
+  background: linear-gradient(90deg, #ffb300 0%, #ff8533 100%);
+  height: 100%;
+  width: 0%; /* Dynamic */
+  border-radius: 20px;
+  transition: width 1.5s cubic-bezier(0.1, 0.8, 0.2, 1);
+  position: relative;
+}
+
+.progress-bar-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.3) 50%,
+    rgba(255,255,255,0) 100__
+  );
+  animation: shine 2s infinite;
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.progress-subtext {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+  font-weight: 500;
+}
+
+/* Top donations style inside progress card */
+.top-donations-section {
+  border-top: 1px solid var(--gray-light);
+  padding-top: 25px;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0;
+}
+
+.donations-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.donations-sort-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.sort-btn {
+  background: var(--bg-light);
+  border: 1px solid var(--gray-light);
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all var(--transition-speed);
+}
+
+.sort-btn:hover {
+  background: #e0e0e0;
+}
+
+.sort-btn.active {
+  background: var(--text-main);
+  color: var(--white);
+  border-color: var(--text-main);
+}
+
+.donation-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.donation-item:last-child {
+  border-bottom: none;
+}
+
+.donation-amount {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-main);
+  min-width: 80px;
+}
+
+.donation-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.donation-donor {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.donation-message {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-style: italic;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.donation-message.expanded {
+  -webkit-line-clamp: unset;
+}
+
+.donation-expand-btn {
+  font-size: 0.75rem;
+  color: var(--primary-dark);
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: none;
+  text-decoration: underline;
+  text-align: left;
+  font-weight: 600;
+}
+
+/* Donation Modal specific card styling */
+.modal-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 25px;
+}
+
+.modal-title-bilingual {
+  padding: 20px 25px 5px 25px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.modal-option-card {
+  background-color: var(--bg-light);
+  border: 2px solid var(--gray-light);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  cursor: pointer;
+  transition: all var(--transition-speed);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--text-main);
+}
+
+.modal-option-card:hover {
+  border-color: var(--primary-red);
+  background-color: rgba(204, 0, 0, 0.02);
+  transform: translateY(-2px);
+  box-shadow: var(--box-shadow);
+}
+
+.modal-option-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--primary-red);
+}
+
+.modal-option-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.modal-option-meta {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  align-self: flex-end;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 992px) {
+  .main-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+  }
+  .left-column {
+    display: contents;
+  }
+  .mobile-order-1 { order: 1; margin-bottom: 15px !important; }
+  .mobile-order-2 { order: 2; margin-bottom: 25px; }
+  .mobile-order-3 { order: 3; }
+
+  .progress-card {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 1.8rem;
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  .hero-banner {
+    padding: 30px 15px 40px 15px;
+  }
+  .main-container {
+    margin-top: -10px;
+    padding: 0 10px;
+  }
+  .content-card {
+    padding: 20px;
+  }
+  .poster-container {
+    margin-bottom: 20px;
+  }
+}
+
+</style>
+
+  <!-- Preload Critical Assets -->
+  <link rel="preload" href="/logo.svg" as="image">
+  <link rel="preload" href="group.webp" as="image">
+  <link rel="preconnect" href="https://docs.google.com">
+  <link rel="preconnect" href="https://upload.wikimedia.org">
+<script>if(!sessionStorage.getItem('en_html_visited')) { localStorage.setItem('walkathon-lang', 'en'); sessionStorage.setItem('en_html_visited', 'true'); }</script>
+</head>
+
+<body style="margin-top: 0px !important;" >
+
+  <!-- Sticky Navigation Header -->
+  <header class="main-header">
+    <a href="/" class="logo-container" style="text-decoration: none; color: inherit;">
+      <img src="/logo.svg" alt="UTMCCF Logo" class="logo-logo">
+      <div class="logo-text">
+        <span class="logo-title">多伦多大学国语基督徒团契</span>
+        <span class="logo-subtitle" data-en="University of Toronto Mandarin Chinese Christian Fellowship"
+          data-zh="University of Toronto Mandarin Chinese Christian Fellowship">University of Toronto Mandarin Chinese
+          Christian Fellowship</span>
+      </div>
+    </a>
+
+    <div class="nav-controls">
+      <button class="lang-toggle" id="lang-toggle-btn">EN</button>
+    </div>
+  </header>
+
+  <!-- Hero Section (Inspired by 99pledges Header) -->
+  <section class="hero-banner">
+    <div class="hero-content">
+      <h1 class="hero-title" data-en="UTMCCF Walkathon: Toronto → Niagara Falls" data-zh="徒步去瀑布：多大团契130km筹款挑战">
+        UTMCCF Walkathon: Toronto → Niagara Falls</h1>
+    </div>
+  </section>
+
+  <!-- Main Content Area -->
+  <main class="main-container">
+
+    <!-- Left Column: Details, description & action -->
+    <div class="left-column">
+
+      <!-- Group Image -->
+      <img src="group.webp" alt="Team Group" class="mobile-order-1"
+        style="width: 100%; border-radius: var(--border-radius); margin-bottom: 30px; display: block; box-shadow: var(--box-shadow);">
+
+      <div class="content-card mobile-order-3">
+        <!-- Bilingual Detailed Description -->
+        <article class="description-text">
+          <div lang="zh">
+            <h3 style="margin-bottom: 10px; color: var(--primary-dark);">我们是谁？</h3>
+            <p>
+              多伦多大学基督徒团契每年在校园内查经、敬拜、小组和各样活动，帮助30~40位留学生接触福音，加深信仰，找到属灵的家，建立真挚的友谊。为了支持团契在新学年能更好地开展校园福音事工、服务更多同学，我们希望用汗水与脚步（<del>痛苦与整活</del>）来为团契筹集资金。
+            </p>
+
+            <h3 style="margin-top: 25px; margin-bottom: 10px; color: var(--primary-dark);">我们要做什么？</h3>
+            <p>本周二（6月16日），团契11位同学将开始一项极限挑战：从多伦多徒步四天三夜130公里，到尼亚加拉大瀑布（Niagara Falls）！</p>
+
+            
+            
+            <h3 style="margin-top: 25px; margin-bottom: 10px; color: var(--primary-dark);">请求支持</h3>
+            <p>我们希望以每公里捐款$3的方式，邀请大家来认领我们的里程！我们将自费承担所有个人开支（食宿、止痛药、水泡贴等），确保您的每一分捐款100%用于您所支持的项目。本次筹款共有两个去向供您选择：</p>
+            
+          </div>
+          <div lang="en">
+            <h3 style="margin-bottom: 10px; color: var(--primary-dark);">Who are we?</h3>
+            <p>Every year, the University of Toronto Mandarin Chinese Christian Fellowship runs Bible studies, worship,
+              small groups, and various activities on campus to help 30~40 international students encounter the gospel,
+              deepen their faith, find a spiritual home, and build genuine friendships. To support the fellowship in
+              better serving more students in the new school year, we hope to raise funds through our sweat and
+              footsteps (<del>pain and memes</del>).</p>
+
+            <h3 style="margin-top: 25px; margin-bottom: 10px; color: var(--primary-dark);">What are we doing?</h3>
+            <p>This Tuesday (June 16), 11 students from the fellowship will embark on an extreme challenge: walking 130
+              kilometers over four days and three nights from Toronto to Niagara Falls!</p>
+
+            
+            
+            <h3 style="margin-top: 25px; margin-bottom: 10px; color: var(--primary-dark);">Request for Support</h3>
+            <p>We hope to invite everyone to sponsor our mileage with a donation of $3 per kilometer! We will bear all
+              personal expenses (food and accommodation, painkillers, blister patches, etc.) at our own expense,
+              ensuring that 100% of your donation will be directly used for the project you support. There are two
+              destinations for you to choose from:</p>
+            
+          </div>
+        </article>
+
+        
+        
+        <!-- Charity Goals breakdown -->
+        <div class="charity-breakdown" lang="zh">
+          <h4 style="margin-bottom: 10px; color: var(--primary-dark);">选项一：支持多大团契校园事工</h4>
+          <p style="margin-bottom: 5px; font-size: 0.95em;">您的捐款将支持团契的发展：</p>
+          <ul>
+            <li>20% 用于团契日常运营</li>
+            <li>10% 用于福音小分队运营</li>
+            <li>45% 支持多大团契辅导 Betty（CCEF校园宣教士）</li>
+            <li>25% 支持CCEF 2027校园精兵营以及补贴报名费</li>
+          </ul>
+          <p style="font-size: 0.95em; font-style: italic; font-weight: 600; margin-top: 15px;">*注：团契事工无法提供抵税收据。</p>
+          <h4 style="margin-top: 20px; margin-bottom: 10px; color: var(--primary-dark);">选项二：支持本地慈善机构 Yonge Street
+            Mission (YSM)</h4>
+          <p style="margin-bottom: 5px; font-size: 0.95em;">您给YSM的捐款将用于消除多伦多的长期贫困，为多伦多街头的流浪青年、弱势儿童和低收入家庭提供食物、医疗和就业支持等：
+          </p>
+          <ul>
+            <li>提供热餐、food bank、御寒衣物及紧急安置。</li>
+            <li>设立免费牙科诊所，并提供心理辅导和创伤/成瘾治疗。</li>
+            <li>提供免费托儿（帮助父母求职）、电脑技能培训、就业对接，帮助他们自立更生。</li>
+          </ul>
+        </div>
+        
+        
+        
+        <div class="charity-breakdown" lang="en">
+          <h4 style="margin-bottom: 10px; color: var(--primary-dark);">Option 1: Support UTMCCF & CCEF Campus Ministry
+          </h4>
+          <p style="margin-bottom: 5px; font-size: 0.95em;">Your donation will support the fellowship's development:</p>
+          <ul>
+            <li>20% for UTMCCF daily operations</li>
+            <li>10% for UTMCCF gospel outreach</li>
+            <li>45% to support our counselor Betty (CCEF missionary)</li>
+            <li>25% to support CCEF 2027 CB Camp and subsidize registration fees</li>
+          </ul>
+          <p style="font-size: 0.95em; font-style: italic; font-weight: 600; margin-top: 15px;">*Note: We are unable to
+            provide donation tax receipts.</p>
+
+          <h4 style="margin-top: 20px; margin-bottom: 10px; color: var(--primary-dark);">Option 2: Support Local Charity
+            - Yonge Street Mission (YSM)</h4>
+          <p style="margin-bottom: 5px; font-size: 0.95em;">Your donation to YSM will be used to end chronic poverty in
+            Toronto, providing food, healthcare, and employment support for homeless youth, vulnerable children, and
+            low-income families:</p>
+          <ul>
+            <li>Provide hot meals, food banks, winter clothing, and emergency shelter.</li>
+            <li>Operate free dental clinics, and provide counseling and trauma/addiction treatment.</li>
+            <li>Provide free childcare (helping parents job search), computer skills training, and employment matching
+              to help them become self-reliant.</li>
+          </ul>
+        </div>
+        
+
+        <article class="description-text" style="margin-top: 25px;">
+          <div lang="zh">
+            <p>除了金钱上的支持，我们也非常需要大家的祷告：</p>
+          </div>
+          <div lang="en">
+            <p>In addition to financial support, we also greatly need your prayers:</p>
+          </div>
+        </article>
+
+        <div class="charity-breakdown" style="border-left-color: var(--accent-dark);" lang="zh">
+          <ul>
+            <li>求神带领整个行程中的天气、住宿和交通安排</li>
+            <li>求神保守我们的身体与四天三夜徒步的平安，并赐给我们耐力与坚持</li>
+            <li>更求神借此机会让更多人认识团契的异象，愿意支持校园福音事工</li>
+          </ul>
+        </div>
+        <div class="charity-breakdown" style="border-left-color: var(--accent-dark);" lang="en">
+          <ul>
+            <li>Pray for God to guide the weather, accommodation, and transportation arrangements</li>
+            <li>Pray for God to protect our bodies and grant us peace, endurance, and perseverance</li>
+            <li>Pray that through this, more people will come to know the fellowship's vision and support campus gospel
+              ministries</li>
+          </ul>
+        </div>
+
+        <article class="description-text">
+          <div lang="zh">
+            <p>无论是奉献还是代祷，都是对我们极大的支持。谢谢大家！</p>
+            
+          </div>
+          <div lang="en">
+            <p>Whether through donations or prayer, both are a tremendous support to us. Thank you!</p>
+            
+          </div>
+        </article>
+
+        <!-- Livestream Schedule - Less Prominent -->
+        <div
+          style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e2e8f0; text-align: center; font-size: 0.9rem;">
+          <h4 data-en="Zoom Live Stream Schedule" data-zh="Zoom 实况直播时间"
+            style="color: var(--primary-dark); margin-bottom: 12px; font-size: 1.05rem;">Zoom 实况直播时间</h4>
+          <ul style="list-style: none; padding: 0; line-height: 1.6; color: var(--text-main); margin-bottom: 15px;">
+            <li><strong data-en="6/16 (Tue)" data-zh="6/16 (周二)">6/16 (周二)</strong><span
+                data-en=": 10am (China 10pm) &amp; 12:30pm (China 12:30am)"
+                data-zh=": 早上10点 (国内晚上10点) &amp; 中午12:30 (国内凌晨12:30)">: 早上10点 (国内晚上10点) &amp; 中午12:30 (国内凌晨12:30)</span>
+            </li>
+            <li><strong data-en="6/17 (Wed)" data-zh="6/17 (周三)">6/17 (周三)</strong><span
+                data-en=": 12:30pm (China 12:30am) &amp; 9pm (China 9am)"
+                data-zh=": 中午12:30 (国内凌晨12:30) &amp; 晚上9点 (国内早上9点)">: 中午12:30 (国内凌晨12:30) &amp; 晚上9点 (国内早上9点)</span>
+            </li>
+            <li><strong data-en="6/18 (Thu)" data-zh="6/18 (周四)">6/18 (周四)</strong><span
+                data-en=": <del>10am (China 10pm)</del> (Cancelled) &amp; 12:30pm (China 12:30am)"
+                data-zh=": <del>早上10点 (国内晚上10点)</del> (取消) &amp; 中午12:30 (国内凌晨12:30)">: <del>早上10点 (国内晚上10点)</del> (取消) &amp; 中午12:30 (国内凌晨12:30)</span>
+            </li>
+            <li><strong data-en="6/19 (Fri)" data-zh="6/19 (周五)">6/19 (周五)</strong><span
+                data-en=": 10am (China 10pm) &amp; 12:30pm (China 12:30am) &amp; 6-7pm (China 6-7am)"
+                data-zh=": 早上10点 (国内晚上10点) &amp; 中午12:30 (国内凌晨12:30) &amp; 下午6-7点 (国内早上6-7点)">: 早上10点 (国内晚上10点) &amp; 中午12:30 (国内凌晨12:30) &amp; 下午6-7点 (国内早上6-7点)</span>
+            </li>
+          </ul>
+          <a href="https://utoronto.zoom.us/my/nathanh" target="_blank"
+            style="color: #2D8CFF; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 6px;"
+            data-en="Join Zoom Live Stream &rarr;" data-zh="加入 Zoom 直播 &rarr;">
+            加入 Zoom 直播 &rarr;
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Journal / Google Doc Embed Section -->
+      <div class="journal-section mobile-order-3" style="margin-top: 40px; margin-bottom: 20px; width: 100%;">
+        <h3 style="margin-bottom: 15px; color: var(--primary-dark); text-align: center;" data-en="Our Journey" data-zh="徒步日记">徒步日记</h3>
+        <div style="border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--box-shadow); background: #fff9e8; width: 100%;">
+          <iframe src="https://docs.google.com/document/d/e/2PACX-1vQdiw0N64tAys3vkWMttk-gE4YdgfqyrYK0aQwuANmXLfph1k3iBLAHPKsQ9IbZkK1_jJbrsPE09Nvv/pub?embedded=true" style="width: 100%; height: 800px; border: none; background: transparent;"></iframe>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column: Overlapping Dashboard (99pledges style) -->
+    <div class="right-column mobile-order-2">
+      <div class="progress-card">
+
+        <div class="progress-header">
+          <div class="progress-header-item">
+            <span class="progress-label" data-en="Raised" data-zh="已筹集">已筹集</span>
+            <span class="progress-value raised" id="progress-raised">$0</span>
+          </div>
+          <div class="progress-header-item" style="text-align: right;">
+          </div>
+        </div>
+
+        <!-- Combined Progress Bar -->
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="main-progress-bar-fill">
+            <div class="progress-bar-glow"></div>
+          </div>
+        </div>
+
+        <div class="progress-subtext">
+          <span id="progress-percent">0%</span>
+          <span data-en="Total Goal: 130km &times; 11 people &times; $3/km = $4290"
+            data-zh="筹款总目标: 130km &times; 11人 &times; $3/km = $4290">筹款总目标: 130km &times; 11人 &times; $3/km =
+            $4290</span>
+        </div>
+
+        <!-- Prominent Call to Action Button -->
+        <button class="btn btn-primary btn-donate-huge" id="donate-now-btn" style="margin-top: 25px;"
+          data-en="Donate Now" data-zh="立即捐款">立即捐款</button>
+
+        <!-- High-Fidelity Top Donations List (Matches Layout in image 1) -->
+        <div class="top-donations-section">
+          <div class="donations-header">
+            <h3 class="section-title">
+              <span data-en="Live Donations" data-zh="实时捐款榜">实时捐款榜</span>
+            </h3>
+            <div class="donations-sort-controls">
+              <button class="sort-btn active" id="sort-latest" data-en="Latest" data-zh="最新">最新</button>
+              <button class="sort-btn" id="sort-amount" data-en="Amount" data-zh="金额">金额</button>
+            </div>
+          </div>
+          <div class="donations-list-container" id="donations-list-container">
+            <!-- Dynamically loaded via public Google Sheets backend by js/data.js -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+  </main>
+
+  <!-- Donation Destination Modal (Popup triggered on clicking "Donate Now") -->
+  <div class="modal-overlay" id="donation-dest-modal">
+    <div class="modal-content">
+      <button class="modal-close">&times;</button>
+      <h3 class="modal-title-bilingual" data-en="Which would you like to support?" data-zh="您希望支持哪项事工？">您希望支持哪项事工？</h3>
+
+      <div class="modal-choices">
+        <!-- Option 1: UTMCCF Student Fellowship Support -->
+        <a href="donate.html" class="modal-option-card">
+          <div class="modal-option-title" data-en="Support UTMCCF & CCEF (Campus Gospel Ministry)"
+            data-zh="支持 UTMCCF & CCEF (校园福音事工)">支持 UTMCCF & CCEF (校园福音事工)</div>
+          <div class="modal-option-desc"
+            data-en="Sponsor our kilometers. Funds will be used for fellowship daily operations, gospel outreach teams, counselor salaries, and camp subsidies. (*No donation receipt can be provided)"
+            data-zh="认领徒步里程。资金用于团契日常运作、福音小分队、辅导薪酬及营会报名补贴。(*无法提供抵税收据)">
+            认领徒步里程。资金用于团契日常运作、福音小分队、辅导薪酬及营会报名补贴。(*无法提供抵税收据)
+          </div>
+          <span class="modal-option-meta" data-en="Enter our fellowship's fundraising page &rarr;"
+            data-zh="进入团契专属筹款页 &rarr;">进入团契专属筹款页 &rarr;</span>
+        </a>
+
+        <!-- Option 2: Yonge Street Mission -->
+        <a href="https://www.ysm.ca/donate/" target="_blank" class="modal-option-card">
+          <div class="modal-option-title" data-en="Support Yonge Street Mission (Local Poverty & Relief)"
+            data-zh="支持 Yonge Street Mission (本地扶贫与救助)">支持 Yonge Street Mission (本地扶贫与救助)</div>
+          <div class="modal-option-desc"
+            data-en="Donate to the local Toronto community to provide food, healthcare, and employment support for homeless youth and low-income families."
+            data-zh="捐给多伦多本地社区，为多伦多流浪青年与低收入家庭提供食物、医疗和就业支持。">
+            捐给多伦多本地社区，为多伦多流浪青年与低收入家庭提供食物、医疗和就业支持。
+          </div>
+          <span class="modal-option-meta" data-en="Go to third-party platform to donate &rarr;"
+            data-zh="前往第三方平台捐款 &rarr;">前往第三方平台捐款 &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shared Footer -->
+  <footer class="main-footer">
+    <p data-en="For questions, contact info@utmccf.com" data-zh="如有任何疑问，请联系 info@utmccf.com">如有任何疑问，请联系 info@utmccf.com
+    </p>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+/* main.js - Shared Language Toggle and Modal Logic */
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Initialize Language
+  initLanguage();
+
+  // Initialize Modals
+  initModals();
+});
+
+/* ==========================================================================
+   1. Bilingual Language Switcher Logic
+   ========================================================================== */
+function initLanguage() {
+  const langToggleBtn = document.getElementById('lang-toggle-btn');
+  if (!langToggleBtn) return;
+
+  // Check URL parameters for language override
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlLang = urlParams.get('lang');
+
+  let currentLang;
+  if (urlLang === 'en' || urlLang === 'zh') {
+    currentLang = urlLang;
+  } else {
+    // Retrieve saved language, or auto-detect based on device language
+    currentLang = localStorage.getItem('walkathon-lang');
+    if (!currentLang) {
+      const browserLang = navigator.language || navigator.userLanguage || '';
+      if (browserLang.toLowerCase().startsWith('en')) {
+        currentLang = 'en';
+      } else {
+        currentLang = 'zh'; // Default to zh given UTMCCF audience
+      }
+    }
+  }
+
+  // Apply initial language
+  applyLanguage(currentLang);
+
+  // Toggle on click
+  langToggleBtn.addEventListener('click', () => {
+    currentLang = currentLang === 'zh' ? 'en' : 'zh';
+    applyLanguage(currentLang);
+  });
+}
+
+function applyLanguage(lang) {
+  document.documentElement.setAttribute('lang', lang);
+  localStorage.setItem('walkathon-lang', lang);
+
+  // Translate all elements with data-en and data-zh
+  const elements = document.querySelectorAll('[data-en][data-zh]');
+  elements.forEach(el => {
+    const text = el.getAttribute(`data-${lang}`);
+    // If element is an input, we might want to translate placeholder instead of innerText
+    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+      el.placeholder = text;
+    } else {
+      el.innerHTML = text;
+    }
+  });
+
+  // Handle placeholders explicitly if needed
+  const placeholders = document.querySelectorAll('[data-en-placeholder][data-zh-placeholder]');
+  placeholders.forEach(el => {
+    el.placeholder = el.getAttribute(`data-${lang}-placeholder`);
+  });
+
+  // Update language toggle button text
+  const toggleBtn = document.getElementById('lang-toggle-btn');
+  if (toggleBtn) {
+    toggleBtn.textContent = lang === 'zh' ? 'EN' : '中文';
+  }
+}
+
+/* ==========================================================================
+   2. Modal Dialog Managers
+   ========================================================================== */
+function initModals() {
+  // --- General Modal Overlay Close Setup ---
+  const overlays = document.querySelectorAll('.modal-overlay');
+  overlays.forEach(overlay => {
+    overlay.addEventListener('click', (e) => {
+      // Close only if clicked on the background overlay itself
+      if (e.target === overlay) {
+        closeModal(overlay);
+      }
+    });
+  });
+
+  const closeBtns = document.querySelectorAll('.modal-close');
+  closeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const modal = btn.closest('.modal-overlay');
+      if (modal) closeModal(modal);
+    });
+  });
+
+  // --- Page 1: Main Dashboard Donation Destination Modal ---
+  const donateNowBtn = document.getElementById('donate-now-btn');
+  const indexModal = document.getElementById('donation-dest-modal');
+
+  if (donateNowBtn) {
+    donateNowBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      // Only open the modal if we are on the 2026 page or en.html
+      if (indexModal && (window.location.href.includes('26') || window.location.href.includes('en.html'))) {
+        openModal(indexModal);
+      } else {
+        window.location.href = 'donate.html';
+      }
+    });
+  }
+
+  // --- Page 2: Gamified Page (e-Transfer or Credit Card Modal) ---
+  const gamifiedModal = document.getElementById('donation-method-modal');
+  const etransferDetails = document.getElementById('etransfer-details');
+  const ccefCreditCardBtn = document.getElementById('ccef-creditcard-btn');
+
+  // Expose rebinding helper globally so data.js can call it after drawing dynamic cards
+  window.rebindTierClickEvents = function () {
+    const activeTiers = document.querySelectorAll('.tier-card');
+    if (gamifiedModal) {
+      activeTiers.forEach(card => {
+        // Prevent duplicate listener attachments by wiping old first if needed (or just assigning inline listener)
+        card.onclick = (e) => {
+          e.preventDefault();
+          if (etransferDetails) {
+            etransferDetails.classList.remove('active');
+          }
+          openModal(gamifiedModal);
+        };
+      });
+    }
+  };
+
+  if (gamifiedModal) {
+    // Run once initially for any cards already present
+    window.rebindTierClickEvents();
+
+    // Option 1: Credit Card direct navigation (Reads from dynamic event configuration, falls back if not ready)
+    if (ccefCreditCardBtn) {
+      ccefCreditCardBtn.onclick = () => {
+        const destUrl = (window.EVENT_CONFIG && window.EVENT_CONFIG.etransfer)
+          ? window.EVENT_CONFIG.etransfer.creditCardUrl
+          : 'https://www.ccef-oc.org/%E5%A5%89%E7%8C%AE-%E7%BD%91%E4%B8%8A%E5%A5%89%E7%8C%AE';
+        window.open(destUrl, '_blank');
+        closeModal(gamifiedModal);
+      };
+    }
+
+    // Option 2: Toggle e-Transfer Instructions
+    const etransferBtn = document.getElementById('etransfer-btn');
+    if (etransferBtn && etransferDetails) {
+      etransferBtn.addEventListener('click', () => {
+        etransferDetails.classList.add('active');
+        // Scroll slightly to make sure instructions are visible on small devices
+        setTimeout(() => {
+          etransferDetails.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+      });
+    }
+
+    // Clipboard Copy Action
+    const copyEmailBtn = document.getElementById('copy-email-btn');
+    if (copyEmailBtn) {
+      copyEmailBtn.addEventListener('click', () => {
+        const emailText = document.getElementById('etransfer-email').textContent;
+        navigator.clipboard.writeText(emailText.trim()).then(() => {
+          const originalText = copyEmailBtn.textContent;
+          const currentLang = localStorage.getItem('walkathon-lang') || 'zh';
+
+          copyEmailBtn.textContent = currentLang === 'zh' ? '已复制!' : 'Copied!';
+          copyEmailBtn.style.backgroundColor = '#48bb78';
+          copyEmailBtn.style.color = '#ffffff';
+
+          setTimeout(() => {
+            copyEmailBtn.textContent = originalText;
+            copyEmailBtn.style.backgroundColor = '';
+            copyEmailBtn.style.color = '';
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy: ', err);
+        });
+      });
+    }
+  }
+}
+
+function openModal(modal) {
+  modal.style.display = 'flex';
+  // Allow browser to render display:flex first before adding class for transition
+  setTimeout(() => {
+    modal.classList.add('active');
+  }, 10);
+  document.body.style.overflow = 'hidden'; // Lock background scrolling
+}
+
+function closeModal(modal) {
+  modal.classList.remove('active');
+  setTimeout(() => {
+    modal.style.display = 'none';
+  }, 300); // Wait for transition to complete
+  document.body.style.overflow = ''; // Restore scrolling
+}
+
+</script>
+  <script>
+/* data.js - Config-Driven Google Sheets CSV Fetching and Progress Calculation */
+
+// Global config store populated natively
+const EVENT_CONFIG = {
+  "spreadsheetCsvUrl": "https://docs.google.com/spreadsheets/d/1KsAqvjxcCI-sGY9vpFceqcmRRg8vZkMOoGhIzYRVIsI/export?format=csv",
+  "totalGoal": 4290,
+  "individualGoal": 130,
+  "contactEmail": "info@utmccf.com",
+  "contactPhone": "416-523-4484",
+  "contactName": "Rosa",
+  "scottMissionGoFundMeUrl": "https://www.gofundme.com",
+  "instagramLiveUrl": "https://www.instagram.com/uoft_mccf/",
+  "etransfer": {
+    "email": "info@utmccf.com",
+    "creditCardUrl": "https://www.ccef-oc.org/%E5%A5%89%E7%8C%AE-%E7%BD%91%E4%B8%8A%E5%A5%89%E7%8C%AE"
+  }
+};
+
+const TEAM_CONFIG = [
+  {
+    "id": "nathan",
+    "name": "Nathan",
+    "avatar": "N",
+    "mockRaised": 150,
+    "quote_en": "",
+    "quote_zh": ""
+  },
+  {
+    "id": "chris",
+    "name": "Chris",
+    "avatar": "C",
+    "mockRaised": 130,
+    "quote_en": "",
+    "quote_zh": ""
+  },
+  {
+    "id": "jonathan",
+    "name": "Jonathan",
+    "avatar": "J",
+    "mockRaised": 80,
+    "quote_en": "",
+    "quote_zh": ""
+  },
+  {
+    "id": "kevin",
+    "name": "Kevin",
+    "avatar": "K",
+    "mockRaised": 110,
+    "quote_en": "",
+    "quote_zh": ""
+  },
+  {
+    "id": "charlie",
+    "name": "Charlie",
+    "avatar": "C",
+    "mockRaised": 140,
+    "quote_en": "",
+    "quote_zh": ""
+  },
+  {
+    "id": "joy",
+    "name": "Joy",
+    "avatar": "J",
+    "mockRaised": 90,
+    "quote_en": "",
+    "quote_zh": ""
+  },
+  {
+    "id": "peter",
+    "name": "Peter",
+    "avatar": "P",
+    "mockRaised": 60,
+    "quote_en": "",
+    "quote_zh": ""
+  },
+  {
+    "id": "enrong",
+    "name": "Enrong",
+    "avatar": "E",
+    "mockRaised": 60,
+    "quote_en": "",
+    "quote_zh": ""
+  },
+  {
+    "id": "binbin",
+    "name": "Bin",
+    "avatar": "B",
+    "mockRaised": 0,
+    "quote_en": "",
+    "quote_zh": ""
+  },
+  {
+    "id": "eric",
+    "name": "Eric",
+    "avatar": "E",
+    "mockRaised": 0,
+    "quote_en": "",
+    "quote_zh": ""
+  },
+  {
+    "id": "ellie",
+    "name": "Ellie",
+    "avatar": "E",
+    "mockRaised": 0,
+    "quote_en": "",
+    "quote_zh": ""
+  }
+];
+
+const TIERS_CONFIG = [
+  {
+    "amount": 3,
+    "title_en": "Fund 1km",
+    "title_zh": "捐助1公里",
+    "desc_en": "",
+    "desc_zh": ""
+  },
+  {
+    "amount": 9,
+    "title_en": "Fund 3km",
+    "title_zh": "捐助3公里",
+    "desc_en": "First steps. Let's do this!",
+    "desc_zh": "千里之行，始于足下！"
+  },
+  {
+    "amount": 21,
+    "title_en": "Fund 7km",
+    "title_zh": "捐助7公里",
+    "desc_en": "10k steps reached!",
+    "desc_zh": "步数破万！"
+  },
+  {
+    "amount": 36,
+    "title_en": "Fund 12km",
+    "title_zh": "捐助12公里",
+    "desc_en": "A morning's trek",
+    "desc_zh": "一个早晨的路程"
+  },
+  {
+    "amount": 75,
+    "title_en": "Fund Day 1 (25km)",
+    "title_zh": "捐助Day 1 (25公里)",
+    "desc_en": "Toronto → Oakville. Fresh legs and big smiles... for now.",
+    "desc_zh": "梦想起航: Toronto → Oakville。大家有说有笑，甚至还能跑跳。"
+  },
+  {
+    "amount": 120,
+    "title_en": "Fund Day 2 (40km)",
+    "title_zh": "捐助Day 2 (40公里)",
+    "desc_en": "Oakville → Grimsby. The long haul. Willpower activated.",
+    "desc_zh": "魔鬼试炼: Oakville → Grimsby。灵魂在前面飞，肉体在后面追。"
+  },
+  {
+    "amount": 105,
+    "title_en": "Fund Day 3 (35km)",
+    "title_zh": "捐助Day 3 (35公里)",
+    "desc_en": "Grimsby → St. Catharines. Bring on the blisters.",
+    "desc_zh": "咬牙死磕: Grimsby → St. Catharines。见证水泡的诞生。"
+  },
+  {
+    "amount": 90,
+    "title_en": "Fund Day 4 (30km)",
+    "title_zh": "捐助Day 4 (30公里)",
+    "desc_en": "St. Catharines → Niagara Falls. The victory hobble to the finish line!",
+    "desc_zh": "胜利冲刺: St. Catharines → Niagara Falls。您的赞助把我们抬进终点。"
+  },
+  {
+    "amount": 390,
+    "title_en": "👑 Fund the entire trip (130km)",
+    "title_zh": "👑 承包全程 (130公里)",
+    "desc_en": "Receive an exclusive custom emoji from the team!",
+    "desc_zh": "获赠队员专属表情包！",
+    "pulse": true
+  },
+  {
+    "isCustom": true,
+    "title_en": "Custom Amount",
+    "title_zh": "自定义金额",
+    "desc_en": "Every dollar counts! Thank you for your support.",
+    "desc_zh": "每一分钱都将化为我们的动力！感谢支持。"
+  }
+];
+
+let LIVE_DONATIONS = [];
+let CURRENT_SORT = 'latest';
+let IS_DONATIONS_EXPANDED = false;
+
+document.addEventListener('DOMContentLoaded', () => {
+  initializeConfigDrivenApp();
+});
+
+async function initializeConfigDrivenApp() {
+  try {
+    // 1. Render dynamic config-driven components immediately
+    renderConfigDrivenUI();
+
+    // 2. Load dynamic donations data (Google CSV or Fallback Mock)
+    await loadWalkathonData();
+  } catch (error) {
+    console.error("Critical error loading configuration profiles:", error);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Render Config-Driven Layouts Dynamically
+   -------------------------------------------------------------------------- */
+function renderConfigDrivenUI() {
+  // Translate Contact Info in Footer
+  updateFooterContact();
+
+  // Populate dynamic elements based on Page context
+  const currentLang = localStorage.getItem('walkathon-lang') || 'zh';
+
+  // --- Page 1: Main Dashboard UI Components ---
+  // renderTopDonations is now called after fetching live data
+
+  // --- Page 2: Gamified Support Page UI Components ---
+  renderDonationTiers(currentLang);
+  renderTeamMembersGrid(currentLang);
+  updateEtransferGuidelines();
+  updateInstagramLiveButton();
+}
+
+function updateFooterContact() {
+  const footerContactParagraph = document.querySelector('footer.main-footer p[data-en*="Rosa"]');
+  if (footerContactParagraph && EVENT_CONFIG.contactEmail) {
+    const zhText = `如有任何疑问，请联系 <a href='mailto:${EVENT_CONFIG.contactEmail}'>${EVENT_CONFIG.contactEmail}</a> 或 ${EVENT_CONFIG.contactName} (${EVENT_CONFIG.contactPhone})`;
+    const enText = `For questions, contact <a href='mailto:${EVENT_CONFIG.contactEmail}'>${EVENT_CONFIG.contactEmail}</a> or ${EVENT_CONFIG.contactName} (${EVENT_CONFIG.contactPhone})`;
+
+    footerContactParagraph.setAttribute('data-zh', zhText);
+    footerContactParagraph.setAttribute('data-en', enText);
+
+    const currentLang = localStorage.getItem('walkathon-lang') || 'zh';
+    footerContactParagraph.innerHTML = currentLang === 'zh' ? zhText : enText;
+  }
+}
+
+// Old renderTopDonations removed
+
+function renderDonationTiers(lang) {
+  const tiersContainer = document.querySelector('.tiers-container');
+  if (!tiersContainer) return;
+
+  tiersContainer.innerHTML = '';
+
+  TIERS_CONFIG.forEach(tier => {
+    const cardLink = document.createElement('a');
+    cardLink.href = '#';
+    cardLink.className = 'tier-card';
+    if (tier.pulse) {
+      cardLink.className += ' pulse-btn';
+    }
+
+    const infoDiv = document.createElement('div');
+    infoDiv.className = 'tier-info';
+
+    const titleSpan = document.createElement('span');
+    titleSpan.className = 'tier-title';
+    titleSpan.setAttribute('data-en', tier.title_en);
+    titleSpan.setAttribute('data-zh', tier.title_zh);
+    titleSpan.textContent = lang === 'zh' ? tier.title_zh : tier.title_en;
+
+    const descSpan = document.createElement('span');
+    descSpan.className = 'tier-desc';
+    descSpan.setAttribute('data-en', tier.desc_en);
+    descSpan.setAttribute('data-zh', tier.desc_zh);
+    descSpan.textContent = lang === 'zh' ? tier.desc_zh : tier.desc_en;
+
+    infoDiv.appendChild(titleSpan);
+    infoDiv.appendChild(descSpan);
+
+    const priceSpan = document.createElement('span');
+    priceSpan.className = 'tier-price-tag';
+    priceSpan.textContent = tier.isCustom ? (lang === 'zh' ? '任意' : 'Any') : `$${tier.amount}`;
+
+    cardLink.appendChild(infoDiv);
+    cardLink.appendChild(priceSpan);
+    tiersContainer.appendChild(cardLink);
+  });
+}
+
+function renderTeamMembersGrid(lang) {
+  const trackersContainer = document.querySelector('.individual-trackers');
+  if (!trackersContainer) return;
+
+  trackersContainer.innerHTML = '';
+
+  TEAM_CONFIG.forEach(member => {
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'member-row';
+    rowDiv.id = `member-row-${member.id}`;
+
+    const avatarDiv = document.createElement('div');
+    avatarDiv.className = 'member-avatar';
+    avatarDiv.textContent = member.avatar;
+
+    const detailsDiv = document.createElement('div');
+    detailsDiv.className = 'member-details';
+
+    const metaDiv = document.createElement('div');
+    metaDiv.className = 'member-meta';
+
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'member-name';
+    nameSpan.innerHTML = member.name;
+
+    metaDiv.appendChild(nameSpan);
+
+    // Dynamic Bilingual Quote Paragraph
+    const quoteParagraph = document.createElement('p');
+    quoteParagraph.className = 'member-quote';
+    quoteParagraph.setAttribute('data-en', member.quote_en);
+    quoteParagraph.setAttribute('data-zh', member.quote_zh);
+    quoteParagraph.textContent = lang === 'zh' ? member.quote_zh : member.quote_en;
+
+    detailsDiv.appendChild(metaDiv);
+    detailsDiv.appendChild(quoteParagraph);
+
+    rowDiv.appendChild(avatarDiv);
+    rowDiv.appendChild(detailsDiv);
+
+    trackersContainer.appendChild(rowDiv);
+  });
+
+  // Re-bind click event on newly rendered tier-cards for modal popup triggers
+  setTimeout(() => {
+    if (typeof window.rebindTierClickEvents === 'function') {
+      window.rebindTierClickEvents();
+    }
+  }, 50);
+}
+
+function updateEtransferGuidelines() {
+  const emailEl = document.getElementById('etransfer-email');
+  if (emailEl && EVENT_CONFIG.etransfer) {
+    emailEl.textContent = EVENT_CONFIG.etransfer.email;
+  }
+}
+
+function updateInstagramLiveButton() {
+  const igBtn = document.querySelector('.ig-live-btn');
+  if (igBtn && EVENT_CONFIG.instagramLiveUrl) {
+    igBtn.href = EVENT_CONFIG.instagramLiveUrl;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Load Dynamic Donation Progress
+   -------------------------------------------------------------------------- */
+async function loadWalkathonData() {
+  const csvUrl = EVENT_CONFIG.spreadsheetCsvUrl;
+
+  // 1. Immediately load and render from cache for instant feedback
+  const cachedTotal = localStorage.getItem('cachedTotalRaised');
+  const cachedList = localStorage.getItem('cachedDonationsList');
+
+  if (cachedTotal) {
+    updateMainProgress(parseFloat(cachedTotal));
+  }
+  if (cachedList) {
+    try {
+      LIVE_DONATIONS = JSON.parse(cachedList);
+      setupSortingControls();
+      renderLiveDonations();
+    } catch (e) { }
+  }
+
+  let totalRaised = cachedTotal ? parseFloat(cachedTotal) : 0;
+
+  // 2. Fetch live data silently in the background
+  if (csvUrl && !csvUrl.includes("1Z1Z1Z1Z1Z1Z1Z1")) {
+    try {
+      const response = await fetch(csvUrl);
+      if (response.ok) {
+        const csvText = await response.text();
+        const freshDonations = parseLiveCSV(csvText);
+
+        // Sum total
+        const freshTotal = freshDonations.reduce((sum, item) => sum + item.amount, 0);
+        console.log("Loaded live donations:", freshDonations);
+
+        // Update state and cache
+        LIVE_DONATIONS = freshDonations;
+        totalRaised = freshTotal;
+        localStorage.setItem('cachedTotalRaised', totalRaised);
+        localStorage.setItem('cachedDonationsList', JSON.stringify(LIVE_DONATIONS));
+
+        // Render updated data
+        updateMainProgress(totalRaised);
+        setupSortingControls();
+        renderLiveDonations();
+      } else {
+        console.warn("Failed to fetch live spreadsheet.");
+      }
+    } catch (error) {
+      console.error("Error loading CSV feed:", error);
+    }
+  }
+}
+
+function parseLiveCSV(csvText) {
+  const result = [];
+  let current = '';
+  let fields = [];
+  let inQuotes = false;
+  let isFirstRow = true;
+
+  for (let i = 0; i < csvText.length; i++) {
+    let char = csvText[i];
+    if (char === '"') {
+      if (inQuotes && csvText[i + 1] === '"') {
+        current += '"';
+        i++;
+      } else {
+        inQuotes = !inQuotes;
+      }
+    } else if (char === ',' && !inQuotes) {
+      fields.push(current.trim());
+      current = '';
+    } else if ((char === '\n' || char === '\r') && !inQuotes) {
+      if (char === '\r' && csvText[i + 1] === '\n') i++;
+      fields.push(current.trim());
+      if (isFirstRow) {
+        isFirstRow = false;
+      } else {
+        processLiveCsvRow(fields, result);
+      }
+      fields = [];
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+  if (current || fields.length > 0) {
+    fields.push(current.trim());
+    if (!isFirstRow) {
+      processLiveCsvRow(fields, result);
+    }
+  }
+  return result;
+}
+
+function processLiveCsvRow(fields, result) {
+  if (fields.length >= 2) {
+    const timeStr = fields[0];
+    const amountStr = fields[1] ? fields[1].replace(/[$,\s]/g, '') : '0';
+    const amount = parseFloat(amountStr);
+    const message = fields[2] || '';
+
+    if (!isNaN(amount) && amount > 0) {
+      const timestamp = new Date(timeStr).getTime() || 0;
+      result.push({
+        timeStr: timeStr,
+        timestamp: timestamp,
+        amount: amount,
+        message: message
+      });
+    }
+  }
+}
+
+function setupSortingControls() {
+  const btnLatest = document.getElementById('sort-latest');
+  const btnAmount = document.getElementById('sort-amount');
+
+  if (!btnLatest || !btnAmount) return;
+
+  // Ensure listeners are only added once
+  btnLatest.replaceWith(btnLatest.cloneNode(true));
+  btnAmount.replaceWith(btnAmount.cloneNode(true));
+  const newBtnLatest = document.getElementById('sort-latest');
+  const newBtnAmount = document.getElementById('sort-amount');
+
+  newBtnLatest.addEventListener('click', () => {
+    CURRENT_SORT = 'latest';
+    newBtnLatest.classList.add('active');
+    newBtnAmount.classList.remove('active');
+    renderLiveDonations();
+  });
+
+  newBtnAmount.addEventListener('click', () => {
+    CURRENT_SORT = 'amount';
+    newBtnAmount.classList.add('active');
+    newBtnLatest.classList.remove('active');
+    renderLiveDonations();
+  });
+}
+
+function renderLiveDonations() {
+  const container = document.getElementById('donations-list-container');
+  if (!container) return;
+
+  container.innerHTML = '';
+
+  let sortedData = [...LIVE_DONATIONS];
+  if (CURRENT_SORT === 'latest') {
+    sortedData.sort((a, b) => b.timestamp - a.timestamp);
+  } else {
+    sortedData.sort((a, b) => b.amount - a.amount);
+  }
+
+  const LIMIT = 5;
+  const listToRender = IS_DONATIONS_EXPANDED ? sortedData : sortedData.slice(0, LIMIT);
+
+  listToRender.forEach(item => {
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'donation-item';
+
+    const amtSpan = document.createElement('span');
+    amtSpan.className = 'donation-amount';
+    amtSpan.textContent = `$${item.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+    const detailsDiv = document.createElement('div');
+    detailsDiv.className = 'donation-details';
+
+    // Only show remark/message
+    const msgSpan = document.createElement('span');
+    msgSpan.className = 'donation-message';
+    msgSpan.textContent = item.message ? item.message : '—';
+    msgSpan.style.fontStyle = 'normal';
+    msgSpan.style.color = 'var(--text-main)';
+    msgSpan.style.fontWeight = '500';
+
+    const timeSpan = document.createElement('span');
+    timeSpan.className = 'donation-time';
+    timeSpan.style.fontSize = '0.75rem';
+    timeSpan.style.color = 'var(--text-muted)';
+    timeSpan.textContent = item.timeStr; // Or formatted date
+
+    detailsDiv.appendChild(msgSpan);
+
+    const expandBtn = document.createElement('button');
+    expandBtn.className = 'donation-expand-btn';
+    const lang = localStorage.getItem('walkathon-lang') || 'zh';
+    expandBtn.textContent = lang === 'en' ? 'Read more' : '展开';
+    expandBtn.style.display = 'none';
+
+    expandBtn.onclick = () => {
+      if (msgSpan.classList.contains('expanded')) {
+        msgSpan.classList.remove('expanded');
+        expandBtn.textContent = localStorage.getItem('walkathon-lang') === 'en' ? 'Read more' : '展开';
+      } else {
+        msgSpan.classList.add('expanded');
+        expandBtn.textContent = localStorage.getItem('walkathon-lang') === 'en' ? 'Show less' : '收起';
+      }
+    };
+
+    detailsDiv.appendChild(expandBtn);
+    detailsDiv.appendChild(timeSpan);
+    itemDiv.appendChild(amtSpan);
+    itemDiv.appendChild(detailsDiv);
+
+    container.appendChild(itemDiv);
+
+    // Check if message overflows its 3 line clamp
+    requestAnimationFrame(() => {
+      if (msgSpan.scrollHeight > msgSpan.clientHeight) {
+        expandBtn.style.display = 'inline-block';
+      }
+    });
+  });
+
+  if (sortedData.length > LIMIT) {
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'sort-btn';
+    toggleBtn.style.width = '100%';
+    toggleBtn.style.marginTop = '15px';
+    toggleBtn.style.textAlign = 'center';
+    
+    const lang = localStorage.getItem('walkathon-lang') || 'zh';
+    if (IS_DONATIONS_EXPANDED) {
+      toggleBtn.textContent = lang === 'en' ? 'Show Less ↑' : '收起列表 ↑';
+    } else {
+      toggleBtn.textContent = lang === 'en' ? 'Show More ↓' : '展开更多 ↓';
+    }
+    
+    toggleBtn.addEventListener('click', () => {
+      IS_DONATIONS_EXPANDED = !IS_DONATIONS_EXPANDED;
+      renderLiveDonations();
+    });
+    
+    container.appendChild(toggleBtn);
+  }
+}
+
+function updateMainProgress(totalRaised) {
+  const progressPercentText = document.getElementById('progress-percent');
+  const progressRaisedText = document.getElementById('progress-raised');
+  const progressBarFill = document.getElementById('main-progress-bar-fill');
+
+  if (!progressRaisedText) return; // Not on Page 1
+
+  progressRaisedText.textContent = `$${totalRaised.toLocaleString()}`;
+
+  const totalGoal = EVENT_CONFIG.totalGoal || 1040;
+  let percentage = (totalRaised / totalGoal) * 100;
+
+  const barPercentage = Math.min(percentage, 100);
+  if (progressBarFill) {
+    progressBarFill.style.width = `${barPercentage}%`;
+  }
+
+  if (progressPercentText) {
+    progressPercentText.textContent = `${Math.round(percentage)}%`;
+  }
+}
+
+</script>
+</body>
+
+</html>
