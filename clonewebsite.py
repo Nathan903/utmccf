@@ -7,7 +7,7 @@ testOnlyOneFile=False
 removeExtraFiles=True
 testWebsite=False
 
-import os, re, time, datetime, pytz, sys, subprocess, shutil
+import os, re, time, datetime, pytz, sys, subprocess, shutil, hashlib, urllib.request
 import create_newsletters
 startTime=time.time()
 resultPath=f'clean_{domain}'
@@ -116,6 +116,7 @@ scriptKeywords=(
   "smartadserver",
   "outbrain",
   "atatags-",
+  "rltInitialize",
   # "gdpr"
 )
 socialMediaIconSvg = {
@@ -141,11 +142,18 @@ def check_for_broken_absolute_url(file_path, text):
   regexpattern = r"""     "[^@]{0,13}?utmccf\.com.{0,512}?"     """.strip()#.replace("$DOMAIN$",)
   for line in text.split("\n"):
     if re.search(regexpattern, line):
-      warning=f"This page 『 {file_path.replace('clean_','').replace('/index.html','')} 』 contains these absolute url links:\n"
+      broken_urls = []
       for url in re.findall(regexpattern, line):
         url=url.strip('"')
-        warning +=f"\t- 【 {url} 】\tfix it by changing it to:【 {absolute_url_to_relative(url)} 】\n"
-      print_warning(warning)
+        if "zht.utmccf.com" in url:
+          continue
+        broken_urls.append(url)
+      
+      if broken_urls:
+        warning=f"This page 『 {file_path.replace('clean_','').replace('/index.html','')} 』 contains these absolute url links:\n"
+        for url in broken_urls:
+          warning +=f"\t- 【 {url} 】\tfix it by changing it to:【 {absolute_url_to_relative(url)} 】\n"
+        print_warning(warning)
 
 def contains(text,keywordList):
   for keyword in keywordList:
@@ -158,9 +166,43 @@ def findUnwantedScripts(text): #look for all <script> tags
     if contains(scriptTag,scriptKeywords):
       toBeRemoved.append(scriptTag)
   return toBeRemoved
+
+def fix_long_jetpack_urls(text, base_dir="clean_utmccf.wordpress.com"):
+  pattern = r'((?:https://utmccf\.wordpress\.com)?(?:(?:\.\./)*)?/_static/\?\?[^\'"]+)'
+  urls = set(re.findall(pattern, text))
+  for url in urls:
+    clean_url_match = re.search(r'(/_static/\?\?.*)', url)
+    if not clean_url_match: continue
+    clean_url = clean_url_match.group(1)
+    
+    url_hash = hashlib.md5(clean_url.encode('utf-8')).hexdigest()[:10]
+    ext = ".css" if "cssminify" in url else ".js"
+    short_filename = f"jetpack_{url_hash}{ext}"
+    short_path_in_html = url.replace(clean_url, f"/_static/{short_filename}")
+    
+    local_path = os.path.join(base_dir, "_static", short_filename)
+    os.makedirs(os.path.dirname(local_path), exist_ok=True)
+    if not os.path.exists(local_path):
+      try:
+        absolute_url = "https://utmccf.wordpress.com" + clean_url
+        req = urllib.request.Request(absolute_url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req) as response:
+          with open(local_path, "wb") as f:
+            f.write(response.read())
+      except Exception as e:
+        print_error(f"Failed to download {absolute_url}: {e}")
+        continue
+    text = text.replace(url, short_path_in_html)
+  return text
+
 def clean(filepath):
   with open(filepath, encoding="utf-8") as f:
     original=text=f.read()
+    
+  text = text.replace("https://utmccf.wordpress.com/", "/")
+  text = text.replace("https://utmccf.wordpress.com", "/")
+  text = text.replace("http://utmccf.wordpress.com/", "/")
+  text = text.replace("http://utmccf.wordpress.com", "/")
 
   newsletterimg, this_weeks_event_summary = create_newsletters.get_latest_newsletter()
   text = text.replace(r"<!--$this_weeks_event$-->", fr"""<img src="/newsletters/{newsletterimg}" alt="Newsletter" style="box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.4);"/>""")
@@ -214,6 +256,8 @@ def clean(filepath):
   if original==text:
     print_warning(f"`clean()` - no change in [{filepath}]")
 
+  text = fix_long_jetpack_urls(text, resultPath)
+
   check_for_broken_absolute_url(filepath,text)
 
   with open(filepath,'w',encoding="utf-8") as f:
@@ -223,28 +267,28 @@ def clean(filepath):
 if downloadAgain:
   if os.path.exists(domain):
     shutil.rmtree(domain)
-  downloadCommand=f'wget --reject xml,txt --reject-regex "(.*)\?(.*)|(.*)/feed/(.*)" --mirror --convert-links --adjust-extension --page-requisites --no-parent https://{domain}/404 --content-on-error'
+  downloadCommand=f'wget --restrict-file-names=windows --reject xml,txt --reject-regex "(.*)/feed/(.*)|(.*)replytocom=(.*)|(.*)share=(.*)|(.*)like=(.*)" --mirror --convert-links --adjust-extension --page-requisites --no-parent https://{domain}/404 --content-on-error'
   os.system(downloadCommand +doNotShowShellResult)
-  downloadCommand=f'wget --reject xml,txt --reject-regex "(.*)\?(.*)|(.*)/feed/(.*)" --mirror --convert-links --adjust-extension --page-requisites --no-parent https://{domain}/'
+  downloadCommand=f'wget --restrict-file-names=windows --reject xml,txt --reject-regex "(.*)/feed/(.*)|(.*)replytocom=(.*)|(.*)share=(.*)|(.*)like=(.*)" --mirror --convert-links --adjust-extension --page-requisites --no-parent https://{domain}/'
   os.system(downloadCommand +doNotShowShellResult)
   print_success(f"Finished download (at: {int(time.time()-startTime)} seconds)")
 
 #copy everything downloaded in /utmccf.wordpress.com and /manually_made_extra_files into /clean_utmccf.wordpress.com
-from distutils.dir_util import copy_tree
+import shutil
 if testOnlyOneFile:
-  from distutils import file_util
   source_file = domain+"/index.html"
   destination_file = resultPath+"/index.html"
-  file_util.copy_file(source_file, destination_file)
+  shutil.copyfile(source_file, destination_file)
   clean(destination_file)
   exit()
 else:
-  copy_tree(domain, resultPath)
-  copy_tree("manually_made_extra_files", resultPath)
+  shutil.copytree(domain, resultPath, dirs_exist_ok=True)
+  if os.path.exists("manually_made_extra_files"):
+    shutil.copytree("manually_made_extra_files", resultPath, dirs_exist_ok=True)
 
 extensionToExcludeFromProduction = ('.py','.')
 keywordsToExcludeFromProduction = ('/?', '/feed/')
-extensionToNotClean = ('.txt','.xml', ".log",".jpg",".png",".webp", ".svg",".css",".pdf")
+extensionToNotClean = ('.txt','.xml', ".log",".jpg",".png",".webp", ".svg",".css",".pdf",".js")
 
 #main loop to clean all files in /clean_utmccf.wordpress.com
 for subdir, dirs, files in os.walk(resultPath):
@@ -254,6 +298,18 @@ for subdir, dirs, files in os.walk(resultPath):
       os.remove(path)
       print_debug_info(f"ignoring [{path}]. This is omitted in production website.")
       continue 
+      
+    if "index.html@%3F" in file:
+      os.remove(path)
+      continue
+
+    if "@" in file:
+      base_name = file.split("@")[0]
+      if base_name and base_name.endswith(('.js', '.css', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.woff', '.woff2', '.ttf', '.json')):
+        base_path = os.path.join(subdir, base_name)
+        if not os.path.exists(base_path):
+          shutil.copy2(path, base_path)
+          print_debug_info(f"Copied [{path}] to [{base_path}] for dynamic loading.")
 
     if path.endswith(".html"):
       clean(path)
