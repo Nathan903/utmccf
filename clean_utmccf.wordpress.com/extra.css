@@ -133,6 +133,16 @@ body, html {overflow-x: hidden !important;}
   }
 }
 
+/* Fix translation button underline width */
+@media screen and (min-width: 1020px) {
+	.navigation-classic .primary-navigation .menu-primary > ul > li.simplified_to_traditional_translation:hover > a,
+	.navigation-classic .primary-navigation .menu-primary > ul > li.simplified_to_traditional_translation > a:hover,
+	.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li.simplified_to_traditional_translation:hover > a,
+	.large-screen.navigation-classic .primary-navigation .menu-primary > ul > li.simplified_to_traditional_translation > a:hover {
+		background-size: 0 3px, 2em 3px !important;
+	}
+}
+
 #masthead{
 	display:flex!important;
 	align-items:center!important;
