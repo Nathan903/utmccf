@@ -86,9 +86,70 @@ tagsToRemove=(
   r"crossorigin='anonymous'", # fix CORS css load failures
 )
 tagsToReplace=(
-  ( #add <link rel="stylesheet" href="extra.css"> to after head
+  ( # add opencc-js client-side translation script to after head
     r'(<head\b[^>]*>)', #<head>
-    r"""\1<link rel="stylesheet" href="/extra.css">"""
+    r"""\1
+<script src="https://cdn.jsdelivr.net/npm/opencc-js@1.0.5/dist/umd/cn2t.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    try {
+        var converter = OpenCC.Converter({ from: 'cn', to: 'tw' });
+        var buttons = document.querySelectorAll(".simplified_to_traditional_translation a");
+        if (!buttons || buttons.length === 0) return;
+        
+        var translatePage = function() {
+            var rootNode = document.documentElement;
+            rootNode.lang = 'zh-CN';
+            var HTMLDict = OpenCC.HTMLConverter(converter, rootNode, 'zh-CN', 'zh-TW');
+            HTMLDict.convert();
+            buttons.forEach(function(btn) {
+                btn.textContent = "简体";
+                btn.onclick = function(e) {
+                    e.preventDefault();
+                    localStorage.setItem("lang_pref", "cn");
+                    HTMLDict.restore();
+                    buttons.forEach(function(b) {
+                        b.textContent = "繁體";
+                        b.onclick = function(e2) {
+                            e2.preventDefault();
+                            localStorage.setItem("lang_pref", "tw");
+                            translatePage();
+                        };
+                    });
+                };
+            });
+        };
+
+        buttons.forEach(function(btn) {
+            btn.href = "#";
+            btn.onclick = function(e) {
+                e.preventDefault();
+                localStorage.setItem("lang_pref", "tw");
+                translatePage();
+            };
+        });
+
+        var pref = localStorage.getItem("lang_pref");
+        if (pref === "tw") {
+            translatePage();
+        } else if (!pref) {
+            var langs = navigator.languages || [navigator.language];
+            for (var i = 0; i < langs.length; i++) {
+                var lang = langs[i].toLowerCase();
+                if (lang.includes("zh-tw") || lang.includes("zh-hk") || lang.includes("zh-hant") || lang.includes("zh-mo")) {
+                    translatePage();
+                    break;
+                } else if (lang.includes("zh-cn") || lang.includes("zh-sg") || lang.includes("zh-hans")) {
+                    break;
+                }
+            }
+        }
+    } catch (e) {
+        console.error("OpenCC translation error: ", e);
+    }
+});
+</script>
+<link rel="stylesheet" href="/extra.css">"""
   ),
   ( # add js to <button class="menu-toggle" aria-expanded="false">Menu</button>
     r'<button[^>]*class="menu-toggle"[^>]*>.*?</button>',
@@ -335,5 +396,3 @@ if warning_found_broken_absolute_url:
 if testWebsite:
   from test_website import test_website
   test_website(resultPath)
-
-import convert_site_to_traditional_characters
