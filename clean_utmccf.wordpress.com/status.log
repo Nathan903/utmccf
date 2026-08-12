@@ -4,21 +4,22 @@ ERROR: `clean()` - cannot find <html> tag in file in [clean_utmccf.wordpress.com
 ERROR: `clean()` - found 0 body tags
 WARNING: `clean()` - no change in [clean_utmccf.wordpress.com/index.html@openidserver=1.html]
 WARNING: downloaded file [clean_utmccf.wordpress.com/sitemap.xml.diff] is not an HTML. It is not processed for ad/tracker cleaning
-ERROR: Failed to download https://utmccf.wordpress.com/_static/??-eJyNjcsKQjEMBX/ImlsQry7ET5GahrbXNCmmRfx7H7gRN+7OwGEGbs2hSifpUIdrPFIRg4V6C3j5MNgQqBoHk4HlcKUYYry/Z5G0RrMV/C06FUEwxRLYsSa1L/iR9Uz1mc0bSKznwK/DsR787Kd5P/ntbnkAuNBIYA==&cssminify=yes: HTTP Error 404: Not found
 ERROR: Failed to download https://utmccf.wordpress.com/_static/??-eJyNkVFqAzEMRC9UV6Sk5Kv0LFpb2Whty+5KXuf4ddJCSwpp0Idg5o0YEPTqfBEjMZhSmV1NbWZR6GUNGNT5hKqksAwJLT0v+gS/Mrn9JDjMZArUhlsik0vYwSjXhEY3+p07ieOgPxo1OqGEROstbCfKA6ltAgosl26CG89oXOQBWCNXl1iiOxbf1B35/EDqsu/UXsgq+uiG1Ksv+dsAbQIbSSgrYLOS0Yz9Hxp09TA1TgGEul698Q8f1X29paip25j6f/6o+J7fdoeXMfvd6375BCNstKU=: HTTP Error 404: Not found
 ERROR: Failed to download https://utmccf.wordpress.com/_static/??-eJyNjcsKQjEMBX/ImlsQry7ET5GahrbXNCmmRfx7H7gRN+7OwGEGbs2hSifpUIdrPFIRg4V6C3j5MNgQqBoHk4HlcKUYYry/Z5G0RrMV/C06FUEwxRLYsSa1L/iR9Uz1mc0bSKznwK/DsR787Kd5P/ntbnkAuNBIYA==&cssminify=yes: HTTP Error 404: Not found
 ERROR: Failed to download https://utmccf.wordpress.com/_static/??-eJyNjcsKQjEMBX/ImlsQry7ET5GahrbXNCmmRfx7H7gRN+7OwGEGbs2hSifpUIdrPFIRg4V6C3j5MNgQqBoHk4HlcKUYYry/Z5G0RrMV/C06FUEwxRLYsSa1L/iR9Uz1mc0bSKznwK/DsR787Kd5P/ntbnkAuNBIYA==&cssminify=yes: HTTP Error 404: Not found
 ERROR: Failed to download https://utmccf.wordpress.com/_static/??-eJyNkVFqAzEMRC9UV6Sk5Kv0LFpb2Whty+5KXuf4ddJCSwpp0Idg5o0YEPTqfBEjMZhSmV1NbWZR6GUNGNT5hKqksAwJLT0v+gS/Mrn9JDjMZArUhlsik0vYwSjXhEY3+p07ieOgPxo1OqGEROstbCfKA6ltAgosl26CG89oXOQBWCNXl1iiOxbf1B35/EDqsu/UXsgq+uiG1Ksv+dsAbQIbSSgrYLOS0Yz9Hxp09TA1TgGEul698Q8f1X29paip25j6f/6o+J7fdoeXMfvd6375BCNstKU=: HTTP Error 404: Not found
+ERROR: Failed to download https://utmccf.wordpress.com/_static/??-eJyNjcsKQjEMBX/ImlsQry7ET5GahrbXNCmmRfx7H7gRN+7OwGEGbs2hSifpUIdrPFIRg4V6C3j5MNgQqBoHk4HlcKUYYry/Z5G0RrMV/C06FUEwxRLYsSa1L/iR9Uz1mc0bSKznwK/DsR787Kd5P/ntbnkAuNBIYA==&cssminify=yes: HTTP Error 404: Not found
 WARNING: This page 『 utmccf.wordpress.com/2012/10/12/布道会-evangelical-conference 』 contains these absolute url links:
 	- 【 http://utmccf.com/conference/ 】	fix it by changing it to:【 /conference/ 】
 
 ERROR: Failed to download https://utmccf.wordpress.com/_static/??-eJyNjcsKQjEMBX/ImlsQry7ET5GahrbXNCmmRfx7H7gRN+7OwGEGbs2hSifpUIdrPFIRg4V6C3j5MNgQqBoHk4HlcKUYYry/Z5G0RrMV/C06FUEwxRLYsSa1L/iR9Uz1mc0bSKznwK/DsR787Kd5P/ntbnkAuNBIYA==&cssminify=yes: HTTP Error 404: Not found
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-includes/js/wp-embed.min.js@m=1743165756i&ver=7.1-alpha-62686] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-includes/js/wp-embed.min.js@m=1743165756i&ver=7.1-alpha-62511] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-includes/js/wp-embed.min.js@m=1743165756i&ver=7.1-alpha-62543] is not an HTML. It is not processed for ad/tracker cleaning
 ERROR: Failed to download https://utmccf.wordpress.com/_static/??-eJyNjcEKwjAQRH/IuFRT6kX8FNkmS5K6yQY3Qfx7bfEiXrwM82B4A49qnJRGpUHupnIPqSgs1Cq624chi6zhO5OCRryTR++fW00l7J3qDv43XVNxoOISsmEJol/wY2uR8vs3WggsM/I6uOTzMI3Hw8lOg11eUT1JKA==&amp;cssminify=yes: HTTP Error 404: Not found
 ERROR: Failed to download https://utmccf.wordpress.com/_static/??-eJyNjcsKQjEMBX/ImlsQry7ET5GahrbXNCmmRfx7H7gRN+7OwGEGbs2hSifpUIdrPFIRg4V6C3j5MNgQqBoHk4HlcKUYYry/Z5G0RrMV/C06FUEwxRLYsSa1L/iR9Uz1mc0bSKznwK/DsR787Kd5P/ntbnkAuNBIYA==&cssminify=yes: HTTP Error 404: Not found
-ERROR: Failed to download https://utmccf.wordpress.com/_static/??-eJyNjcsKQjEMBX/ImlsQry7ET5GahrbXNCmmRfx7H7gRN+7OwGEGbs2hSifpUIdrPFIRg4V6C3j5MNgQqBoHk4HlcKUYYry/Z5G0RrMV/C06FUEwxRLYsSa1L/iR9Uz1mc0bSKznwK/DsR787Kd5P/ntbnkAuNBIYA==&cssminify=yes: HTTP Error 404: Not found
 ERROR: Failed to download https://utmccf.wordpress.com/_static/??-eJydjEEKgCAQAD+UrR6KLtFbTJfQdJXWxe9HUB/oOMMw0KtyhRpSgyyqJjkCMURs1brzZWAhyMVLQgZnryKMCbiHipfahXzC0TEP8H/2NZ94fltezbxMxkx61vEGx+U/hQ==&cssminify=yes: HTTP Error 404: Not found
+ERROR: Failed to download https://utmccf.wordpress.com/_static/??-eJyNjcsKQjEMBX/ImlsQry7ET5GahrbXNCmmRfx7H7gRN+7OwGEGbs2hSifpUIdrPFIRg4V6C3j5MNgQqBoHk4HlcKUYYry/Z5G0RrMV/C06FUEwxRLYsSa1L/iR9Uz1mc0bSKznwK/DsR787Kd5P/ntbnkAuNBIYA==&cssminify=yes: HTTP Error 404: Not found
 WARNING: This page 『 utmccf.wordpress.com/2022/08/25/2022-summer-活动总集 』 contains these absolute url links:
 	- 【 https://utmccf.com/?attachment_id=2825 】	fix it by changing it to:【 /?attachment_id=2825 】
 	- 【 https://utmccf.com/?attachment_id=2833 】	fix it by changing it to:【 /?attachment_id=2833 】
@@ -30,11 +31,11 @@ WARNING: This page 『 utmccf.wordpress.com/2022/08/25/2022-summer-活动总集 
 	- 【 https://utmccf.com/fellowship/nl-615/ 】	fix it by changing it to:【 /fellowship/nl-615/ 】
 	- 【 https://utmccf.com/conference/wechatimg560/ 】	fix it by changing it to:【 /conference/wechatimg560/ 】
 	- 【 https://utmccf.com/conference/16101658206922_-pic/ 】	fix it by changing it to:【 /conference/16101658206922_-pic/ 】
-	- 【 https://utmccf.com/?attachment_id=2827 】	fix it by changing it to:【 /?attachment_id=2827 】
 
 WARNING: downloaded file [clean_utmccf.wordpress.com/20250426/ans.webm] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/20250426/croped.JPG] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/js/bilmur.min.js@i=17&m=202632] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/js/bilmur.min.js@i=17&m=202633] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/plugins/gutenberg-core/v23.7.1/build/scripts/dom-ready/index.min.js@m=1786118922i&ver=a06281ae5cf5500e9317] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/plugins/gutenberg-core/v23.7.1/build/scripts/hooks/index.min.js@m=1786118922i&ver=7496969728ca0f95732d] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/plugins/gutenberg-core/v23.7.1/build/scripts/i18n/index.min.js@m=1786118922i&ver=125448662852c5e18937] is not an HTML. It is not processed for ad/tracker cleaning
@@ -88,6 +89,11 @@ WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2009/09/
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2009/09/love-seminar-march-2011.jpg@w=450&h=299] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2009/09/coffeehouse-2010-poster.jpg@w=450&h=634] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2009/09/coffeehouse-2010-poster.jpg@w=213&h=300] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2026/08/image_20260812112507.jpg@w=95] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2026/08/image_20260812112507.jpg@w=189] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2026/08/image_20260812112507.jpg@w=1292] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2026/08/image_20260812112507.jpg@w=768] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2026/08/image_20260812112507.jpg@w=646] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2012/08/e789a7e5b888e8aeb2e5baa7.jpg@w=450&h=584] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2012/08/e6b3a5e59c9fe99fb3e4b990e4bc9a.jpg@w=450&h=584] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2012/08/sports-night.jpg@w=450&h=584] is not an HTML. It is not processed for ad/tracker cleaning
@@ -377,7 +383,7 @@ There is NO WARRANTY, to the extent permitted by law.
 Originally written by Hrvoje Niksic <hniksic@xemacs.org>.
 Please send bug reports and questions to <bug-wget@gnu.org>.
 
-DONE: website published with 314 warnings and 13 errors. Last updated 2026-08-08 12:56:32 EDT
+DONE: website published with 321 warnings and 13 errors. Last updated 2026-08-12 11:43:31 EDT
 
 
 * Website is published with warnings/errors. Please check all affected pages. If nothing is broken, ignore the warnings/errors
