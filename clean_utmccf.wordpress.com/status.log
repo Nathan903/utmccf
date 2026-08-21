@@ -1,13 +1,13 @@
 WARNING: downloaded file [clean_utmccf.wordpress.com/xmlrpc.php@rsd] is not an HTML. It is not processed for ad/tracker cleaning
-ERROR: Failed to download https://utmccf.wordpress.com/_static/??-eJyNkVFqAzEMRC9UV6Sk5Kv0LFpb2Whty+5KXuf4ddJCSwpp0Idg5o0YEPTqfBEjMZhSmV1NbWZR6GUNGNT5hKqksAwJLT0v+gS/Mrn9JDjMZArUhlsik0vYwSjXhEY3+p07ieOgPxo1OqGEROstbCfKA6ltAgosl26CG89oXOQBWCNXl1iiOxbf1B35/EDqsu/UXsgq+uiG1Ksv+dsAbQIbSSgrYLOS0Yz9Hxp09TA1TgGEul698Q8f1X29paip25j6f/6o+J7fdoeXMfvd6375BCNstKU=: HTTP Error 404: Not found
 ERROR: Failed to download https://utmccf.wordpress.com/_static/??-eJyNjcsKQjEMBX/ImlsQry7ET5GahrbXNCmmRfx7H7gRN+7OwGEGbs2hSifpUIdrPFIRg4V6C3j5MNgQqBoHk4HlcKUYYry/Z5G0RrMV/C06FUEwxRLYsSa1L/iR9Uz1mc0bSKznwK/DsR787Kd5P/ntbnkAuNBIYA==&cssminify=yes: HTTP Error 404: Not found
+ERROR: Failed to download https://utmccf.wordpress.com/_static/??-eJyNkVFqAzEMRC9UV6Sk5Kv0LFpb2Whty+5KXuf4ddJCSwpp0Idg5o0YEPTqfBEjMZhSmV1NbWZR6GUNGNT5hKqksAwJLT0v+gS/Mrn9JDjMZArUhlsik0vYwSjXhEY3+p07ieOgPxo1OqGEROstbCfKA6ltAgosl26CG89oXOQBWCNXl1iiOxbf1B35/EDqsu/UXsgq+uiG1Ksv+dsAbQIbSSgrYLOS0Yz9Hxp09TA1TgGEul698Q8f1X29paip25j6f/6o+J7fdoeXMfvd6375BCNstKU=: HTTP Error 404: Not found
 ERROR: `clean()` - cannot find <html> tag in file in [clean_utmccf.wordpress.com/index.html@openidserver=1.html]
 ERROR: `clean()` - found 0 body tags
 WARNING: `clean()` - no change in [clean_utmccf.wordpress.com/index.html@openidserver=1.html]
 ERROR: Failed to download https://utmccf.wordpress.com/_static/??-eJyNjcsKQjEMBX/ImlsQry7ET5GahrbXNCmmRfx7H7gRN+7OwGEGbs2hSifpUIdrPFIRg4V6C3j5MNgQqBoHk4HlcKUYYry/Z5G0RrMV/C06FUEwxRLYsSa1L/iR9Uz1mc0bSKznwK/DsR787Kd5P/ntbnkAuNBIYA==&cssminify=yes: HTTP Error 404: Not found
 WARNING: downloaded file [clean_utmccf.wordpress.com/sitemap.xml.diff] is not an HTML. It is not processed for ad/tracker cleaning
-ERROR: Failed to download https://utmccf.wordpress.com/_static/??-eJyNkVFqAzEMRC9UV6Sk5Kv0LFpb2Whty+5KXuf4ddJCSwpp0Idg5o0YEPTqfBEjMZhSmV1NbWZR6GUNGNT5hKqksAwJLT0v+gS/Mrn9JDjMZArUhlsik0vYwSjXhEY3+p07ieOgPxo1OqGEROstbCfKA6ltAgosl26CG89oXOQBWCNXl1iiOxbf1B35/EDqsu/UXsgq+uiG1Ksv+dsAbQIbSSgrYLOS0Yz9Hxp09TA1TgGEul698Q8f1X29paip25j6f/6o+J7fdoeXMfvd6375BCNstKU=: HTTP Error 404: Not found
 ERROR: Failed to download https://utmccf.wordpress.com/_static/??-eJyNjcsKQjEMBX/ImlsQry7ET5GahrbXNCmmRfx7H7gRN+7OwGEGbs2hSifpUIdrPFIRg4V6C3j5MNgQqBoHk4HlcKUYYry/Z5G0RrMV/C06FUEwxRLYsSa1L/iR9Uz1mc0bSKznwK/DsR787Kd5P/ntbnkAuNBIYA==&cssminify=yes: HTTP Error 404: Not found
+ERROR: Failed to download https://utmccf.wordpress.com/_static/??-eJyNkVFqAzEMRC9UV6Sk5Kv0LFpb2Whty+5KXuf4ddJCSwpp0Idg5o0YEPTqfBEjMZhSmV1NbWZR6GUNGNT5hKqksAwJLT0v+gS/Mrn9JDjMZArUhlsik0vYwSjXhEY3+p07ieOgPxo1OqGEROstbCfKA6ltAgosl26CG89oXOQBWCNXl1iiOxbf1B35/EDqsu/UXsgq+uiG1Ksv+dsAbQIbSSgrYLOS0Yz9Hxp09TA1TgGEul698Q8f1X29paip25j6f/6o+J7fdoeXMfvd6375BCNstKU=: HTTP Error 404: Not found
 WARNING: downloaded file [clean_utmccf.wordpress.com/20250426/ans.webm] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/20250426/croped.JPG] is not an HTML. It is not processed for ad/tracker cleaning
 ERROR: Failed to download https://utmccf.wordpress.com/_static/??-eJydjEEKgCAQAD+UrR6KLtFbTJfQdJXWxe9HUB/oOMMw0KtyhRpSgyyqJjkCMURs1brzZWAhyMVLQgZnryKMCbiHipfahXzC0TEP8H/2NZ94fltezbxMxkx61vEGx+U/hQ==&cssminify=yes: HTTP Error 404: Not found
@@ -29,7 +29,9 @@ WARNING: This page 『 utmccf.wordpress.com/2022/08/25/2022-summer-活动总集 
 
 ERROR: Failed to download https://utmccf.wordpress.com/_static/??-eJyNjcsKQjEMBX/ImlsQry7ET5GahrbXNCmmRfx7H7gRN+7OwGEGbs2hSifpUIdrPFIRg4V6C3j5MNgQqBoHk4HlcKUYYry/Z5G0RrMV/C06FUEwxRLYsSa1L/iR9Uz1mc0bSKznwK/DsR787Kd5P/ntbnkAuNBIYA==&cssminify=yes: HTTP Error 404: Not found
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-includes/js/wp-embed.min.js@m=1743165756i&ver=7.1-alpha-62543] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-includes/js/wp-embed.min.js@m=1743165756i&ver=7.1-RC3-63319] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-includes/js/wp-embed.min.js@m=1743165756i&ver=7.1-alpha-62686] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-includes/js/wp-embed.min.js@m=1743165756i&ver=7.1-RC1-63061] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-includes/js/wp-embed.min.js@m=1743165756i&ver=7.1-alpha-62511] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: This page 『 utmccf.wordpress.com/2012/10/12/布道会-evangelical-conference 』 contains these absolute url links:
 	- 【 http://utmccf.com/conference/ 】	fix it by changing it to:【 /conference/ 】
@@ -323,19 +325,26 @@ WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpa
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/sun/_inc/genericons/genericons/Genericons.eot@] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/sun/_inc/genericons/genericons/Genericons.ttf] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/sun/_inc/genericons/genericons/Genericons.eot] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/moon/_inc/build/tiled-gallery/tiled-gallery/tiled-gallery.min.js@m=1755006225i&ver=16.2-a.2] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/moon/_inc/build/tiled-gallery/tiled-gallery/tiled-gallery.min.js@m=1755006225i&ver=16.2-a.0] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/moon/_inc/build/sharedaddy/sharing.min.js@m=1786736522i] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/moon/_inc/build/sharedaddy/sharing.min.js@m=1755006225i] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/moon/_inc/blocks/tiled-gallery/view.js@m=1782736681i&minify=false&ver=16.2-a.0] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/moon/_inc/blocks/tiled-gallery/view.js@m=1782736681i&minify=false&ver=16.2-a.2] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/moon/_inc/genericons/genericons/Genericons.eot@] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/moon/_inc/genericons/genericons/Genericons.ttf] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/moon/_inc/genericons/genericons/Genericons.eot] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/carousel-wpcom/carousel-wpcom.js@m=1761899756i] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/plugins/gutenberg-core/v23.8.0/build/scripts/i18n/index.min.js@m=1787137145i&ver=1dfe7db3940c23ea9216] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/plugins/gutenberg-core/v23.8.0/build/scripts/dom-ready/index.min.js@m=1787137145i&ver=3fe927cab37bf38d6a23] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/plugins/gutenberg-core/v23.8.0/build/scripts/hooks/index.min.js@m=1787137145i&ver=f0f188028580e8dc1255] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/plugins/gutenberg-core/v23.6.2/build/scripts/i18n/index.min.js@m=1785233848i&ver=125448662852c5e18937] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/plugins/gutenberg-core/v23.6.2/build/scripts/dom-ready/index.min.js@m=1785233848i&ver=a06281ae5cf5500e9317] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/plugins/gutenberg-core/v23.6.2/build/scripts/hooks/index.min.js@m=1785233848i&ver=7496969728ca0f95732d] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/plugins/gutenberg-core/v23.7.1/build/scripts/i18n/index.min.js@m=1786118922i&ver=125448662852c5e18937] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/plugins/gutenberg-core/v23.7.1/build/scripts/dom-ready/index.min.js@m=1786118922i&ver=a06281ae5cf5500e9317] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/plugins/gutenberg-core/v23.7.1/build/scripts/hooks/index.min.js@m=1786118922i&ver=7496969728ca0f95732d] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/js/bilmur.min.js@i=17&m=202634] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/js/bilmur.min.js@i=17&m=202632] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/js/bilmur.min.js@i=17&m=202633] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/themes/pub/edin/font/edincon.eot@-yw7mjc] is not an HTML. It is not processed for ad/tracker cleaning
@@ -384,7 +393,7 @@ There is NO WARRANTY, to the extent permitted by law.
 Originally written by Hrvoje Niksic <hniksic@xemacs.org>.
 Please send bug reports and questions to <bug-wget@gnu.org>.
 
-DONE: website published with 321 warnings and 13 errors. Last updated 2026-08-13 21:51:09 EDT
+DONE: website published with 330 warnings and 13 errors. Last updated 2026-08-20 21:14:11 EDT
 
 
 * Website is published with warnings/errors. Please check all affected pages. If nothing is broken, ignore the warnings/errors
