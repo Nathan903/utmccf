@@ -394,12 +394,12 @@ body.admin-bar.has-marketing-bar .entry-content > *[id] {
 	left: -36px;
 	width: 24px;
 	height: 24px;
-	background-image: url(/wp-content/blog-plugins/marketing-bar/css/../images/wpcom-mark.svg);
+	background-image: url(../wp-content/blog-plugins/marketing-bar/images/wpcom-mark.svg);
 	background-size: 24px;
 }
 
 .marketing-bar.is-jetpack-app-link .marketing-bar-text:before { 
-	background-image: url(/wp-content/blog-plugins/marketing-bar/css/../images/jp-app.svg);
+	background-image: url(../wp-content/blog-plugins/marketing-bar/images/jp-app.svg);
 	background-size: 24px;
 	left: -44px;
 	background-repeat: no-repeat;
@@ -491,7 +491,7 @@ body.admin-bar.has-marketing-bar .entry-content > *[id] {
 		margin: 0 0 0 8px;
 		padding:0;
 		border: 0;
-		background: no-repeat center url(/wp-content/blog-plugins/marketing-bar/css/../images/arrow.svg);
+		background: no-repeat center url(../wp-content/blog-plugins/marketing-bar/images/arrow.svg);
 		background-size: 24px;
 		text-indent: 17px;
 		white-space: nowrap;

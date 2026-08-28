@@ -327,9 +327,11 @@ WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpa
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/sun/_inc/genericons/genericons/Genericons.eot] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/moon/_inc/build/tiled-gallery/tiled-gallery/tiled-gallery.min.js@m=1755006225i&ver=16.2-a.2] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/moon/_inc/build/tiled-gallery/tiled-gallery/tiled-gallery.min.js@m=1755006225i&ver=16.2-a.0] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/moon/_inc/build/tiled-gallery/tiled-gallery/tiled-gallery.min.js@m=1755006225i&ver=16.2-a.4] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/moon/_inc/build/sharedaddy/sharing.min.js@m=1786736522i] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/moon/_inc/build/sharedaddy/sharing.min.js@m=1755006225i] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/moon/_inc/blocks/tiled-gallery/view.js@m=1782736681i&minify=false&ver=16.2-a.0] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/moon/_inc/blocks/tiled-gallery/view.js@m=1782736681i&minify=false&ver=16.2-a.4] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/moon/_inc/blocks/tiled-gallery/view.js@m=1782736681i&minify=false&ver=16.2-a.2] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/moon/_inc/genericons/genericons/Genericons.eot@] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/moon/_inc/genericons/genericons/Genericons.ttf] is not an HTML. It is not processed for ad/tracker cleaning
@@ -347,6 +349,7 @@ WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/plugins/gutenber
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/js/bilmur.min.js@i=17&m=202634] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/js/bilmur.min.js@i=17&m=202632] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/js/bilmur.min.js@i=17&m=202633] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/js/bilmur.min.js@i=17&m=202635] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/themes/pub/edin/font/edincon.eot@-yw7mjc] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/themes/pub/edin/font/edincon.eot@] is not an HTML. It is not processed for ad/tracker cleaning
 WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/themes/pub/edin/font/edincon.svg@-yw7mjc] is not an HTML. It is not processed for ad/tracker cleaning
@@ -368,18 +371,18 @@ Compile:
     -DLOCALEDIR="/usr/share/locale" -I. -I../../src -I../lib 
     -I../../lib -Wdate-time -D_FORTIFY_SOURCE=3 -DHAVE_LIBSSL -DNDEBUG 
     -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer 
-    -ffile-prefix-map=/build/wget-TrFjsj/wget-1.21.4=. -flto=auto 
+    -ffile-prefix-map=/build/wget-JgCXcc/wget-1.21.4=. -flto=auto 
     -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection 
     -Wformat -Werror=format-security -fcf-protection 
-    -fdebug-prefix-map=/build/wget-TrFjsj/wget-1.21.4=/usr/src/wget-1.21.4-1ubuntu4.4 
+    -fdebug-prefix-map=/build/wget-JgCXcc/wget-1.21.4=/usr/src/wget-1.21.4-1ubuntu4.5 
     -DNO_SSLv2 -D_FILE_OFFSET_BITS=64 -g -Wall 
 Link: 
     gcc -DHAVE_LIBSSL -DNDEBUG -g -O2 -fno-omit-frame-pointer 
     -mno-omit-leaf-frame-pointer 
-    -ffile-prefix-map=/build/wget-TrFjsj/wget-1.21.4=. -flto=auto 
+    -ffile-prefix-map=/build/wget-JgCXcc/wget-1.21.4=. -flto=auto 
     -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection 
     -Wformat -Werror=format-security -fcf-protection 
-    -fdebug-prefix-map=/build/wget-TrFjsj/wget-1.21.4=/usr/src/wget-1.21.4-1ubuntu4.4 
+    -fdebug-prefix-map=/build/wget-JgCXcc/wget-1.21.4=/usr/src/wget-1.21.4-1ubuntu4.5 
     -DNO_SSLv2 -D_FILE_OFFSET_BITS=64 -g -Wall -Wl,-Bsymbolic-functions 
     -flto=auto -ffat-lto-objects -Wl,-z,relro -Wl,-z,now -lpcre2-8 
     -luuid -lidn2 -lssl -lcrypto -lz -lpsl ../lib/libgnu.a 
@@ -393,7 +396,7 @@ There is NO WARRANTY, to the extent permitted by law.
 Originally written by Hrvoje Niksic <hniksic@xemacs.org>.
 Please send bug reports and questions to <bug-wget@gnu.org>.
 
-DONE: website published with 330 warnings and 13 errors. Last updated 2026-08-20 21:14:11 EDT
+DONE: website published with 333 warnings and 13 errors. Last updated 2026-08-28 05:44:39 EDT
 
 
 * Website is published with warnings/errors. Please check all affected pages. If nothing is broken, ignore the warnings/errors
