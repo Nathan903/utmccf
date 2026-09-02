@@ -178,6 +178,10 @@ scriptKeywords=(
   "outbrain",
   "atatags-",
   "rltInitialize",
+  "stats.wp.com",
+  "bilmur",
+  "_stq",
+  "_tkq",
   # "gdpr"
 )
 socialMediaIconSvg = {
@@ -228,35 +232,54 @@ def findUnwantedScripts(text): #look for all <script> tags
       toBeRemoved.append(scriptTag)
   return toBeRemoved
 
-def fix_long_jetpack_urls(text, base_dir="clean_utmccf.wordpress.com"):
-  pattern = r'((?:https://utmccf\.wordpress\.com)?(?:(?:\.\./)*)?/_static/\?\?[^\'"]+)'
-  urls = set(re.findall(pattern, text))
-  for url in urls:
-    clean_url_match = re.search(r'(/_static/\?\?.*)', url)
-    if not clean_url_match: continue
-    clean_url = clean_url_match.group(1)
+def build_jetpack_mapping(base_dir):
+  """Scan _static/ for raw wget jetpack bundle files, create clean copies, return URL mapping."""
+  mapping = {}
+  static_dir = os.path.join(base_dir, "_static")
+  if not os.path.isdir(static_dir):
+    return mapping
+  
+  for filename in os.listdir(static_dir):
+    if not filename.startswith("index.html@%3F"):
+      continue
+    filepath = os.path.join(static_dir, filename)
+    if not os.path.isfile(filepath):
+      continue
     
-    url_hash = hashlib.md5(clean_url.encode('utf-8')).hexdigest()[:10]
-    ext = ".css" if "cssminify" in url else ".js"
-    short_filename = f"jetpack_{url_hash}{ext}"
-    short_path_in_html = url.replace(clean_url, f"/_static/{short_filename}")
+    is_css = filename.endswith('.css') or 'cssminif' in filename.lower() or 'cssminify' in filename.lower()
+    ext = ".css" if is_css else ".js"
     
-    local_path = os.path.join(base_dir, "_static", short_filename)
-    os.makedirs(os.path.dirname(local_path), exist_ok=True)
-    if not os.path.exists(local_path):
-      try:
-        absolute_url = "https://utmccf.wordpress.com" + clean_url
-        req = urllib.request.Request(absolute_url, headers={'User-Agent': 'Mozilla/5.0'})
-        with urllib.request.urlopen(req) as response:
-          with open(local_path, "wb") as f:
-            f.write(response.read())
-      except Exception as e:
-        print_error(f"Failed to download {absolute_url}: {e}")
-        continue
-    text = text.replace(url, short_path_in_html)
+    url_hash = hashlib.md5(filename.encode('utf-8')).hexdigest()[:10]
+    jetpack_name = f"jetpack_{url_hash}{ext}"
+    jetpack_path = os.path.join(static_dir, jetpack_name)
+    
+    if not os.path.exists(jetpack_path):
+      content = open(filepath, 'rb').read()
+      if is_css:
+        css_text = content.decode('utf-8', errors='ignore')
+        css_text = re.sub(r'(\.\w{2,5})@[^)\s]+', r'\1', css_text)
+        content = css_text.encode('utf-8')
+      with open(jetpack_path, 'wb') as f:
+        f.write(content)
+      print_debug_info(f"Created jetpack bundle: {jetpack_name} ({len(content)} bytes)")
+    
+    html_filename = filename.replace('%', '%25')
+    mapping[html_filename] = jetpack_name
+    # HTML attributes may use &amp; instead of &
+    html_filename_amp = html_filename.replace('&', '&amp;')
+    if html_filename_amp != html_filename:
+      mapping[html_filename_amp] = jetpack_name
+  
+  return mapping
+
+def fix_jetpack_urls(text, mapping):
+  """Replace _static/index.html@%253F... URLs with /_static/jetpack_*.{css,js}."""
+  for html_filename, jetpack_name in mapping.items():
+    pattern = r'(?:\.\./)*_static/' + re.escape(html_filename)
+    text = re.sub(pattern, f'/_static/{jetpack_name}', text)
   return text
 
-def clean(filepath):
+def clean(filepath, jetpack_mapping):
   with open(filepath, encoding="utf-8") as f:
     original=text=f.read()
     
@@ -317,7 +340,12 @@ def clean(filepath):
   if original==text:
     print_warning(f"`clean()` - no change in [{filepath}]")
 
-  text = fix_long_jetpack_urls(text, resultPath)
+  # Replace jetpack combined bundle URLs with clean /_static/jetpack_*.{css,js}
+  text = fix_jetpack_urls(text, jetpack_mapping)
+
+  # Strip @... query suffixes from all asset URLs (wget --restrict-file-names=windows converts ? to @)
+  # e.g. wpgroho.js@m=1610363240i -> wpgroho.js, cropped-cross.png@w=50 -> cropped-cross.png
+  text = re.sub(r'(\.\w{2,5})@[^"\'\s>)]+', r'\1', text)
 
   check_for_broken_absolute_url(filepath,text)
 
@@ -340,7 +368,7 @@ if testOnlyOneFile:
   source_file = domain+"/index.html"
   destination_file = resultPath+"/index.html"
   shutil.copyfile(source_file, destination_file)
-  clean(destination_file)
+  clean(destination_file, {})
   exit()
 else:
   shutil.copytree(domain, resultPath, dirs_exist_ok=True)
@@ -351,6 +379,11 @@ extensionToExcludeFromProduction = ('.py','.')
 keywordsToExcludeFromProduction = ('/?', '/feed/')
 extensionToNotClean = ('.txt','.xml', ".log",".jpg",".png",".webp", ".svg",".css",".pdf",".js")
 
+# Build jetpack bundle mapping before processing HTML files
+jetpack_mapping = build_jetpack_mapping(resultPath)
+if jetpack_mapping:
+  print_debug_info(f"Built jetpack mapping with {len(jetpack_mapping)} bundles")
+
 #main loop to clean all files in /clean_utmccf.wordpress.com
 for subdir, dirs, files in os.walk(resultPath):
   for file in files:
@@ -359,27 +392,31 @@ for subdir, dirs, files in os.walk(resultPath):
       os.remove(path)
       print_debug_info(f"ignoring [{path}]. This is omitted in production website.")
       continue 
-      
-    if "index.html@%3F" in file:
-      os.remove(path)
-      continue
 
+    # Copy foo.ext@query -> foo.ext so the base file exists on disk
     if "@" in file:
       base_name = file.split("@")[0]
-      if base_name and base_name.endswith(('.js', '.css', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.woff', '.woff2', '.ttf', '.json')):
+      if base_name and base_name.endswith(('.js', '.css', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.woff', '.woff2', '.ttf', '.json', '.eot')):
         base_path = os.path.join(subdir, base_name)
         if not os.path.exists(base_path):
           shutil.copy2(path, base_path)
           print_debug_info(f"Copied [{path}] to [{base_path}] for dynamic loading.")
 
-    if path.endswith(".html"):
-      clean(path)
+    if path.endswith(".html") and "@" not in file:
+      clean(path, jetpack_mapping)
     elif path.endswith(extensionToNotClean):
       #files to NOT clean
       pass
       #print_debug_info(f"downloaded file [{path}] is not an HTML. It is not processed for ad/tracker cleaning")
     else:
-      print_warning(f"downloaded file [{path}] is not an HTML. It is not processed for ad/tracker cleaning")
+      if "@" not in file:
+        print_warning(f"downloaded file [{path}] is not an HTML. It is not processed for ad/tracker cleaning")
+
+# Cleanup: remove all files with @ in their name (no longer referenced after HTML cleaning)
+for subdir, dirs, files in os.walk(resultPath):
+  for file in files:
+    if "@" in file:
+      os.remove(os.path.join(subdir, file))
 
 print_warning(subprocess.run(['wget', '--version'], capture_output=True, text=True, check=True).stdout)
 print_success(f"Finished processing (at: {int(time.time()-startTime)} seconds)")
