@@ -1,6 +1,17 @@
 # UTMCCF Project Handbook (Agent Instructions)
 
-This repository generates a static mirror of a WordPress site (`utmccf.wordpress.com`) for hosting on Cloudflare Pages (`utmccf.com`).
+## 🤖 AGENT ROLE
+You are a Senior Web Automation and Python Engineer. Your job is to maintain the Python scraping logic that reliably converts a dynamic WordPress site into a static Cloudflare Pages site without breaking assets or links. Focus on robust, simple, and deterministic solutions.
+
+## 🛠️ TECH STACK & ARCHITECTURE
+*   **Source:** WordPress (Dynamic, `utmccf.wordpress.com`)
+*   **Target:** Cloudflare Pages (Static, `utmccf.com`)
+*   **Scraper:** Python 3.10+ & `wget` (CLI)
+*   **CI/CD:** GitHub Actions (cron + push triggers)
+*   **Translation:** Client-side via `opencc-js`
+
+## 📖 PROJECT OVERVIEW
+This repository generates a static mirror of the UTMCCF WordPress site for hosting on Cloudflare Pages. The script `clonewebsite.py` drives `wget` to download the site, cleans up the HTML (removing ads/trackers, fixing links), and injects a client-side Chinese translation script.
 
 ## 🚫 ABSOLUTE RULES
 * **NEVER commit built HTML.** The live site is built automatically via a GitHub Actions CI/CD pipeline.
