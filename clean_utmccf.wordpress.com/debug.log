@@ -56704,3 +56704,117 @@ Please send bug reports and questions to <bug-wget@gnu.org>.
 		DONE: website published with 333 warnings and 13 errors. Last updated 2026-08-28 05:44:39 EDT
 
  
+		INFO: ARG=--downloadAgain
+		SUCCESS: Finished download (at: 167 seconds)
+		INFO: Created jetpack bundle: jetpack_2028e26cd5.js (89323 bytes)
+		INFO: Created jetpack bundle: jetpack_d178c05c62.css (10745 bytes)
+		INFO: Created jetpack bundle: jetpack_58057c1f0a.css (32676 bytes)
+		INFO: Created jetpack bundle: jetpack_36735b6da1.css (21595 bytes)
+		INFO: Created jetpack bundle: jetpack_16029fc2bb.css (96190 bytes)
+		INFO: Created jetpack bundle: jetpack_f69b0b2099.js (113235 bytes)
+		INFO: Created jetpack bundle: jetpack_ee5ee5dcae.js (60554 bytes)
+		INFO: Created jetpack bundle: jetpack_8ad5b52f72.js (75802 bytes)
+		INFO: Created jetpack bundle: jetpack_159ae72b11.js (117756 bytes)
+		INFO: Created jetpack bundle: jetpack_f225f6bb7d.js (91217 bytes)
+		INFO: Created jetpack bundle: jetpack_3776c0616a.js (85382 bytes)
+		INFO: Created jetpack bundle: jetpack_ec5eca6cc5.css (1089 bytes)
+		INFO: Created jetpack bundle: jetpack_59d7ea275c.css (34429 bytes)
+		INFO: Created jetpack bundle: jetpack_ad028d801a.css (32328 bytes)
+		INFO: Created jetpack bundle: jetpack_1a85690250.js (107519 bytes)
+		INFO: Created jetpack bundle: jetpack_32548dcab5.css (32857 bytes)
+		INFO: Created jetpack bundle: jetpack_6b81a491b5.js (105678 bytes)
+		INFO: Created jetpack bundle: jetpack_df911c8b16.js (34390 bytes)
+		INFO: Created jetpack bundle: jetpack_b6fe71adca.js (87276 bytes)
+		INFO: Created jetpack bundle: jetpack_a8596aa185.js (106465 bytes)
+		INFO: Created jetpack bundle: jetpack_3fe78c26f6.js (68571 bytes)
+		INFO: Created jetpack bundle: jetpack_ba2fc8230c.css (13315 bytes)
+		INFO: Created jetpack bundle: jetpack_b83e79f647.js (116045 bytes)
+		INFO: Created jetpack bundle: jetpack_5143564a7d.css (15013 bytes)
+		INFO: Created jetpack bundle: jetpack_37a1c4cdec.css (116850 bytes)
+		INFO: Created jetpack bundle: jetpack_cbb4894502.js (38349 bytes)
+		INFO: Created jetpack bundle: jetpack_a4498fd2d4.js (114151 bytes)
+		INFO: Created jetpack bundle: jetpack_1aae426a87.js (98672 bytes)
+		INFO: Created jetpack bundle: jetpack_1b04bdbed4.js (130442 bytes)
+		INFO: Built jetpack mapping with 40 bundles
+WARNING: downloaded file [clean_utmccf.wordpress.com/sitemap.xml.diff] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/20250426/ans.webm] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/20250426/croped.JPG] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: This page 『 utmccf.wordpress.com/2022/08/25/2022-summer-活动总集 』 contains these absolute url links:
+	- 【 https://utmccf.com/?attachment_id=2825 】	fix it by changing it to:【 /?attachment_id=2825 】
+	- 【 https://utmccf.com/?attachment_id=2833 】	fix it by changing it to:【 /?attachment_id=2833 】
+	- 【 https://utmccf.com/?attachment_id=2834 】	fix it by changing it to:【 /?attachment_id=2834 】
+	- 【 https://utmccf.com/?attachment_id=2832 】	fix it by changing it to:【 /?attachment_id=2832 】
+	- 【 https://utmccf.com/?attachment_id=2837 】	fix it by changing it to:【 /?attachment_id=2837 】
+	- 【 https://utmccf.com/?attachment_id=2835 】	fix it by changing it to:【 /?attachment_id=2835 】
+	- 【 https://utmccf.com/?attachment_id=2830 】	fix it by changing it to:【 /?attachment_id=2830 】
+	- 【 https://utmccf.com/fellowship/nl-615/ 】	fix it by changing it to:【 /fellowship/nl-615/ 】
+	- 【 https://utmccf.com/conference/wechatimg560/ 】	fix it by changing it to:【 /conference/wechatimg560/ 】
+	- 【 https://utmccf.com/conference/16101658206922_-pic/ 】	fix it by changing it to:【 /conference/16101658206922_-pic/ 】
+	- 【 https://utmccf.com/?attachment_id=2827 】	fix it by changing it to:【 /?attachment_id=2827 】
+
+WARNING: This page 『 utmccf.wordpress.com/2012/10/12/布道会-evangelical-conference 』 contains these absolute url links:
+	- 【 http://utmccf.com/conference/ 】	fix it by changing it to:【 /conference/ 】
+
+		INFO: ignoring [clean_utmccf.wordpress.com/2025worshipnight/lyrics/code/main.py]. This is omitted in production website.
+		INFO: ignoring [clean_utmccf.wordpress.com/2025worshipnight/code/main.py]. This is omitted in production website.
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2025/09/137dd25d-a475-49a9-8158-e4adf927db0c_1_105_c-2-edited.jpeg] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2025/09/whatsapp-image-2025-09-22-at-16.28.39.jpeg] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2025/09/137dd25d-a475-49a9-8158-e4adf927db0c_1_105_c-2.jpeg] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2025/09/whatsapp-image-2025-08-31-at-20.53.39-1.jpeg] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2022/06/wechatimg560.jpeg] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2022/11/wechatimg1987.jpeg] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/uploads/2023/10/wechatimg2844-1.jpeg] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/sun/_inc/genericons/genericons/Genericons.ttf] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/sun/_inc/genericons/genericons/Genericons.eot] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/moon/_inc/genericons/genericons/Genericons.ttf] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/mu-plugins/jetpack-plugin/moon/_inc/genericons/genericons/Genericons.eot] is not an HTML. It is not processed for ad/tracker cleaning
+		INFO: Copied [clean_utmccf.wordpress.com/wp-content/plugins/gutenberg-core/v23.9.0/build/scripts/i18n/index.min.js@m=1788366818i&ver=1dfe7db3940c23ea9216] to [clean_utmccf.wordpress.com/wp-content/plugins/gutenberg-core/v23.9.0/build/scripts/i18n/index.min.js] for dynamic loading.
+		INFO: Copied [clean_utmccf.wordpress.com/wp-content/plugins/gutenberg-core/v23.9.0/build/scripts/dom-ready/index.min.js@m=1788366818i&ver=3fe927cab37bf38d6a23] to [clean_utmccf.wordpress.com/wp-content/plugins/gutenberg-core/v23.9.0/build/scripts/dom-ready/index.min.js] for dynamic loading.
+		INFO: Copied [clean_utmccf.wordpress.com/wp-content/plugins/gutenberg-core/v23.9.0/build/scripts/hooks/index.min.js@m=1788366818i&ver=f0f188028580e8dc1255] to [clean_utmccf.wordpress.com/wp-content/plugins/gutenberg-core/v23.9.0/build/scripts/hooks/index.min.js] for dynamic loading.
+		INFO: Copied [clean_utmccf.wordpress.com/wp-content/themes/pub/edin/font/edincon.eot@-yw7mjc] to [clean_utmccf.wordpress.com/wp-content/themes/pub/edin/font/edincon.eot] for dynamic loading.
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/themes/pub/edin/font/edincon.woff] is not an HTML. It is not processed for ad/tracker cleaning
+WARNING: downloaded file [clean_utmccf.wordpress.com/wp-content/themes/pub/edin/font/edincon.ttf] is not an HTML. It is not processed for ad/tracker cleaning
+		INFO: ignoring [clean_utmccf.wordpress.com/2025draw_n_spill/cards/test.py]. This is omitted in production website.
+WARNING: GNU Wget 1.21.4 built on linux-gnu.
+
+-cares +digest -gpgme +https +ipv6 +iri +large-file -metalink +nls 
++ntlm +opie +psl +ssl/openssl 
+
+Wgetrc: 
+    /etc/wgetrc (system)
+Locale: 
+    /usr/share/locale 
+Compile: 
+    gcc -DHAVE_CONFIG_H -DSYSTEM_WGETRC="/etc/wgetrc" 
+    -DLOCALEDIR="/usr/share/locale" -I. -I../../src -I../lib 
+    -I../../lib -Wdate-time -D_FORTIFY_SOURCE=3 -DHAVE_LIBSSL -DNDEBUG 
+    -g -O2 -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer 
+    -ffile-prefix-map=/build/wget-JgCXcc/wget-1.21.4=. -flto=auto 
+    -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection 
+    -Wformat -Werror=format-security -fcf-protection 
+    -fdebug-prefix-map=/build/wget-JgCXcc/wget-1.21.4=/usr/src/wget-1.21.4-1ubuntu4.5 
+    -DNO_SSLv2 -D_FILE_OFFSET_BITS=64 -g -Wall 
+Link: 
+    gcc -DHAVE_LIBSSL -DNDEBUG -g -O2 -fno-omit-frame-pointer 
+    -mno-omit-leaf-frame-pointer 
+    -ffile-prefix-map=/build/wget-JgCXcc/wget-1.21.4=. -flto=auto 
+    -ffat-lto-objects -fstack-protector-strong -fstack-clash-protection 
+    -Wformat -Werror=format-security -fcf-protection 
+    -fdebug-prefix-map=/build/wget-JgCXcc/wget-1.21.4=/usr/src/wget-1.21.4-1ubuntu4.5 
+    -DNO_SSLv2 -D_FILE_OFFSET_BITS=64 -g -Wall -Wl,-Bsymbolic-functions 
+    -flto=auto -ffat-lto-objects -Wl,-z,relro -Wl,-z,now -lpcre2-8 
+    -luuid -lidn2 -lssl -lcrypto -lz -lpsl ../lib/libgnu.a 
+
+Copyright (C) 2015 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later
+<http://www.gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Originally written by Hrvoje Niksic <hniksic@xemacs.org>.
+Please send bug reports and questions to <bug-wget@gnu.org>.
+
+		SUCCESS: Finished processing (at: 207 seconds)
+		DONE: website published with 19 warnings and 0 errors. Last updated 2026-09-02 14:08:23 EDT
+
+ 
