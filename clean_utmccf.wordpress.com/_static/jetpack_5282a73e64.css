@@ -1048,3 +1048,54 @@ body.custom-background.has-marketing-bar-theme-ixion {
 		top: calc(45px + var(--wp-admin--marketing-bar--height));
 	}
 }
+
+
+
+
+#marketingbar.marketing-bar.is-redesign-treatment {
+	background: #3858e9;
+	color: #ffffff;
+}
+
+#marketingbar.marketing-bar.is-redesign-treatment .marketing-bar-text:before {
+	background-image: url(../wp-content/blog-plugins/marketing-bar/images/wpcom-wmark-white.svg);
+}
+
+#marketingbar.marketing-bar.is-redesign-treatment .marketing-bar-button {
+	background: #ffffff;
+	color: #3858e9;
+	font-weight: 500;
+}
+
+#marketingbar.marketing-bar.is-redesign-treatment .marketing-bar-button:focus {
+	box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #3858e9;
+}
+
+
+#marketingbar.marketing-bar .marketing-bar-text-short {
+	display: none;
+}
+
+@media screen and (max-width: 782px) {
+	#marketingbar.marketing-bar .marketing-bar-text-long {
+		display: none;
+	}
+
+	#marketingbar.marketing-bar .marketing-bar-text-short {
+		display: inline;
+	}
+
+	
+	#marketingbar.marketing-bar.is-redesign-treatment .marketing-bar-button {
+		width: auto;
+		height: auto;
+		margin: 0 0 0 auto;
+		padding: 6px 12px;
+		font-size: 13px;
+		line-height: 18px;
+		text-indent: 0;
+		background: #ffffff;
+		white-space: nowrap;
+		flex-shrink: 0;
+	}
+}
